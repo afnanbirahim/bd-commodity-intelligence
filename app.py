@@ -20,7 +20,7 @@ from bs4 import BeautifulSoup
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 APP_NAME = "Bangladesh Commodity Intelligence"
-APP_VERSION = "2.4.0-consumer-final-egg-hali"
+APP_VERSION = "3.0.0-smart-consumer-final"
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_DIR = BASE_DIR / "cache"
 DATA_DIR = BASE_DIR / "data"
@@ -71,7 +71,7 @@ TRANSLATIONS = {
         "subtitle": "Latest verified essential commodity prices for consumers. Official data only. No demo prices. No fake market ranking.",
         "language": "Language",
         "source_ok": "Official data loaded",
-        "source_partial": "Official prices are available. Dhaka market-wise ranking is unavailable today.",
+        "source_partial": "Official price data loaded; market ranking requires market-wise rows.",
         "source_fail": "Official data unavailable right now",
         "last_updated": "Last updated",
         "data_date": "Data date",
@@ -104,6 +104,26 @@ TRANSLATIONS = {
         "unit_hali": "Hali / 4 eggs",
         "egg_unit_note": "Egg prices from the official source are treated as hali / 4 eggs, not per single egg.",
         "source_monitor": "Official source monitor",
+        "smart_basket": "🛒 Smart shopping basket",
+        "smart_basket_help": "Choose your own quantities. The app calculates low, average, and high cost using the latest verified official prices.",
+        "basket_item": "Item",
+        "qty": "Quantity",
+        "calc_cost": "Calculate basket cost",
+        "custom_basket_total": "Custom basket total",
+        "alerts": "🔔 Price alerts",
+        "alerts_help": "Automatic alerts based on official change percentages and price spread. These are signals, not forecasts.",
+        "no_alerts": "No major official price alert detected today.",
+        "alert_increase": "Price increased",
+        "alert_decrease": "Price decreased",
+        "alert_spread": "Large low-high market spread",
+        "history": "📈 Historical trends",
+        "history_help": "Trend view from saved daily snapshots. It becomes richer as the app runs every day.",
+        "history_empty": "No historical snapshots yet. After daily refreshes, this section will show trend lines.",
+        "market_comparison": "📍 Market comparison",
+        "market_comparison_help": "Activates only when verified Dhaka market-wise rows are available from the official/backend feed.",
+        "market_comparison_unavailable": "Verified Dhaka market-wise rows are unavailable today, so the app does not show market comparison or fake cheapest-market claims.",
+        "perfect_features": "What this app adds beyond official portals",
+        "perfect_features_text": "Smart custom basket, historical trend storage, alert cards, localized Bangla/English UI, consumer-friendly charts, map labels, source transparency, and verified-only market comparison when official market-level rows exist.",
         "technical_details": "Technical details",
         "basket_summary": "🛒 Estimated weekly household basket",
         "low": "Low",
@@ -124,21 +144,24 @@ TRANSLATIONS = {
         "map_note": "Base map place names come from OpenStreetMap tiles. Market marker labels/tooltips are localized by the app.",
         "covered_markets": "Covered Dhaka markets",
         "source_policy": "This app uses only verified official/public-source data or a backend-configured verified official feed. It does not display demo prices as real prices. If official market-wise data is not available, the app clearly says so.",
+        "positioning": "How this app differs",
+        "positioning_text": "Bangladesh already has official TCB and DAM price-report portals. This app does not replace them; it repackages verified public data into a mobile-friendly consumer view with Bangla/English UI, basket estimates, charts, map labels, and clear source transparency.",
+        "official_not_marketwise": "Official prices are authentic as reference price ranges. Cheapest-market claims are shown only when verified market-wise Dhaka rows are available.",
     },
     "বাংলা": {
         "title": "🛒 বাংলাদেশ কমোডিটি ইন্টেলিজেন্স",
         "subtitle": "ভোক্তাদের জন্য সর্বশেষ যাচাইকৃত নিত্যপ্রয়োজনীয় পণ্যের বাজারদর। শুধু সরকারি তথ্য; ডেমো দাম নয়, ভুয়া র‍্যাঙ্কিং নয়।",
         "language": "ভাষা",
-        "source_ok": "সরকারি তথ্য পাওয়া গেছে",
-        "source_partial": "সরকারি মূল্যতথ্য পাওয়া গেছে। ঢাকার বাজারভিত্তিক র‍্যাঙ্কিং আজ পাওয়া যায়নি।",
+        "source_ok": "সরকারি তথ্য লোড হয়েছে",
+        "source_partial": "সরকারি দাম লোড হয়েছে; বাজার র‍্যাঙ্কিংয়ের জন্য বাজারভিত্তিক তথ্য দরকার।",
         "source_fail": "এই মুহূর্তে সরকারি তথ্য পাওয়া যাচ্ছে না",
         "last_updated": "সর্বশেষ হালনাগাদ",
         "data_date": "তথ্যের তারিখ",
         "status": "অবস্থা",
         "coverage": "ঢাকার বাজারভিত্তিক তথ্য",
         "covered": "পণ্যের সংখ্যা",
-        "available": "পাওয়া গেছে",
-        "not_available": "তথ্য অনুপলব্ধ",
+        "available": "উপলব্ধ",
+        "not_available": "অনুপলব্ধ",
         "official_ranges": "📌 সর্বশেষ সরকারি মূল্যসীমা",
         "official_ranges_help": "DAM-এর পাবলিক সরকারি তথ্য থেকে পাওয়া সামগ্রিক/মূল্যসীমা। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি হিসেবে দেখানো হয়েছে।",
         "key_prices": "💳 আজকের গুরুত্বপূর্ণ সরকারি দাম",
@@ -163,6 +186,26 @@ TRANSLATIONS = {
         "unit_hali": "হালি / ৪টি",
         "egg_unit_note": "সরকারি উৎসের ডিমের দাম ১টি নয়, হালি / ৪টি হিসেবে ধরা হয়েছে।",
         "source_monitor": "সরকারি উৎস মনিটর",
+        "smart_basket": "🛒 স্মার্ট বাজার ঝুড়ি",
+        "smart_basket_help": "নিজের প্রয়োজনমতো পরিমাণ দিন। সর্বশেষ যাচাইকৃত সরকারি দামের ভিত্তিতে কম, গড় ও বেশি খরচ হিসাব করা হবে।",
+        "basket_item": "পণ্য",
+        "qty": "পরিমাণ",
+        "calc_cost": "বাজার খরচ হিসাব করুন",
+        "custom_basket_total": "নিজস্ব বাজার ঝুড়ির মোট খরচ",
+        "alerts": "🔔 মূল্য সতর্কতা",
+        "alerts_help": "সরকারি পরিবর্তন হার ও মূল্যসীমার পার্থক্যের ভিত্তিতে স্বয়ংক্রিয় সতর্কতা। এগুলো সংকেত, পূর্বাভাস নয়।",
+        "no_alerts": "আজ বড় কোনো সরকারি মূল্য সতর্কতা পাওয়া যায়নি।",
+        "alert_increase": "দাম বেড়েছে",
+        "alert_decrease": "দাম কমেছে",
+        "alert_spread": "নিম্ন-উচ্চ দামের বড় পার্থক্য",
+        "history": "📈 ঐতিহাসিক ট্রেন্ড",
+        "history_help": "সংরক্ষিত দৈনিক স্ন্যাপশট থেকে ট্রেন্ড ভিউ। অ্যাপ প্রতিদিন চললে এই অংশ আরও সমৃদ্ধ হবে।",
+        "history_empty": "এখনও ঐতিহাসিক স্ন্যাপশট নেই। দৈনিক রিফ্রেশের পর এখানে ট্রেন্ড লাইন দেখা যাবে।",
+        "market_comparison": "📍 বাজার তুলনা",
+        "market_comparison_help": "শুধু যাচাইকৃত ঢাকার বাজারভিত্তিক সারি সরকারি/ব্যাকএন্ড ফিডে পাওয়া গেলে সক্রিয় হবে।",
+        "market_comparison_unavailable": "আজ যাচাইকৃত ঢাকার বাজারভিত্তিক সারি পাওয়া যায়নি, তাই অ্যাপ বাজার তুলনা বা ভুয়া সর্বনিম্ন বাজার দেখাচ্ছে না।",
+        "perfect_features": "সরকারি পোর্টালের বাইরে এই অ্যাপ যা যোগ করে",
+        "perfect_features_text": "স্মার্ট কাস্টম বাজার ঝুড়ি, ঐতিহাসিক ট্রেন্ড সংরক্ষণ, সতর্কতা কার্ড, বাংলা/ইংরেজি UI, ভোক্তাবান্ধব চার্ট, ম্যাপ লেবেল, উৎস স্বচ্ছতা, এবং সরকারি বাজারভিত্তিক সারি থাকলে যাচাইকৃত বাজার তুলনা।",
         "technical_details": "টেকনিক্যাল বিস্তারিত",
         "basket_summary": "🛒 আনুমানিক সাপ্তাহিক বাজার",
         "low": "কম",
@@ -183,6 +226,9 @@ TRANSLATIONS = {
         "map_note": "বেস ম্যাপের জায়গার নাম OpenStreetMap টাইল থেকে আসে। বাজারের মার্কার/টুলটিপের নাম অ্যাপ নিজে বাংলায় দেখায়।",
         "covered_markets": "কভার করা ঢাকার বাজার",
         "source_policy": "এই অ্যাপ শুধু যাচাইকৃত সরকারি/পাবলিক উৎসের তথ্য বা ব্যাকএন্ডে সংযুক্ত যাচাইকৃত সরকারি ফিড ব্যবহার করে। ডেমো দামকে বাস্তব দাম হিসেবে দেখায় না। সরকারি বাজারভিত্তিক তথ্য না পাওয়া গেলে অ্যাপ তা স্পষ্টভাবে জানায়।",
+        "positioning": "এই অ্যাপের পার্থক্য",
+        "positioning_text": "বাংলাদেশে TCB ও DAM-এর সরকারি মূল্যতথ্য পোর্টাল আগে থেকেই আছে। এই অ্যাপ সেগুলোর বিকল্প নয়; যাচাইকৃত পাবলিক তথ্যকে ভোক্তাবান্ধব মোবাইল ভিউ, বাংলা/ইংরেজি UI, বাজার ঝুড়ির হিসাব, চার্ট, ম্যাপ লেবেল ও উৎস-স্বচ্ছতার মাধ্যমে সহজ করে দেখায়।",
+        "official_not_marketwise": "সরকারি দামগুলো রেফারেন্স মূল্যসীমা হিসেবে প্রামাণ্য। যাচাইকৃত ঢাকার বাজারভিত্তিক সারি পাওয়া গেলেই শুধু সবচেয়ে কমদামের বাজার দেখানো হবে।",
     },
 }
 
@@ -912,7 +958,7 @@ def build_key_price_table(official_range_df: pd.DataFrame) -> pd.DataFrame:
         "Commodity": [display_commodity(x) for x in key_df["commodity"].astype(str)],
         "Official price range": [fmt_range(a, b, c) for a, b, c in zip(key_df["price_min"], key_df["price_max"], key_df["price"])],
         "Midpoint": [fmt_tk(x) for x in key_df["price"]],
-        "Unit": [tr("unit_published") if str(x).lower() == "as published" else str(x) for x in key_df.get("unit", "As published")],
+        "Unit": [display_unit(u, c) for u, c in zip(key_df.get("unit", "As published"), key_df["commodity"].astype(str))],
         "Source": [source_short(x) for x in key_df.get("source", "Official")],
     })
 
@@ -963,6 +1009,153 @@ def localized_status_message(status: Dict[str, str]) -> str:
     if name == "Local cache":
         return "লাইভ সরকারি উৎস ব্যর্থ হওয়ায় সর্বশেষ যাচাইকৃত লোকাল ক্যাশ ব্যবহার করা হয়েছে।"
     return msg.translate(BN_DIGITS)
+
+
+
+def build_alerts(official_range_df: pd.DataFrame) -> List[str]:
+    alerts: List[str] = []
+    if official_range_df.empty:
+        return alerts
+    work = official_range_df.copy()
+    work["change_pct"] = pd.to_numeric(work.get("change_pct", 0), errors="coerce").fillna(0)
+    work["spread"] = pd.to_numeric(work.get("price_max", work.get("price", 0)), errors="coerce") - pd.to_numeric(work.get("price_min", work.get("price", 0)), errors="coerce")
+    work["price"] = pd.to_numeric(work.get("price", 0), errors="coerce")
+    inc = work[work["change_pct"] >= 5].sort_values("change_pct", ascending=False).head(4)
+    dec = work[work["change_pct"] <= -5].sort_values("change_pct", ascending=True).head(4)
+    for _, r in inc.iterrows():
+        alerts.append(f"🔺 {display_commodity(r['commodity'])}: {tr('alert_increase')} {fmt_num(r['change_pct'])}%")
+    for _, r in dec.iterrows():
+        alerts.append(f"🔻 {display_commodity(r['commodity'])}: {tr('alert_decrease')} {fmt_num(abs(r['change_pct']))}%")
+    # Spread alert: show only if spread is meaningfully large relative to midpoint or over Tk 20
+    work["spread_ratio"] = np.where(work["price"] > 0, work["spread"] / work["price"], 0)
+    spr = work[(work["spread"] >= 20) | (work["spread_ratio"] >= 0.15)].sort_values("spread", ascending=False).head(4)
+    for _, r in spr.iterrows():
+        alerts.append(f"⚠️ {display_commodity(r['commodity'])}: {tr('alert_spread')} ({fmt_range(r.get('price_min'), r.get('price_max'), r.get('price'))})")
+    # Deduplicate while preserving order
+    seen=set(); out=[]
+    for a in alerts:
+        if a not in seen:
+            out.append(a); seen.add(a)
+    return out[:6]
+
+
+def render_alerts(official_range_df: pd.DataFrame) -> None:
+    st.subheader(tr("alerts"))
+    st.caption(tr("alerts_help"))
+    alerts = build_alerts(official_range_df)
+    if not alerts:
+        st.success(tr("no_alerts"))
+    else:
+        for a in alerts:
+            st.warning(a)
+
+
+def basket_match_price(official_range_df: pd.DataFrame, pattern: str):
+    if official_range_df.empty:
+        return None
+    matches = official_range_df[match_commodity(official_range_df["commodity"], pattern)]
+    if matches.empty:
+        return None
+    return matches.sort_values("price").iloc[0]
+
+
+def render_smart_basket(official_range_df: pd.DataFrame) -> None:
+    st.subheader(tr("smart_basket"))
+    st.caption(tr("smart_basket_help"))
+    presets = [
+        ("Rice", "rice|boro|aman", 5.0),
+        ("Flour/Ata", "ata|flour", 1.0),
+        ("Lentil/Dal", "lentil|mung|gram", 1.0),
+        ("Onion", "onion", 2.0),
+        ("Potato", "potato", 2.0),
+        ("Soybean oil", "soybean|oil", 2.0),
+        ("Egg", "egg", 2.0),
+        ("Chicken/Hen", "hen|chicken", 1.0),
+        ("Sugar", "sugar", 1.0),
+        ("Salt", "salt", 1.0),
+    ]
+    cols = st.columns(2)
+    rows=[]; total_low=total_mid=total_high=0.0
+    for i,(label,pattern,default_qty) in enumerate(presets):
+        with cols[i % 2]:
+            qty = st.number_input(f"{display_item(label)}", min_value=0.0, max_value=100.0, value=float(default_qty), step=0.5, key=f"smart_qty_{label}")
+        if qty <= 0:
+            continue
+        r = basket_match_price(official_range_df, pattern)
+        if r is None:
+            continue
+        low = float(r.get("price_min", r["price"])) * qty
+        mid = float(r.get("price", r["price"])) * qty
+        high = float(r.get("price_max", r["price"])) * qty
+        total_low += low; total_mid += mid; total_high += high
+        rows.append({
+            "Item": display_item(label),
+            "Matched official item": display_commodity(r["commodity"]),
+            "Quantity": bn_digits(f"{qty:g}"),
+            "Unit": display_unit(r.get("unit", "As published"), r.get("commodity", ""), label),
+            "Low estimate": fmt_tk(low),
+            "Mid estimate": fmt_tk(mid),
+            "High estimate": fmt_tk(high),
+        })
+    if rows:
+        st.markdown(f"### {tr('custom_basket_total')}")
+        x1,x2,x3=st.columns(3)
+        x1.metric(tr("low"), fmt_tk(total_low))
+        x2.metric(tr("mid"), fmt_tk(total_mid))
+        x3.metric(tr("high"), fmt_tk(total_high))
+        st.caption(tr("egg_unit_note"))
+        st.dataframe(localize_columns(pd.DataFrame(rows)), use_container_width=True, hide_index=True)
+    else:
+        st.info(tr("basket_fail"))
+
+
+def render_history() -> None:
+    st.subheader(tr("history"))
+    st.caption(tr("history_help"))
+    hist_path = CACHE_DIR / "history_official_prices.csv"
+    hist = load_cache(hist_path)
+    if hist.empty or "date" not in hist.columns or "commodity" not in hist.columns or "price" not in hist.columns:
+        st.info(tr("history_empty"))
+        return
+    hist = hist.copy()
+    hist["price"] = pd.to_numeric(hist["price"], errors="coerce")
+    hist = hist.dropna(subset=["price"])
+    if hist.empty or hist["date"].nunique() < 2:
+        st.info(tr("history_empty"))
+        return
+    choices = sorted(hist["commodity"].astype(str).unique())
+    default = choices[:5]
+    selected = st.multiselect(tr("axis_commodity"), choices, default=default, format_func=display_commodity)
+    if not selected:
+        st.info(tr("history_empty"))
+        return
+    show = hist[hist["commodity"].astype(str).isin(selected)].copy()
+    show["commodity_display"] = [display_commodity(x) for x in show["commodity"]]
+    fig = px.line(show, x="date", y="price", color="commodity_display", markers=True, labels={"date": tr("data_date"), "price": tr("axis_price"), "commodity_display": tr("axis_commodity")})
+    fig.update_layout(height=460)
+    st.plotly_chart(fig, use_container_width=True)
+
+
+def render_market_comparison(df: pd.DataFrame, market_df: pd.DataFrame) -> None:
+    st.subheader(tr("market_comparison"))
+    st.caption(tr("market_comparison_help"))
+    if market_df.empty:
+        st.markdown(f"<div class='warnbox'>{tr('market_comparison_unavailable')}</div>", unsafe_allow_html=True)
+        return
+    cheapest = build_cheapest_market(df)
+    if cheapest.empty:
+        st.markdown(f"<div class='warnbox'>{tr('market_comparison_unavailable')}</div>", unsafe_allow_html=True)
+        return
+    show = pd.DataFrame({
+        "Commodity": [display_commodity(x) for x in cheapest["commodity"]],
+        "Cheapest market": [display_market(x) for x in cheapest["market"]],
+        "Area": [display_area(x) for x in cheapest["area"]],
+        "Unit": [display_unit(u, c) for u, c in zip(cheapest.get("unit", "As published"), cheapest["commodity"])],
+        "Lowest price": [fmt_tk(x) for x in cheapest["price"]],
+        "Saving vs highest": [fmt_tk(x) for x in cheapest["saving_vs_highest"]],
+        "Source": [source_short(x) for x in cheapest["source"]],
+    })
+    st.dataframe(localize_columns(show), use_container_width=True, hide_index=True)
 
 
 def main() -> None:
@@ -1027,23 +1220,12 @@ def main() -> None:
     else:
         st.dataframe(localize_columns(key_table), use_container_width=True, hide_index=True)
 
-    st.subheader(tr("cheapest_market"))
-    st.caption(tr("cheapest_market_help"))
-    cheapest = build_cheapest_market(df)
-    if cheapest.empty:
-        st.markdown(f"<div class='warnbox'>{tr('no_marketwise')}</div>", unsafe_allow_html=True)
-    else:
-        show = cheapest[["commodity", "market", "area", "unit", "price", "saving_vs_highest", "source"]].copy()
-        show = pd.DataFrame({
-            "Commodity": [display_commodity(x) for x in show["commodity"]],
-            "Cheapest market": [display_market(x) for x in show["market"]],
-            "Area": [display_area(x) for x in show["area"]],
-            "Unit": show["unit"],
-            "Lowest price": [fmt_tk(x) for x in show["price"]],
-            "Saving vs highest": [fmt_tk(x) for x in show["saving_vs_highest"]],
-            "Source": [source_short(x) for x in show["source"]],
-        })
-        st.dataframe(localize_columns(show), use_container_width=True, hide_index=True)
+    render_alerts(official_range_df)
+
+    render_smart_basket(official_range_df)
+
+    render_market_comparison(df, market_df)
+    st.caption(tr("official_not_marketwise"))
 
     st.subheader(tr("basket"))
     st.caption(tr("basket_help"))
@@ -1100,6 +1282,8 @@ def main() -> None:
             fig2.update_layout(height=520, yaxis={"categoryorder": "total ascending"})
             st.plotly_chart(fig2, use_container_width=True)
 
+    render_history()
+
     st.subheader(tr("map"))
     map_df = DHAKA_MARKETS.copy()
     if not market_df.empty:
@@ -1155,6 +1339,10 @@ def main() -> None:
             if s.get("url"):
                 st.caption(s["url"])
         st.markdown(tr("source_policy"))
+    with st.expander(tr("positioning"), expanded=False):
+        st.markdown(tr("positioning_text"))
+    with st.expander(tr("perfect_features"), expanded=False):
+        st.markdown(tr("perfect_features_text"))
 
 
 if __name__ == "__main__":
