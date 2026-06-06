@@ -1,9 +1,11 @@
-commodity_keyword,quantity,unit_note
-Rice,5,kg
-Onion,2,kg
-Potato,2,kg
-Soybean,2,litre/as reported
-Egg,1,dozen/as reported
-Lentil,1,kg
-Sugar,1,kg
-Salt,1,kg
+item_label,commodity_pattern,quantity,unit_note
+Rice,rice|boro|aman,5,kg/as published
+Flour/Ata,ata|flour,2,kg/as published
+Lentil/Dal,lentil|masur|mung|gram,1,kg/as published
+Onion,onion,2,kg/as published
+Potato,potato,2,kg/as published
+Soybean oil,soybean|oil,2,litre/as published
+Egg,egg,1,dozen/as published
+Chicken/Hen,chicken|hen,1,kg/as published
+Sugar,sugar,1,kg/as published
+Salt,salt,1,kg/as published

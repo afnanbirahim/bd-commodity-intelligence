@@ -83,3 +83,12 @@ If the official source does not return market-level rows, the app will not inven
 - DAM market portal: https://market.dam.gov.bd/?L=E
 - DAM market daily price report: https://market.dam.gov.bd/market_daily_price_report?L=E
 - TCB daily retail market prices: https://tcb.gov.bd/pages/daily-rmps
+
+
+## Consumer-final corrections
+
+- Hides raw technical SSL errors from consumers.
+- Shows short status cards that do not get cut off.
+- Adds a consumer-first key prices section before technical tables.
+- Expands the household basket to rice, flour/ata, dal, onion, potato, soybean oil, eggs, chicken/hen, sugar, and salt where official rows are available.
+- Keeps market-wise cheapest-market results hidden unless verified market-level Dhaka rows are actually available.
