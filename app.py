@@ -20,7 +20,7 @@ from bs4 import BeautifulSoup
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 APP_NAME = "Bangladesh Commodity Intelligence"
-APP_VERSION = "3.0.0-smart-consumer-final"
+APP_VERSION = "3.1.0-unit-clear-consumer-final"
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_DIR = BASE_DIR / "cache"
 DATA_DIR = BASE_DIR / "data"
@@ -81,9 +81,9 @@ TRANSLATIONS = {
         "available": "Available",
         "not_available": "Unavailable",
         "official_ranges": "📌 Latest official price ranges",
-        "official_ranges_help": "Official aggregate/range prices parsed from public DAM data. Egg prices are normalized from hali / 4 eggs to single egg price where applicable.",
+        "official_ranges_help": "Official aggregate/range prices parsed from public DAM data. Every row shows the price unit, such as per kg, per litre, or per piece. Egg prices are normalized from hali / 4 eggs to single egg price where applicable.",
         "key_prices": "💳 Today's key official prices",
-        "key_prices_help": "Consumer-friendly view of essential items from the latest verified official data.",
+        "key_prices_help": "Consumer-friendly view of essential items from the latest verified official data. Check the price unit column beside every price.",
         "cheapest_market": "🏷️ Cheapest Dhaka market by commodity",
         "cheapest_market_help": "This appears only when official/verified market-wise Dhaka rows are available.",
         "no_marketwise": "Official market-wise Dhaka rows are not available to this deployment today. Showing official aggregate/range prices instead of fake cheapest-market results.",
@@ -93,17 +93,27 @@ TRANSLATIONS = {
         "charts": "📊 Price spread and trend view",
         "transparency": "🔎 Data transparency",
         "consumer_note": "Consumer note",
-        "consumer_note_text": "Prices can vary by quality, brand, package size, retail shop, and time of day. Egg prices are normalized from hali / 4 eggs to single egg price where applicable. Use this as a verified reference, not a bargaining guarantee.",
+        "consumer_note_text": "Prices can vary by quality, brand, package size, retail shop, and time of day. Each row shows the price unit: per kg, per litre, per piece, or official unit. Egg prices are normalized from hali / 4 eggs to single egg price where applicable. Use this as a verified reference, not a bargaining guarantee.",
         "reload": "Refresh official data",
         "download": "Download current data",
         "market_unavailable": "Market-wise ranking is unavailable until the official source returns market-level Dhaka rows.",
         "verified": "Verified",
         "partial": "Verified",
         "unavailable": "Unavailable",
-        "unit_published": "As published",
-        "unit_hali": "Single egg",
-        "unit_single_egg": "Single egg",
-        "egg_unit_note": "Egg prices are converted from official hali / 4 eggs values into a single-egg estimate.",
+        "unit_published": "Official unit",
+        "unit_kg": "per kg",
+        "unit_litre": "per litre",
+        "unit_piece": "per piece",
+        "unit_packet": "per packet",
+        "unit_hali": "per piece",
+        "unit_single_egg": "per piece",
+        "qty_kg": "kg",
+        "qty_litre": "litre",
+        "qty_piece": "piece",
+        "qty_packet": "packet",
+        "price_unit": "Price unit",
+        "unit_published_note": "Unit inferred from commodity name when the official page does not expose a separate unit column.",
+        "egg_unit_note": "Egg prices are converted from official hali / 4 eggs values into a single-egg estimate. So 30 eggs means 30 individual eggs, not 30 hali.",
         "source_monitor": "Official source monitor",
         "smart_basket": "🛒 Smart shopping basket",
         "smart_basket_help": "Choose your own quantities. The app calculates low, average, and high cost using the latest verified official prices.",
@@ -164,9 +174,9 @@ TRANSLATIONS = {
         "available": "উপলব্ধ",
         "not_available": "অনুপলব্ধ",
         "official_ranges": "📌 সর্বশেষ সরকারি মূল্যসীমা",
-        "official_ranges_help": "DAM-এর পাবলিক সরকারি তথ্য থেকে পাওয়া সামগ্রিক/মূল্যসীমা। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি থেকে ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে।",
+        "official_ranges_help": "DAM-এর পাবলিক সরকারি তথ্য থেকে পাওয়া সামগ্রিক/মূল্যসীমা। প্রতিটি সারিতে দামের একক দেখানো হয়—প্রতি কেজি, প্রতি লিটার, প্রতি পিস বা সরকারি একক। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি থেকে ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে।",
         "key_prices": "💳 আজকের গুরুত্বপূর্ণ সরকারি দাম",
-        "key_prices_help": "সর্বশেষ যাচাইকৃত সরকারি তথ্য থেকে ভোক্তাবান্ধব নিত্যপণ্যের তালিকা।",
+        "key_prices_help": "সর্বশেষ যাচাইকৃত সরকারি তথ্য থেকে ভোক্তাবান্ধব নিত্যপণ্যের তালিকা। প্রতিটি দামের পাশে দামের একক দেখুন।",
         "cheapest_market": "🏷️ পণ্যভিত্তিক ঢাকার সবচেয়ে কমদামের বাজার",
         "cheapest_market_help": "শুধু যাচাইকৃত/সরকারি বাজারভিত্তিক ঢাকার তথ্য পাওয়া গেলে এটি দেখাবে।",
         "no_marketwise": "আজ এই ডেপ্লয়মেন্টে সরকারি বাজারভিত্তিক ঢাকার সারি পাওয়া যায়নি। তাই ভুয়া কমদামের বাজার না দেখিয়ে সরকারি সামগ্রিক মূল্যসীমা দেখানো হচ্ছে।",
@@ -176,17 +186,27 @@ TRANSLATIONS = {
         "charts": "📊 মূল্য পার্থক্য ও ট্রেন্ড",
         "transparency": "🔎 তথ্যের স্বচ্ছতা",
         "consumer_note": "ভোক্তা নোট",
-        "consumer_note_text": "মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী দাম বদলাতে পারে। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি থেকে ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে। এটিকে যাচাইকৃত রেফারেন্স হিসেবে ব্যবহার করুন, দর-কষাকষির নিশ্চয়তা হিসেবে নয়।",
+        "consumer_note_text": "মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী দাম বদলাতে পারে। প্রতিটি সারিতে দামের একক দেখানো হয়—প্রতি কেজি, প্রতি লিটার, প্রতি পিস বা সরকারি একক। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি থেকে ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে। এটিকে যাচাইকৃত রেফারেন্স হিসেবে ব্যবহার করুন, দর-কষাকষির নিশ্চয়তা হিসেবে নয়।",
         "reload": "সরকারি তথ্য রিফ্রেশ করুন",
         "download": "বর্তমান তথ্য ডাউনলোড",
         "market_unavailable": "সরকারি উৎস বাজারভিত্তিক ঢাকার সারি না দেওয়া পর্যন্ত বাজার র‍্যাঙ্কিং পাওয়া যাবে না।",
         "verified": "যাচাইকৃত",
         "partial": "যাচাইকৃত",
         "unavailable": "পাওয়া যায়নি",
-        "unit_published": "প্রকাশিত রূপে",
-        "unit_hali": "১টি ডিম",
-        "unit_single_egg": "১টি ডিম",
-        "egg_unit_note": "সরকারি উৎসে ডিমের দাম হালি / ৪টি হলে সেটি ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে।",
+        "unit_published": "সরকারি একক",
+        "unit_kg": "প্রতি কেজি",
+        "unit_litre": "প্রতি লিটার",
+        "unit_piece": "প্রতি পিস",
+        "unit_packet": "প্রতি প্যাকেট",
+        "unit_hali": "প্রতি পিস",
+        "unit_single_egg": "প্রতি পিস",
+        "qty_kg": "কেজি",
+        "qty_litre": "লিটার",
+        "qty_piece": "টি",
+        "qty_packet": "প্যাকেট",
+        "price_unit": "দামের একক",
+        "unit_published_note": "সরকারি পেজ আলাদা একক না দিলে পণ্যের নাম থেকে একক অনুমান করে দেখানো হয়েছে।",
+        "egg_unit_note": "সরকারি উৎসে ডিমের দাম হালি / ৪টি হলে সেটি ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে। তাই ৩০ ডিম মানে ৩০টি ডিম, ৩০ হালি নয়।",
         "source_monitor": "সরকারি উৎস মনিটর",
         "smart_basket": "🛒 স্মার্ট বাজার ঝুড়ি",
         "smart_basket_help": "নিজের প্রয়োজনমতো পরিমাণ দিন। সর্বশেষ যাচাইকৃত সরকারি দামের ভিত্তিতে কম, গড় ও বেশি খরচ হিসাব করা হবে।",
@@ -308,7 +328,9 @@ COLUMN_BN = {
     "Commodity": "পণ্য",
     "Official price range": "সরকারি মূল্যসীমা",
     "Midpoint": "মধ্যমান",
-    "Unit": "একক",
+    "Unit": "দামের একক",
+    "Price unit": "দামের একক",
+    "Quantity used": "ব্যবহৃত পরিমাণ",
     "Source": "উৎস",
     "Low": "সর্বনিম্ন",
     "High": "সর্বোচ্চ",
@@ -358,13 +380,88 @@ def is_egg_name(value: object) -> bool:
     return "egg" in clean_text(value).lower() or "ডিম" in clean_text(value)
 
 
+def unit_key_for(commodity: object = "", item: object = "", unit: object = "") -> str:
+    """Return a consumer-facing normalized unit key.
+
+    DAM public recent-price snippets do not always expose a separate machine-readable
+    unit column. For consumer clarity, we infer the common Bangladesh retail unit
+    from the commodity name while preserving explicit official units when present.
+    """
+    text = f"{clean_text(commodity)} {clean_text(item)} {clean_text(unit)}".lower()
+    raw_unit = clean_text(unit).lower()
+
+    if is_egg_name(commodity) or is_egg_name(item) or "egg" in text or "ডিম" in text:
+        return "piece"
+    if "soybean" in text or "oil" in text or "তেল" in text:
+        return "litre"
+    if "packet" in text or "packed" in text or "প্যাকেট" in text:
+        # Packeted salt/ata is usually sold by packet, often a kg packet.
+        return "packet" if "salt" in text or "লবণ" in text else "kg"
+    kg_words = [
+        "rice", "boro", "aman", "ata", "flour", "lentil", "masur", "mung",
+        "gram", "onion", "potato", "garlic", "ginger", "chili", "chilli",
+        "hen", "chicken", "beef", "mutton", "fish", "sugar", "salt",
+        "চাল", "আটা", "ডাল", "পেঁয়াজ", "পেঁয়াজ", "আলু", "রসুন", "আদা",
+        "মরিচ", "মুরগি", "মাংস", "মাছ", "চিনি", "লবণ", "ছোলা",
+    ]
+    if any(w in text for w in kg_words):
+        return "kg"
+    if any(w in raw_unit for w in ["kg", "kilogram", "কেজি"]):
+        return "kg"
+    if any(w in raw_unit for w in ["litre", "liter", "ltr", "লিটার"]):
+        return "litre"
+    if any(w in raw_unit for w in ["piece", "pcs", "pc", "টি", "পিস"]):
+        return "piece"
+    if any(w in raw_unit for w in ["packet", "pack", "প্যাকেট"]):
+        return "packet"
+    return "published"
+
+
 def display_unit(unit: object, commodity: object = "", item: object = "") -> str:
-    if is_egg_name(commodity) or is_egg_name(item):
-        return tr("unit_single_egg")
+    key = unit_key_for(commodity, item, unit)
+    if key == "kg":
+        return tr("unit_kg")
+    if key == "litre":
+        return tr("unit_litre")
+    if key == "piece":
+        return tr("unit_piece")
+    if key == "packet":
+        return tr("unit_packet")
     raw = clean_text(unit)
     if raw.lower() in {"as published", "", "nan", "none"}:
         return tr("unit_published")
     return bn_digits(raw) if is_bn() else raw
+
+
+def display_quantity(qty: object, commodity: object = "", item: object = "", unit: object = "") -> str:
+    key = unit_key_for(commodity, item, unit)
+    q = fmt_num(qty)
+    if key == "kg":
+        return f"{q} {tr('qty_kg')}"
+    if key == "litre":
+        return f"{q} {tr('qty_litre')}"
+    if key == "piece":
+        return f"{q} {tr('qty_piece')}"
+    if key == "packet":
+        return f"{q} {tr('qty_packet')}"
+    return q
+
+
+def quantity_unit_name(commodity: object = "", item: object = "", unit: object = "") -> str:
+    key = unit_key_for(commodity, item, unit)
+    if key == "kg":
+        return tr("qty_kg")
+    if key == "litre":
+        return tr("qty_litre")
+    if key == "piece":
+        return tr("qty_piece")
+    if key == "packet":
+        return tr("qty_packet")
+    return tr("unit_published")
+
+
+def input_label_with_unit(item: object, commodity: object = "", unit: object = "") -> str:
+    return f"{display_item(item)} ({quantity_unit_name(commodity, item, unit)})"
 
 
 
@@ -851,16 +948,16 @@ def load_basket() -> pd.DataFrame:
         basket = pd.read_csv(basket_path)
     else:
         basket = pd.DataFrame([
-            {"item_label": "Rice", "commodity_pattern": "rice|boro|aman", "quantity": 5, "unit_note": "kg/as published"},
-            {"item_label": "Flour/Ata", "commodity_pattern": "ata|flour", "quantity": 2, "unit_note": "kg/as published"},
-            {"item_label": "Lentil/Dal", "commodity_pattern": "lentil|masur|mung|gram", "quantity": 1, "unit_note": "kg/as published"},
-            {"item_label": "Onion", "commodity_pattern": "onion", "quantity": 2, "unit_note": "kg/as published"},
-            {"item_label": "Potato", "commodity_pattern": "potato", "quantity": 2, "unit_note": "kg/as published"},
-            {"item_label": "Soybean oil", "commodity_pattern": "soybean|oil", "quantity": 2, "unit_note": "litre/as published"},
-            {"item_label": "Egg", "commodity_pattern": "egg", "quantity": 12, "unit_note": "single egg"},
-            {"item_label": "Chicken/Hen", "commodity_pattern": "chicken|hen", "quantity": 1, "unit_note": "kg/as published"},
-            {"item_label": "Sugar", "commodity_pattern": "sugar", "quantity": 1, "unit_note": "kg/as published"},
-            {"item_label": "Salt", "commodity_pattern": "salt", "quantity": 1, "unit_note": "kg/as published"},
+            {"item_label": "Rice", "commodity_pattern": "rice|boro|aman", "quantity": 5, "unit_note": "kg"},
+            {"item_label": "Flour/Ata", "commodity_pattern": "ata|flour", "quantity": 2, "unit_note": "kg"},
+            {"item_label": "Lentil/Dal", "commodity_pattern": "lentil|masur|mung|gram", "quantity": 1, "unit_note": "kg"},
+            {"item_label": "Onion", "commodity_pattern": "onion", "quantity": 2, "unit_note": "kg"},
+            {"item_label": "Potato", "commodity_pattern": "potato", "quantity": 2, "unit_note": "kg"},
+            {"item_label": "Soybean oil", "commodity_pattern": "soybean|oil", "quantity": 2, "unit_note": "litre"},
+            {"item_label": "Egg", "commodity_pattern": "egg", "quantity": 12, "unit_note": "piece"},
+            {"item_label": "Chicken/Hen", "commodity_pattern": "chicken|hen", "quantity": 1, "unit_note": "kg"},
+            {"item_label": "Sugar", "commodity_pattern": "sugar", "quantity": 1, "unit_note": "kg"},
+            {"item_label": "Salt", "commodity_pattern": "salt", "quantity": 1, "unit_note": "kg"},
         ])
     if "commodity_pattern" not in basket.columns and "commodity_keyword" in basket.columns:
         basket["commodity_pattern"] = basket["commodity_keyword"]
@@ -891,7 +988,7 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
                 cost = float(selected["price"]) * qty
                 total += cost
                 matched += 1
-                details.append(f"{display_item(label)}: {bn_digits(f'{qty:g}')} {display_unit(selected.get('unit', "As published"), selected.get('commodity', ""), label)} × {fmt_tk(selected['price'])}")
+                details.append(f"{display_item(label)}: {display_quantity(qty, selected.get('commodity', ''), label, selected.get('unit', 'As published'))} × {fmt_tk(selected['price'])} {display_unit(selected.get('unit', 'As published'), selected.get('commodity', ''), label)}")
             if matched:
                 rows.append({"Market": market, "Basket estimate": fmt_tk(total), "Items matched": bn_digits(matched), "Details": "; ".join(details)})
         if rows:
@@ -917,8 +1014,8 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
         rows.append({
             "Item": display_item(label),
             "Matched official item": display_commodity(selected["commodity"]),
-            "Quantity": bn_digits(f"{qty:g}"),
-            "Unit": display_unit(selected.get("unit", "As published"), selected.get("commodity", ""), label),
+            "Quantity used": display_quantity(qty, selected.get("commodity", ""), label, selected.get("unit", "As published")),
+            "Price unit": display_unit(selected.get("unit", "As published"), selected.get("commodity", ""), label),
             "Low estimate": fmt_tk(low),
             "Mid estimate": fmt_tk(mid),
             "High estimate": fmt_tk(high),
@@ -928,7 +1025,7 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
         return pd.DataFrame(), "none"
     result = pd.DataFrame(rows)
     result.loc[len(result)] = {
-        "Item": display_item("TOTAL"), "Matched official item": "", "Quantity": "", "Unit": "",
+        "Item": display_item("TOTAL"), "Matched official item": "", "Quantity used": "", "Price unit": "",
         "Low estimate": fmt_tk(total_low), "Mid estimate": fmt_tk(total_mid), "High estimate": fmt_tk(total_high),
     }
     return result, "range"
@@ -987,7 +1084,7 @@ def build_key_price_table(official_range_df: pd.DataFrame) -> pd.DataFrame:
         "Commodity": [display_commodity(x) for x in key_df["commodity"].astype(str)],
         "Official price range": [fmt_range(a, b, c) for a, b, c in zip(key_df["price_min"], key_df["price_max"], key_df["price"])],
         "Midpoint": [fmt_tk(x) for x in key_df["price"]],
-        "Unit": [display_unit(u, c) for u, c in zip(key_df.get("unit", "As published"), key_df["commodity"].astype(str))],
+        "Price unit": [display_unit(u, c) for u, c in zip(key_df.get("unit", "As published"), key_df["commodity"].astype(str))],
         "Source": [source_short(x) for x in key_df.get("source", "Official")],
     })
 
@@ -1107,7 +1204,8 @@ def render_smart_basket(official_range_df: pd.DataFrame) -> None:
     rows=[]; total_low=total_mid=total_high=0.0
     for i,(label,pattern,default_qty) in enumerate(presets):
         with cols[i % 2]:
-            qty = st.number_input(f"{display_item(label)}", min_value=0.0, max_value=100.0, value=float(default_qty), step=0.5, key=f"smart_qty_{label}")
+            step = 1.0 if unit_key_for(label, label) == "piece" else 0.5
+            qty = st.number_input(input_label_with_unit(label, label), min_value=0.0, max_value=100.0, value=float(default_qty), step=step, key=f"smart_qty_{label}")
         if qty <= 0:
             continue
         r = basket_match_price(official_range_df, pattern)
@@ -1120,8 +1218,8 @@ def render_smart_basket(official_range_df: pd.DataFrame) -> None:
         rows.append({
             "Item": display_item(label),
             "Matched official item": display_commodity(r["commodity"]),
-            "Quantity": bn_digits(f"{qty:g}"),
-            "Unit": display_unit(r.get("unit", "As published"), r.get("commodity", ""), label),
+            "Quantity used": display_quantity(qty, r.get("commodity", ""), label, r.get("unit", "As published")),
+            "Price unit": display_unit(r.get("unit", "As published"), r.get("commodity", ""), label),
             "Low estimate": fmt_tk(low),
             "Mid estimate": fmt_tk(mid),
             "High estimate": fmt_tk(high),
@@ -1179,7 +1277,7 @@ def render_market_comparison(df: pd.DataFrame, market_df: pd.DataFrame) -> None:
         "Commodity": [display_commodity(x) for x in cheapest["commodity"]],
         "Cheapest market": [display_market(x) for x in cheapest["market"]],
         "Area": [display_area(x) for x in cheapest["area"]],
-        "Unit": [display_unit(u, c) for u, c in zip(cheapest.get("unit", "As published"), cheapest["commodity"])],
+        "Price unit": [display_unit(u, c) for u, c in zip(cheapest.get("unit", "As published"), cheapest["commodity"])],
         "Lowest price": [fmt_tk(x) for x in cheapest["price"]],
         "Saving vs highest": [fmt_tk(x) for x in cheapest["saving_vs_highest"]],
         "Source": [source_short(x) for x in cheapest["source"]],
@@ -1287,7 +1385,7 @@ def main() -> None:
             "Low": [fmt_tk(x) for x in table["price_min"]],
             "High": [fmt_tk(x) for x in table["price_max"]],
             "Midpoint": [fmt_tk(x) for x in table["price"]],
-            "Unit": [display_unit(u, c) for u, c in zip(table.get("unit", "As published"), table["commodity"].astype(str))],
+            "Price unit": [display_unit(u, c) for u, c in zip(table.get("unit", "As published"), table["commodity"].astype(str))],
             "Change %": [fmt_num(x) for x in table.get("change_pct", 0)],
             "Source": [source_short(x) for x in table.get("source", "Official")],
         }).sort_values("Commodity")

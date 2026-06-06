@@ -1,12 +1,8 @@
 # Deployment Guide
 
-## 1. Extract the ZIP
+## 1. Upload to GitHub
 
-Do not upload the ZIP file itself to GitHub. Extract it first.
-
-## 2. Upload project contents
-
-Upload the files and folders inside the extracted folder so GitHub shows:
+Do not upload the ZIP itself. Extract the ZIP and upload the contents so the repository root contains:
 
 ```text
 app.py
@@ -20,43 +16,65 @@ scripts/
 cache/
 ```
 
-## 3. Streamlit Cloud
+## 2. Deploy on Streamlit Community Cloud
 
-- Connect GitHub.
-- Choose your repository.
-- Main file: `app.py`.
-- Deploy.
-
-## 4. Optional production feed
-
-In Streamlit Cloud secrets, add:
-
-```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-official-marketwise-feed.csv"
-```
-
-The app will use this feed as a verified backend source if available.
-
-## 5. Important data rule
-
-The public app should not claim a cheapest Dhaka market unless verified market-wise rows are loaded. Aggregate official ranges are authentic reference prices, but they are not the same as market-by-market shopping prices.
-
-## 6. Daily history
-
-The app stores daily snapshots in:
+1. Go to Streamlit Community Cloud.
+2. Connect your GitHub repository.
+3. Select the repository.
+4. Set main file path:
 
 ```text
-cache/history_official_prices.csv
+app.py
 ```
 
-If deployed with the included GitHub Actions workflow or opened daily, the historical trend section becomes richer over time.
+5. Deploy.
 
-## 7. Consumer features included
+## 3. Optional production secret
 
-- Smart Shopping Basket
-- Price Alerts
-- Historical Trends
-- Dhaka Map
-- Verified-only Market Comparison
-- Bangla/English UI
-- Egg unit correction: single egg (converted from hali / 4 eggs when official source uses hali)
+For a verified official/backend market-wise CSV feed, add this Streamlit secret:
+
+```toml
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed.csv"
+```
+
+Expected columns:
+
+```text
+date, commodity, market, area, price, price_min, price_max, unit, source, source_url, data_level, verified
+```
+
+For market comparison, use:
+
+```text
+data_level = market
+verified = true
+```
+
+Recommended units:
+
+```text
+kg
+litre
+piece
+packet
+```
+
+Egg rows should preferably be sent as `piece`. If an official/public source provides egg as hali / 4 eggs, the app normalizes it to a single-egg price.
+
+## 4. Daily refresh
+
+The package includes a GitHub Actions workflow under:
+
+```text
+.github/workflows/daily_refresh.yml
+```
+
+This can run a daily refresh script and commit cached data snapshots, depending on repository permissions.
+
+## 5. Consumer data rule
+
+The public app should not show demo prices as real prices. It should show:
+
+- verified official price ranges when available;
+- verified market-wise ranking only when verified market-wise rows exist;
+- clear unavailable status when market-wise data is absent.

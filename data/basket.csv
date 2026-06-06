@@ -1,11 +1,11 @@
 item_label,commodity_pattern,quantity,unit_note
-Rice,rice|boro|aman,5,kg/as published
-Flour/Ata,ata|flour,2,kg/as published
-Lentil/Dal,lentil|masur|mung|gram,1,kg/as published
-Onion,onion,2,kg/as published
-Potato,potato,2,kg/as published
-Soybean oil,soybean|oil,2,litre/as published
-Egg,egg,12,single egg
-Chicken/Hen,chicken|hen,1,kg/as published
-Sugar,sugar,1,kg/as published
-Salt,salt,1,kg/as published
+Rice,rice|boro|aman,5,kg
+Flour/Ata,ata|flour,2,kg
+Lentil/Dal,lentil|masur|mung|gram,1,kg
+Onion,onion,2,kg
+Potato,potato,2,kg
+Soybean oil,soybean|oil,2,litre
+Egg,egg,12,piece
+Chicken/Hen,chicken|hen,1,kg
+Sugar,sugar,1,kg
+Salt,salt,1,kg
