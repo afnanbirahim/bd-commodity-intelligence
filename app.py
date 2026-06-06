@@ -20,7 +20,7 @@ from bs4 import BeautifulSoup
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 APP_NAME = "Bangladesh Commodity Intelligence"
-APP_VERSION = "2.3.0-consumer-final"
+APP_VERSION = "2.4.0-consumer-final-egg-hali"
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_DIR = BASE_DIR / "cache"
 DATA_DIR = BASE_DIR / "data"
@@ -71,7 +71,7 @@ TRANSLATIONS = {
         "subtitle": "Latest verified essential commodity prices for consumers. Official data only. No demo prices. No fake market ranking.",
         "language": "Language",
         "source_ok": "Official data loaded",
-        "source_partial": "Official price ranges are available; Dhaka market ranking is unavailable today.",
+        "source_partial": "Official prices are available. Dhaka market-wise ranking is unavailable today.",
         "source_fail": "Official data unavailable right now",
         "last_updated": "Last updated",
         "data_date": "Data date",
@@ -79,9 +79,9 @@ TRANSLATIONS = {
         "coverage": "Dhaka market data",
         "covered": "Commodities covered",
         "available": "Available",
-        "not_available": "Unavailable today",
+        "not_available": "Unavailable",
         "official_ranges": "📌 Latest official price ranges",
-        "official_ranges_help": "Official aggregate/range prices parsed from public DAM data. Units are shown exactly as published when machine-readable unit detail is unavailable.",
+        "official_ranges_help": "Official aggregate/range prices parsed from public DAM data. Egg prices are shown as hali / 4 eggs where applicable.",
         "key_prices": "💳 Today's key official prices",
         "key_prices_help": "Consumer-friendly view of essential items from the latest verified official data.",
         "cheapest_market": "🏷️ Cheapest Dhaka market by commodity",
@@ -93,7 +93,7 @@ TRANSLATIONS = {
         "charts": "📊 Price spread and trend view",
         "transparency": "🔎 Data transparency",
         "consumer_note": "Consumer note",
-        "consumer_note_text": "Prices can vary by quality, brand, package size, retail shop, and time of day. Use this as a verified reference, not a bargaining guarantee.",
+        "consumer_note_text": "Prices can vary by quality, brand, package size, retail shop, and time of day. Egg prices are treated as hali / 4 eggs where applicable. Use this as a verified reference, not a bargaining guarantee.",
         "reload": "Refresh official data",
         "download": "Download current data",
         "market_unavailable": "Market-wise ranking is unavailable until the official source returns market-level Dhaka rows.",
@@ -101,6 +101,8 @@ TRANSLATIONS = {
         "partial": "Verified",
         "unavailable": "Unavailable",
         "unit_published": "As published",
+        "unit_hali": "Hali / 4 eggs",
+        "egg_unit_note": "Egg prices from the official source are treated as hali / 4 eggs, not per single egg.",
         "source_monitor": "Official source monitor",
         "technical_details": "Technical details",
         "basket_summary": "🛒 Estimated weekly household basket",
@@ -128,7 +130,7 @@ TRANSLATIONS = {
         "subtitle": "ভোক্তাদের জন্য সর্বশেষ যাচাইকৃত নিত্যপ্রয়োজনীয় পণ্যের বাজারদর। শুধু সরকারি তথ্য; ডেমো দাম নয়, ভুয়া র‍্যাঙ্কিং নয়।",
         "language": "ভাষা",
         "source_ok": "সরকারি তথ্য পাওয়া গেছে",
-        "source_partial": "সরকারি মূল্যসীমা পাওয়া গেছে; ঢাকার বাজারভিত্তিক র‍্যাঙ্কিং আজ পাওয়া যায়নি।",
+        "source_partial": "সরকারি মূল্যতথ্য পাওয়া গেছে। ঢাকার বাজারভিত্তিক র‍্যাঙ্কিং আজ পাওয়া যায়নি।",
         "source_fail": "এই মুহূর্তে সরকারি তথ্য পাওয়া যাচ্ছে না",
         "last_updated": "সর্বশেষ হালনাগাদ",
         "data_date": "তথ্যের তারিখ",
@@ -136,9 +138,9 @@ TRANSLATIONS = {
         "coverage": "ঢাকার বাজারভিত্তিক তথ্য",
         "covered": "পণ্যের সংখ্যা",
         "available": "পাওয়া গেছে",
-        "not_available": "আজ পাওয়া যায়নি",
+        "not_available": "তথ্য অনুপলব্ধ",
         "official_ranges": "📌 সর্বশেষ সরকারি মূল্যসীমা",
-        "official_ranges_help": "DAM-এর পাবলিক সরকারি তথ্য থেকে পাওয়া সামগ্রিক/মূল্যসীমা। মেশিন-রিডেবল ইউনিট না থাকলে প্রকাশিত রূপেই দেখানো হয়।",
+        "official_ranges_help": "DAM-এর পাবলিক সরকারি তথ্য থেকে পাওয়া সামগ্রিক/মূল্যসীমা। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি হিসেবে দেখানো হয়েছে।",
         "key_prices": "💳 আজকের গুরুত্বপূর্ণ সরকারি দাম",
         "key_prices_help": "সর্বশেষ যাচাইকৃত সরকারি তথ্য থেকে ভোক্তাবান্ধব নিত্যপণ্যের তালিকা।",
         "cheapest_market": "🏷️ পণ্যভিত্তিক ঢাকার সবচেয়ে কমদামের বাজার",
@@ -150,7 +152,7 @@ TRANSLATIONS = {
         "charts": "📊 মূল্য পার্থক্য ও ট্রেন্ড",
         "transparency": "🔎 তথ্যের স্বচ্ছতা",
         "consumer_note": "ভোক্তা নোট",
-        "consumer_note_text": "মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী দাম বদলাতে পারে। এটিকে যাচাইকৃত রেফারেন্স হিসেবে ব্যবহার করুন, দর-কষাকষির নিশ্চয়তা হিসেবে নয়।",
+        "consumer_note_text": "মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী দাম বদলাতে পারে। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি হিসেবে ধরা হয়েছে। এটিকে যাচাইকৃত রেফারেন্স হিসেবে ব্যবহার করুন, দর-কষাকষির নিশ্চয়তা হিসেবে নয়।",
         "reload": "সরকারি তথ্য রিফ্রেশ করুন",
         "download": "বর্তমান তথ্য ডাউনলোড",
         "market_unavailable": "সরকারি উৎস বাজারভিত্তিক ঢাকার সারি না দেওয়া পর্যন্ত বাজার র‍্যাঙ্কিং পাওয়া যাবে না।",
@@ -158,6 +160,8 @@ TRANSLATIONS = {
         "partial": "যাচাইকৃত",
         "unavailable": "পাওয়া যায়নি",
         "unit_published": "প্রকাশিত রূপে",
+        "unit_hali": "হালি / ৪টি",
+        "egg_unit_note": "সরকারি উৎসের ডিমের দাম ১টি নয়, হালি / ৪টি হিসেবে ধরা হয়েছে।",
         "source_monitor": "সরকারি উৎস মনিটর",
         "technical_details": "টেকনিক্যাল বিস্তারিত",
         "basket_summary": "🛒 আনুমানিক সাপ্তাহিক বাজার",
@@ -300,6 +304,19 @@ def display_commodity(name: object) -> str:
 def display_item(name: object) -> str:
     txt = clean_text(name)
     return ITEM_BN.get(txt, txt) if is_bn() else txt
+
+
+def is_egg_name(value: object) -> bool:
+    return "egg" in clean_text(value).lower() or "ডিম" in clean_text(value)
+
+
+def display_unit(unit: object, commodity: object = "", item: object = "") -> str:
+    if is_egg_name(commodity) or is_egg_name(item):
+        return tr("unit_hali")
+    raw = clean_text(unit)
+    if raw.lower() in {"as published", "", "nan", "none"}:
+        return tr("unit_published")
+    return bn_digits(raw) if is_bn() else raw
 
 
 def display_market(name: object) -> str:
@@ -765,7 +782,7 @@ def load_basket() -> pd.DataFrame:
             {"item_label": "Onion", "commodity_pattern": "onion", "quantity": 2, "unit_note": "kg/as published"},
             {"item_label": "Potato", "commodity_pattern": "potato", "quantity": 2, "unit_note": "kg/as published"},
             {"item_label": "Soybean oil", "commodity_pattern": "soybean|oil", "quantity": 2, "unit_note": "litre/as published"},
-            {"item_label": "Egg", "commodity_pattern": "egg", "quantity": 1, "unit_note": "dozen/as published"},
+            {"item_label": "Egg", "commodity_pattern": "egg", "quantity": 1, "unit_note": "hali / 4 eggs"},
             {"item_label": "Chicken/Hen", "commodity_pattern": "chicken|hen", "quantity": 1, "unit_note": "kg/as published"},
             {"item_label": "Sugar", "commodity_pattern": "sugar", "quantity": 1, "unit_note": "kg/as published"},
             {"item_label": "Salt", "commodity_pattern": "salt", "quantity": 1, "unit_note": "kg/as published"},
@@ -799,7 +816,7 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
                 cost = float(selected["price"]) * qty
                 total += cost
                 matched += 1
-                details.append(f"{display_item(label)}: {bn_digits(f'{qty:g}')} × {fmt_tk(selected['price'])}")
+                details.append(f"{display_item(label)}: {bn_digits(f'{qty:g}')} {display_unit(selected.get('unit', "As published"), selected.get('commodity', ""), label)} × {fmt_tk(selected['price'])}")
             if matched:
                 rows.append({"Market": market, "Basket estimate": fmt_tk(total), "Items matched": bn_digits(matched), "Details": "; ".join(details)})
         if rows:
@@ -826,7 +843,7 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
             "Item": display_item(label),
             "Matched official item": display_commodity(selected["commodity"]),
             "Quantity": bn_digits(f"{qty:g}"),
-            "Unit": tr("unit_published") if str(selected.get("unit", "As published")).lower() == "as published" else str(selected.get("unit", "As published")),
+            "Unit": display_unit(selected.get("unit", "As published"), selected.get("commodity", ""), label),
             "Low estimate": fmt_tk(low),
             "Mid estimate": fmt_tk(mid),
             "High estimate": fmt_tk(high),
@@ -1045,6 +1062,7 @@ def main() -> None:
             b1.metric(tr("low"), str(total_row.iloc[0].get("Low estimate", "—")))
             b2.metric(tr("mid"), str(total_row.iloc[0].get("Mid estimate", "—")))
             b3.metric(tr("high"), str(total_row.iloc[0].get("High estimate", "—")))
+        st.caption(tr("egg_unit_note"))
         st.dataframe(localize_columns(basket_df), use_container_width=True, hide_index=True)
 
     st.subheader(tr("official_ranges"))
@@ -1058,7 +1076,7 @@ def main() -> None:
             "Low": [fmt_tk(x) for x in table["price_min"]],
             "High": [fmt_tk(x) for x in table["price_max"]],
             "Midpoint": [fmt_tk(x) for x in table["price"]],
-            "Unit": [tr("unit_published") if str(x).lower() == "as published" else str(x) for x in table.get("unit", "As published")],
+            "Unit": [display_unit(u, c) for u, c in zip(table.get("unit", "As published"), table["commodity"].astype(str))],
             "Change %": [fmt_num(x) for x in table.get("change_pct", 0)],
             "Source": [source_short(x) for x in table.get("source", "Official")],
         }).sort_values("Commodity")
