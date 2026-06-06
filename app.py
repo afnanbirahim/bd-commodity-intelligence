@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 APP_NAME = "Bangladesh Commodity Intelligence"
-APP_VERSION = "2.1.0-consumer-final"
+APP_VERSION = "2.2.0-bangla-localized"
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_DIR = BASE_DIR / "cache"
 DATA_DIR = BASE_DIR / "data"
@@ -102,6 +102,10 @@ TRANSLATIONS = {
         "unit_published": "As published",
         "source_monitor": "Official source monitor",
         "technical_details": "Technical details",
+        "basket_summary": "🛒 Estimated weekly household basket",
+        "low": "Low",
+        "mid": "Average",
+        "high": "High",
     },
     "বাংলা": {
         "title": "🛒 বাংলাদেশ কমোডিটি ইন্টেলিজেন্স",
@@ -140,8 +144,122 @@ TRANSLATIONS = {
         "unit_published": "প্রকাশিত রূপে",
         "source_monitor": "সরকারি উৎস মনিটর",
         "technical_details": "টেকনিক্যাল বিস্তারিত",
+        "basket_summary": "🛒 আনুমানিক সাপ্তাহিক বাজার",
+        "low": "কম",
+        "mid": "গড়",
+        "high": "বেশি",
     },
 }
+
+
+COMMODITY_BN = {
+    "Boro-Fine": "বোরো চাল (সরু)",
+    "Boro-Coarse": "বোরো চাল (মোটা)",
+    "Aman-Medium": "আমন চাল (মাঝারি)",
+    "Ata (packet)": "আটা (প্যাকেট)",
+    "Flour": "ময়দা",
+    "Onion-local": "পেঁয়াজ (দেশি)",
+    "Onion-Imported": "পেঁয়াজ (আমদানিকৃত)",
+    "Potato": "আলু",
+    "Soybean": "সয়াবিন তেল",
+    "Egg Farm-Red": "ডিম (ফার্ম লাল)",
+    "Egg Farm-White": "ডিম (ফার্ম সাদা)",
+    "Farm-raised Hen": "ব্রয়লার/ফার্ম মুরগি",
+    "Chicken": "মুরগি",
+    "Beef": "গরুর মাংস",
+    "Mutton": "খাসির মাংস",
+    "Mung": "মুগ ডাল",
+    "Gram-Whole": "ছোলা",
+    "Lentil": "মসুর ডাল",
+    "Sugar (Local)": "চিনি (দেশি)",
+    "Iodized Salt (Packed)": "আয়োডিনযুক্ত লবণ (প্যাকেট)",
+    "Ginger-local": "আদা (দেশি)",
+    "Ginger-Imported": "আদা (আমদানিকৃত)",
+    "Garlic-local": "রসুন (দেশি)",
+    "Garlic-Imported": "রসুন (আমদানিকৃত)",
+    "Green Chili": "কাঁচা মরিচ",
+    "Green Chilli": "কাঁচা মরিচ",
+}
+
+ITEM_BN = {
+    "Rice": "চাল",
+    "Flour/Ata": "আটা",
+    "Lentil/Dal": "ডাল",
+    "Onion": "পেঁয়াজ",
+    "Potato": "আলু",
+    "Soybean oil": "সয়াবিন তেল",
+    "Egg": "ডিম",
+    "Chicken/Hen": "মুরগি",
+    "Sugar": "চিনি",
+    "Salt": "লবণ",
+    "TOTAL": "মোট",
+}
+
+COLUMN_BN = {
+    "Commodity": "পণ্য",
+    "Official price range": "সরকারি মূল্যসীমা",
+    "Midpoint": "মধ্যমান",
+    "Unit": "একক",
+    "Source": "উৎস",
+    "Low": "সর্বনিম্ন",
+    "High": "সর্বোচ্চ",
+    "Change %": "পরিবর্তন %",
+    "Item": "পণ্য",
+    "Matched official item": "মিল পাওয়া সরকারি পণ্য",
+    "Quantity": "পরিমাণ",
+    "Low estimate": "কম হিসাব",
+    "Mid estimate": "গড় হিসাব",
+    "High estimate": "বেশি হিসাব",
+    "Cheapest market": "সর্বনিম্ন দামের বাজার",
+    "Area": "এলাকা",
+    "Lowest price": "সর্বনিম্ন দাম",
+    "Saving vs highest": "সর্বোচ্চ দামের তুলনায় সাশ্রয়",
+    "Market": "বাজার",
+    "Basket estimate": "বাজার ঝুড়ির আনুমানিক খরচ",
+    "Items matched": "মিল পাওয়া পণ্য",
+    "Details": "বিস্তারিত",
+}
+
+BN_DIGITS = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
+BN_MONTHS = {
+    "01": "জানুয়ারি", "02": "ফেব্রুয়ারি", "03": "মার্চ", "04": "এপ্রিল",
+    "05": "মে", "06": "জুন", "07": "জুলাই", "08": "আগস্ট",
+    "09": "সেপ্টেম্বর", "10": "অক্টোবর", "11": "নভেম্বর", "12": "ডিসেম্বর",
+}
+
+def is_bn() -> bool:
+    return st.session_state.get("lang", "English") == "বাংলা"
+
+
+def bn_digits(text: object) -> str:
+    return str(text).translate(BN_DIGITS) if is_bn() else str(text)
+
+
+def display_commodity(name: object) -> str:
+    txt = clean_text(name)
+    return COMMODITY_BN.get(txt, txt) if is_bn() else txt
+
+
+def display_item(name: object) -> str:
+    txt = clean_text(name)
+    return ITEM_BN.get(txt, txt) if is_bn() else txt
+
+
+def localize_columns(df: pd.DataFrame) -> pd.DataFrame:
+    if not is_bn() or df.empty:
+        return df
+    return df.rename(columns={c: COLUMN_BN.get(c, c) for c in df.columns})
+
+
+def display_date(value: object) -> str:
+    raw = clean_text(value)
+    if not is_bn():
+        return raw
+    try:
+        dt = datetime.fromisoformat(raw[:10])
+        return f"{str(dt.day).translate(BN_DIGITS)} {BN_MONTHS.get(f'{dt.month:02d}', f'{dt.month:02d}')} {str(dt.year).translate(BN_DIGITS)}"
+    except Exception:
+        return raw.translate(BN_DIGITS)
 
 
 def tr(key: str) -> str:
@@ -218,8 +336,10 @@ def fmt_num(value: object) -> str:
     if np.isnan(x):
         return "—"
     if abs(x - round(x)) < 0.001:
-        return f"{int(round(x))}"
-    return f"{x:.1f}".rstrip("0").rstrip(".")
+        out = f"{int(round(x))}"
+    else:
+        out = f"{x:.1f}".rstrip("0").rstrip(".")
+    return bn_digits(out)
 
 
 def fmt_tk(value: object) -> str:
@@ -612,9 +732,9 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
                 cost = float(selected["price"]) * qty
                 total += cost
                 matched += 1
-                details.append(f"{label}: {qty:g} × {fmt_tk(selected['price'])}")
+                details.append(f"{display_item(label)}: {bn_digits(f'{qty:g}')} × {fmt_tk(selected['price'])}")
             if matched:
-                rows.append({"Market": market, "Basket estimate": fmt_tk(total), "Items matched": matched, "Details": "; ".join(details)})
+                rows.append({"Market": market, "Basket estimate": fmt_tk(total), "Items matched": bn_digits(matched), "Details": "; ".join(details)})
         if rows:
             raw = pd.DataFrame(rows)
             raw["_sort"] = raw["Basket estimate"].str.replace("৳", "", regex=False).astype(float)
@@ -636,10 +756,10 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
         mid = float(selected.get("price", selected["price"])) * qty
         high = float(selected.get("price_max", selected["price"])) * qty
         rows.append({
-            "Item": label,
-            "Matched official item": selected["commodity"],
-            "Quantity": f"{qty:g}",
-            "Unit": selected.get("unit", "As published"),
+            "Item": display_item(label),
+            "Matched official item": display_commodity(selected["commodity"]),
+            "Quantity": bn_digits(f"{qty:g}"),
+            "Unit": tr("unit_published") if str(selected.get("unit", "As published")).lower() == "as published" else str(selected.get("unit", "As published")),
             "Low estimate": fmt_tk(low),
             "Mid estimate": fmt_tk(mid),
             "High estimate": fmt_tk(high),
@@ -649,7 +769,7 @@ def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
         return pd.DataFrame(), "none"
     result = pd.DataFrame(rows)
     result.loc[len(result)] = {
-        "Item": "TOTAL", "Matched official item": "", "Quantity": "", "Unit": "",
+        "Item": display_item("TOTAL"), "Matched official item": "", "Quantity": "", "Unit": "",
         "Low estimate": fmt_tk(total_low), "Mid estimate": fmt_tk(total_mid), "High estimate": fmt_tk(total_high),
     }
     return result, "range"
@@ -673,10 +793,10 @@ def display_metric_cards(df: pd.DataFrame, statuses: List[Dict[str, str]]) -> No
     market_rows = int((df.get("data_level", pd.Series(dtype=str)) == "market").sum()) if not df.empty else 0
     c1, c2, c3, c4 = st.columns(4)
     c1.metric(tr("status"), f"{badge} {short_status}")
-    c2.metric(tr("data_date"), data_date)
-    c3.metric(tr("covered"), f"{covered}")
+    c2.metric(tr("data_date"), display_date(data_date))
+    c3.metric(tr("covered"), bn_digits(covered))
     c4.metric(tr("coverage"), tr("available") if market_rows else tr("not_available"))
-    st.caption(f"{tr('last_updated')}: {latest_time} · {long_status} · App version: {APP_VERSION}")
+    st.caption(f"{tr('last_updated')}: {bn_digits(latest_time)} · {long_status} · App version: {APP_VERSION}")
 
 
 def build_key_price_table(official_range_df: pd.DataFrame) -> pd.DataFrame:
@@ -705,10 +825,10 @@ def build_key_price_table(official_range_df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame()
     key_df = pd.DataFrame(rows)
     return pd.DataFrame({
-        "Commodity": key_df["commodity"].astype(str),
+        "Commodity": [display_commodity(x) for x in key_df["commodity"].astype(str)],
         "Official price range": [fmt_range(a, b, c) for a, b, c in zip(key_df["price_min"], key_df["price_max"], key_df["price"])],
         "Midpoint": [fmt_tk(x) for x in key_df["price"]],
-        "Unit": key_df.get("unit", "As published"),
+        "Unit": [tr("unit_published") if str(x).lower() == "as published" else str(x) for x in key_df.get("unit", "As published")],
         "Source": [source_short(x) for x in key_df.get("source", "Official")],
     })
 
@@ -773,7 +893,7 @@ def main() -> None:
     if key_table.empty:
         st.info("Key official prices could not be summarized today.")
     else:
-        st.dataframe(key_table, use_container_width=True, hide_index=True)
+        st.dataframe(localize_columns(key_table), use_container_width=True, hide_index=True)
 
     st.subheader(tr("cheapest_market"))
     st.caption(tr("cheapest_market_help"))
@@ -783,7 +903,7 @@ def main() -> None:
     else:
         show = cheapest[["commodity", "market", "area", "unit", "price", "saving_vs_highest", "source"]].copy()
         show = pd.DataFrame({
-            "Commodity": show["commodity"],
+            "Commodity": [display_commodity(x) for x in show["commodity"]],
             "Cheapest market": show["market"],
             "Area": show["area"],
             "Unit": show["unit"],
@@ -791,7 +911,7 @@ def main() -> None:
             "Saving vs highest": [fmt_tk(x) for x in show["saving_vs_highest"]],
             "Source": [source_short(x) for x in show["source"]],
         })
-        st.dataframe(show, use_container_width=True, hide_index=True)
+        st.dataframe(localize_columns(show), use_container_width=True, hide_index=True)
 
     st.subheader(tr("basket"))
     st.caption(tr("basket_help"))
@@ -800,10 +920,17 @@ def main() -> None:
         st.info("Basket could not be calculated because matching official commodity rows were not found.")
     elif basket_mode == "market":
         st.success("Market-wise basket ranking available from verified market rows.")
-        st.dataframe(basket_df, use_container_width=True, hide_index=True)
+        st.dataframe(localize_columns(basket_df), use_container_width=True, hide_index=True)
     else:
         st.info("Market-wise basket ranking is not shown because market-level data was not available. This is an official aggregate weekly basket estimate.")
-        st.dataframe(basket_df, use_container_width=True, hide_index=True)
+        total_row = basket_df[basket_df["Item"].astype(str).isin([display_item("TOTAL"), "TOTAL"])]
+        if not total_row.empty:
+            st.markdown(f"### {tr('basket_summary')}")
+            b1, b2, b3 = st.columns(3)
+            b1.metric(tr("low"), str(total_row.iloc[0].get("Low estimate", "—")))
+            b2.metric(tr("mid"), str(total_row.iloc[0].get("Mid estimate", "—")))
+            b3.metric(tr("high"), str(total_row.iloc[0].get("High estimate", "—")))
+        st.dataframe(localize_columns(basket_df), use_container_width=True, hide_index=True)
 
     st.subheader(tr("official_ranges"))
     st.caption(tr("official_ranges_help"))
@@ -812,30 +939,31 @@ def main() -> None:
     else:
         table = official_range_df.copy()
         table = pd.DataFrame({
-            "Commodity": table["commodity"].astype(str),
+            "Commodity": [display_commodity(x) for x in table["commodity"].astype(str)],
             "Low": [fmt_tk(x) for x in table["price_min"]],
             "High": [fmt_tk(x) for x in table["price_max"]],
             "Midpoint": [fmt_tk(x) for x in table["price"]],
-            "Unit": table.get("unit", "As published"),
+            "Unit": [tr("unit_published") if str(x).lower() == "as published" else str(x) for x in table.get("unit", "As published")],
             "Change %": [fmt_num(x) for x in table.get("change_pct", 0)],
             "Source": [source_short(x) for x in table.get("source", "Official")],
         }).sort_values("Commodity")
-        st.dataframe(table, use_container_width=True, hide_index=True)
+        st.dataframe(localize_columns(table), use_container_width=True, hide_index=True)
 
     st.subheader(tr("charts"))
     chart_df = official_range_df.copy() if not official_range_df.empty else df.copy()
     if not chart_df.empty:
         chart_df["spread"] = pd.to_numeric(chart_df.get("price_max", chart_df["price"]), errors="coerce") - pd.to_numeric(chart_df.get("price_min", chart_df["price"]), errors="coerce")
         chart_df = chart_df.dropna(subset=["price"])
+        chart_df["commodity_display"] = [display_commodity(x) for x in chart_df["commodity"]]
         c1, c2 = st.columns(2)
         with c1:
             top = chart_df.sort_values("price", ascending=False).head(15)
-            fig = px.bar(top, x="price", y="commodity", orientation="h", title="Higher-price essentials / উচ্চমূল্যের পণ্য", labels={"price": "Price", "commodity": "Commodity"})
+            fig = px.bar(top, x="price", y="commodity_display", orientation="h", title="Higher-price essentials / উচ্চমূল্যের পণ্য", labels={"price": "Price", "commodity_display": "Commodity"})
             fig.update_layout(height=520, yaxis={"categoryorder": "total ascending"})
             st.plotly_chart(fig, use_container_width=True)
         with c2:
             sp = chart_df.sort_values("spread", ascending=False).head(15)
-            fig2 = px.bar(sp, x="spread", y="commodity", orientation="h", title="Official low-high spread / মূল্যসীমার পার্থক্য", labels={"spread": "Spread", "commodity": "Commodity"})
+            fig2 = px.bar(sp, x="spread", y="commodity_display", orientation="h", title="Official low-high spread / মূল্যসীমার পার্থক্য", labels={"spread": "Spread", "commodity_display": "Commodity"})
             fig2.update_layout(height=520, yaxis={"categoryorder": "total ascending"})
             st.plotly_chart(fig2, use_container_width=True)
 
