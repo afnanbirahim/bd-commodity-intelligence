@@ -1,10 +1,8 @@
 # Deployment Guide
 
-## 1. Upload to GitHub correctly
+## Correct GitHub structure
 
-Do **not** upload the ZIP file itself.
-
-Extract the ZIP, then upload the contents so your repository root shows:
+Your repository homepage should show:
 
 ```text
 app.py
@@ -18,74 +16,26 @@ scripts/
 cache/
 ```
 
-## 2. Deploy on Streamlit Community Cloud
+Do not upload only the ZIP file. Streamlit cannot run inside a ZIP.
 
-1. Go to Streamlit Community Cloud.
-2. Sign in with GitHub.
-3. Click **New app**.
-4. Select your repository.
-5. Set main file path:
+## Streamlit Cloud
 
-```text
-app.py
-```
+- Main file path: `app.py`
+- Python version: default is fine
+- Secrets: optional
 
-6. Deploy.
-
-## 3. Add production secrets
-
-In Streamlit Cloud:
-
-**App → Settings → Secrets**
-
-Add:
+Optional secret:
 
 ```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
-ALLOW_PREVIEW_DATA = "false"
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-official-feed.csv"
 ```
 
-## 4. Data feed recommendation
+## Why market-wise rows may not always appear
 
-For the most authentic consumer app, do not let the public upload CSV files. Instead, maintain one verified feed from official or formally verified sources.
+The public DAM and TCB pages expose official price information, but not every public page returns a clean machine-readable Dhaka market-wise table without filters/session/dynamic IDs.
 
-Recommended workflow:
+This app will:
 
-1. DAM/TCB official report is checked daily.
-2. Market-wise rows are entered/validated in a controlled Google Sheet or small database.
-3. The sheet/database exposes a CSV/API endpoint.
-4. This app consumes that endpoint automatically.
-5. The app shows the latest verified date and source.
-
-## 5. Common deployment errors
-
-### Error: `File does not exist: app.py`
-
-Your files are probably inside another folder or ZIP.
-
-Fix: repository root must contain `app.py` directly.
-
-### Error: package not found
-
-Check `requirements.txt` is named exactly:
-
-```text
-requirements.txt
-```
-
-not `requirements` and not `requirements.txt.txt`.
-
-### App shows preview warning
-
-This means no verified feed URL has been configured.
-
-Fix: add Streamlit secrets:
-
-```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
-ALLOW_PREVIEW_DATA = "false"
-```
-
-### App says verified data unavailable
-
-That is expected if no clean market-wise verified feed is connected. The app is strict by design and will not invent cheapest-market claims.
+- show official aggregate price ranges when available;
+- show cheapest market only when verified market-level rows are available;
+- never show preview/fake prices as if they were real.

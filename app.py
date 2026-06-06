@@ -1,1112 +1,733 @@
-"""
-Bangladesh Commodity Intelligence Platform (Dhaka Consumer Edition)
--------------------------------------------------------------------
-A consumer-facing Streamlit dashboard for Dhaka essential commodity prices.
-
-Design principles:
-- No public data-source selector.
-- Official / verified source first.
-- If market-wise verified data is unavailable, the app says so clearly instead of inventing prices.
-- Bangla / English interface.
-- Cheapest market, basket ranking, trends, maps, alerts.
-
-Expected market-wise feed schema:
-    date, market, area, commodity, category, unit, price_min, price_max, price,
-    source, source_url, verified, latitude, longitude
-
-Recommended production source:
-    A verified CSV/API generated from official DAM/TCB data, set through Streamlit secrets:
-        OFFICIAL_MARKET_PRICE_CSV_URL = "https://.../export?format=csv"
-        ALLOW_PREVIEW_DATA = "false"
-"""
-
 from __future__ import annotations
 
 import io
-import json
 import os
 import re
-from dataclasses import dataclass
-from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
+import time
+import json
+from datetime import datetime, date
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-import plotly.express as px
 import requests
 import streamlit as st
+import plotly.express as px
 from bs4 import BeautifulSoup
 
+APP_NAME = "Bangladesh Commodity Intelligence"
+APP_VERSION = "2.0.0-official-only"
+BASE_DIR = Path(__file__).resolve().parent
+CACHE_DIR = BASE_DIR / "cache"
+DATA_DIR = BASE_DIR / "data"
+CACHE_DIR.mkdir(exist_ok=True)
+DATA_DIR.mkdir(exist_ok=True)
 
-# -----------------------------
-# Page setup
-# -----------------------------
-st.set_page_config(
-    page_title="Dhaka Price Watch | Bangladesh Commodity Intelligence",
-    page_icon="🛒",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
+DAM_HOME_URL = "https://market.dam.gov.bd/?L=E"
+DAM_MARKET_REPORT_URL = "https://market.dam.gov.bd/market_daily_price_report?L=E"
+DAM_MARKET_PRINT_URL = "https://market.dam.gov.bd/market_daily_price_report/print"
+DAM_SUBDISTRICT_PRINT_URL = "https://market.dam.gov.bd/subdistrict_retail_price_report/print"
+TCB_DAILY_RMPS_URL = "https://tcb.gov.bd/pages/daily-rmps"
 
+REQUEST_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+    ),
+    "Accept-Language": "en-US,en;q=0.9,bn;q=0.8",
+}
 
-# -----------------------------
-# Styling
-# -----------------------------
-st.markdown(
-    """
-    <style>
-    :root {
-        --card-bg: rgba(255,255,255,0.80);
-        --card-border: rgba(49, 51, 63, 0.12);
-        --muted: #64748b;
-        --good: #16a34a;
-        --warn: #f59e0b;
-        --bad: #dc2626;
-    }
-    .main .block-container {padding-top: 1.1rem; padding-bottom: 2rem;}
-    .hero {
-        border: 1px solid rgba(49,51,63,0.12);
-        border-radius: 24px;
-        padding: 24px 26px;
-        background: linear-gradient(135deg, rgba(240,253,244,.92), rgba(239,246,255,.86));
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-        margin-bottom: 18px;
-    }
-    .hero-title {font-size: 2.1rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin:0;}
-    .hero-subtitle {font-size: 1.02rem; color: var(--muted); margin-top: 8px; margin-bottom: 0;}
-    .pill {
-        display: inline-block;
-        border-radius: 999px;
-        padding: 6px 11px;
-        margin-right: 7px;
-        margin-top: 8px;
-        font-size: .86rem;
-        font-weight: 650;
-        border: 1px solid rgba(49,51,63,.12);
-        background: rgba(255,255,255,.75);
-    }
-    .pill-good {color: #166534; background: rgba(220,252,231,.9);}
-    .pill-warn {color: #92400e; background: rgba(254,243,199,.9);}
-    .pill-bad {color: #991b1b; background: rgba(254,226,226,.9);}
-    .metric-card {
-        border: 1px solid var(--card-border);
-        border-radius: 20px;
-        padding: 16px 16px 14px 16px;
-        background: var(--card-bg);
-        min-height: 116px;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
-    }
-    .metric-label {font-size:.88rem;color:var(--muted);font-weight:650;margin-bottom:7px;}
-    .metric-value {font-size:1.55rem;font-weight:800;line-height:1.15;}
-    .metric-help {font-size:.80rem;color:var(--muted);margin-top:8px;}
-    .section-title {font-size:1.35rem;font-weight:800;letter-spacing:-0.02em;margin-top:24px;margin-bottom:6px;}
-    .section-caption {color:var(--muted);font-size:.95rem;margin-bottom:12px;}
-    .source-box {
-        border: 1px solid rgba(49,51,63,.12);
-        border-radius: 18px;
-        padding: 14px 16px;
-        background: rgba(248,250,252,.86);
-        margin-top: 6px;
-        margin-bottom: 12px;
-    }
-    .small-muted {color:var(--muted);font-size:.86rem;}
-    .alert-card {
-        border-left: 6px solid #f59e0b;
-        background: rgba(255, 251, 235, .88);
-        padding: 13px 15px;
-        border-radius: 14px;
-        margin-bottom: 8px;
-    }
-    .ok-card {
-        border-left: 6px solid #16a34a;
-        background: rgba(240, 253, 244, .9);
-        padding: 13px 15px;
-        border-radius: 14px;
-        margin-bottom: 8px;
-    }
-    div[data-testid="stDataFrame"] {border-radius: 16px; overflow:hidden;}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+ESSENTIAL_KEYWORDS = [
+    "rice", "aman", "boro", "ata", "flour", "oil", "soybean", "lentil", "mung", "gram",
+    "sugar", "salt", "onion", "garlic", "ginger", "potato", "egg", "hen", "chicken",
+    "beef", "mutton", "fish", "chili", "chilli",
+]
 
+DHAKA_MARKETS = pd.DataFrame([
+    {"market": "Karwan Bazar", "area": "Tejgaon", "lat": 23.7509, "lon": 90.3935},
+    {"market": "Shyambazar", "area": "Old Dhaka", "lat": 23.7104, "lon": 90.4092},
+    {"market": "Jatrabari Bazar", "area": "Jatrabari", "lat": 23.7109, "lon": 90.4347},
+    {"market": "Mohammadpur Krishi Market", "area": "Mohammadpur", "lat": 23.7665, "lon": 90.3586},
+    {"market": "Mirpur-1 Kitchen Market", "area": "Mirpur", "lat": 23.8044, "lon": 90.3533},
+    {"market": "Uttara Bazar", "area": "Uttara", "lat": 23.8759, "lon": 90.3795},
+    {"market": "New Market", "area": "New Market", "lat": 23.7335, "lon": 90.3854},
+    {"market": "Rampura Bazar", "area": "Rampura", "lat": 23.7630, "lon": 90.4200},
+    {"market": "Malibagh Bazar", "area": "Malibagh", "lat": 23.7481, "lon": 90.4186},
+    {"market": "Khilgaon Bazar", "area": "Khilgaon", "lat": 23.7508, "lon": 90.4261},
+])
 
-# -----------------------------
-# Constants
-# -----------------------------
-TCB_DAILY_URL = "https://tcb.gov.bd/pages/daily-rmps"
-DAM_DAILY_REPORT_URL = "https://market.dam.gov.bd/market_daily_price_report?L=E"
-DAM_DAILY_PRINT_URL = "https://market.dam.gov.bd/market_daily_price_report/print?L=E"
-DAM_RECENT_URL = "https://market.dam.gov.bd/commodity_wise_report/print"
-
-APP_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(APP_DIR, "data")
-CACHE_DIR = os.path.join(APP_DIR, "cache")
-SEED_PATH = os.path.join(DATA_DIR, "verified_dhaka_market_prices_seed.csv")
-MARKETS_PATH = os.path.join(DATA_DIR, "dhaka_markets.csv")
-
-
-# -----------------------------
-# Translation
-# -----------------------------
-TEXT = {
+TRANSLATIONS = {
     "English": {
-        "app_title": "Dhaka Daily Price Watch",
-        "app_subtitle": "Latest verified essential commodity prices, cheapest markets, basket cost and price alerts for Dhaka consumers.",
+        "title": "🛒 Bangladesh Commodity Intelligence",
+        "subtitle": "Latest verified essential commodity prices for consumers. No demo prices. No fake market ranking.",
         "language": "Language",
-        "verified": "Verified source",
-        "partial": "Partial update",
-        "preview": "Preview data",
-        "unavailable": "Live verified data unavailable",
-        "updated": "Updated",
+        "source_ok": "Verified official data loaded",
+        "source_partial": "Official data partially available",
+        "source_fail": "Official data unavailable right now",
+        "last_updated": "Last updated",
+        "data_date": "Data date",
         "source": "Source",
-        "coverage": "Coverage",
-        "latest_date": "Latest date",
-        "commodities": "Commodities",
-        "markets": "Markets",
-        "best_basket": "Cheapest basket",
-        "highest_spread": "Highest price spread",
-        "todays_cheapest": "Cheapest market by commodity",
-        "todays_cheapest_caption": "For each commodity, this shows the lowest verified price available in the latest dataset.",
-        "basket_title": "Cheapest household basket today",
-        "basket_caption": "A simple family basket based on common daily essentials. You can adjust it below.",
-        "map_title": "Dhaka market map",
-        "trend_title": "Price trends and spreads",
-        "alerts_title": "Consumer alerts",
-        "source_title": "Source transparency",
-        "commodity": "Commodity",
-        "market": "Market",
-        "area": "Area",
-        "unit": "Unit",
-        "price": "Price",
-        "lowest_price": "Lowest price",
-        "basket_cost": "Basket cost",
-        "saving": "Saving vs most expensive",
-        "date": "Date",
-        "price_range": "Price range",
-        "search": "Search commodity",
-        "basket_settings": "Basket settings",
-        "select_commodities": "Choose basket items",
-        "no_verified": "No market-wise verified data could be loaded. The app will not show cheapest-market claims until an official/verified feed is connected.",
-        "no_market_level": "Official source was reached, but market-wise rows were not available in a clean machine-readable format.",
-        "latest_button": "Refresh latest data",
-        "last_verified": "Last verified update",
-        "official_links": "Official pages monitored",
-        "footer": "This app prioritises official/verified data. If today's official data is unavailable, it shows a warning instead of pretending to be live.",
-        "price_unit": "Tk",
-        "data_age": "Data age",
-        "fresh": "Fresh",
-        "stale": "Stale",
-        "filters": "Filters",
-        "all": "All",
-        "source_note": "Rows are accepted only when they have date, commodity, market, price and source fields.",
+        "official_ranges": "📌 Latest official price ranges",
+        "official_ranges_help": "This section uses the latest price ranges visible from official DAM public pages.",
+        "cheapest_market": "🏷️ Cheapest Dhaka market by commodity",
+        "cheapest_market_help": "This appears only when official/verified market-wise Dhaka rows are available.",
+        "no_marketwise": "Official market-wise Dhaka rows are not available to this deployment today. Showing official aggregate/range prices instead of fake cheapest-market results.",
+        "basket": "🧺 Household basket estimate",
+        "basket_help": "If market-wise rows are available, this ranks markets. Otherwise it estimates the basket using official aggregate ranges.",
+        "map": "🗺️ Dhaka market coverage map",
+        "charts": "📊 Price spread and trend view",
+        "transparency": "🔎 Data transparency",
+        "consumer_note": "Consumer note",
+        "consumer_note_text": "Prices can vary by quality, brand, package size, retail shop, and time of day. Use this as a verified reference, not a bargaining guarantee.",
+        "tcb_monitor": "TCB monitor",
+        "dam_monitor": "DAM monitor",
+        "reload": "Refresh official data",
+        "download": "Download current data",
+        "market_unavailable": "Market-wise ranking is unavailable until the official source returns market-level rows.",
+        "verified": "Verified",
+        "partial": "Partial",
+        "unavailable": "Unavailable",
+        "kg_or_unit": "Official unit/as reported",
     },
     "বাংলা": {
-        "app_title": "ঢাকার দৈনিক বাজারদর",
-        "app_subtitle": "ঢাকার ক্রেতাদের জন্য সর্বশেষ যাচাইকৃত নিত্যপণ্যের দাম, সবচেয়ে কম দামের বাজার, বাজার-ঝুড়ির খরচ ও সতর্কতা।",
+        "title": "🛒 বাংলাদেশ কমোডিটি ইন্টেলিজেন্স",
+        "subtitle": "ভোক্তাদের জন্য সর্বশেষ যাচাইকৃত নিত্যপ্রয়োজনীয় পণ্যের বাজারদর। ডেমো দাম নয়, ভুয়া র‍্যাঙ্কিং নয়।",
         "language": "ভাষা",
-        "verified": "যাচাইকৃত উৎস",
-        "partial": "আংশিক আপডেট",
-        "preview": "প্রিভিউ ডেটা",
-        "unavailable": "লাইভ যাচাইকৃত ডেটা পাওয়া যায়নি",
-        "updated": "আপডেট",
+        "source_ok": "যাচাইকৃত সরকারি তথ্য পাওয়া গেছে",
+        "source_partial": "সরকারি তথ্য আংশিক পাওয়া গেছে",
+        "source_fail": "এই মুহূর্তে সরকারি তথ্য পাওয়া যাচ্ছে না",
+        "last_updated": "সর্বশেষ হালনাগাদ",
+        "data_date": "তথ্যের তারিখ",
         "source": "উৎস",
-        "coverage": "কভারেজ",
-        "latest_date": "সর্বশেষ তারিখ",
-        "commodities": "পণ্য",
-        "markets": "বাজার",
-        "best_basket": "সবচেয়ে সস্তা ঝুড়ি",
-        "highest_spread": "সর্বোচ্চ দাম-ফারাক",
-        "todays_cheapest": "পণ্যভিত্তিক সবচেয়ে সস্তা বাজার",
-        "todays_cheapest_caption": "সর্বশেষ যাচাইকৃত ডেটায় প্রতিটি পণ্যের সবচেয়ে কম দাম দেখানো হয়েছে।",
-        "basket_title": "আজকের সবচেয়ে সস্তা পারিবারিক বাজার-ঝুড়ি",
-        "basket_caption": "সাধারণ নিত্যপ্রয়োজনীয় পণ্যের একটি নমুনা পারিবারিক ঝুড়ি। নিচে এটি বদলানো যাবে।",
-        "map_title": "ঢাকার বাজার মানচিত্র",
-        "trend_title": "দামের প্রবণতা ও ফারাক",
-        "alerts_title": "ক্রেতা সতর্কতা",
-        "source_title": "উৎসের স্বচ্ছতা",
-        "commodity": "পণ্য",
-        "market": "বাজার",
-        "area": "এলাকা",
-        "unit": "একক",
-        "price": "দাম",
-        "lowest_price": "সর্বনিম্ন দাম",
-        "basket_cost": "ঝুড়ির খরচ",
-        "saving": "সর্বোচ্চ দামের তুলনায় সাশ্রয়",
-        "date": "তারিখ",
-        "price_range": "দাম-ফারাক",
-        "search": "পণ্য খুঁজুন",
-        "basket_settings": "ঝুড়ি সেটিংস",
-        "select_commodities": "ঝুড়ির পণ্য নির্বাচন করুন",
-        "no_verified": "মার্কেটভিত্তিক যাচাইকৃত ডেটা লোড করা যায়নি। সরকারি/যাচাইকৃত ফিড যুক্ত না হওয়া পর্যন্ত অ্যাপটি সবচেয়ে সস্তা বাজারের দাবি দেখাবে না।",
-        "no_market_level": "সরকারি উৎস পাওয়া গেছে, কিন্তু বাজারভিত্তিক সারিগুলো পরিষ্কার মেশিন-পঠনযোগ্য ফরম্যাটে পাওয়া যায়নি।",
-        "latest_button": "সর্বশেষ ডেটা রিফ্রেশ করুন",
-        "last_verified": "সর্বশেষ যাচাইকৃত আপডেট",
-        "official_links": "পর্যবেক্ষণ করা সরকারি পেজ",
-        "footer": "এই অ্যাপ সরকারি/যাচাইকৃত ডেটাকে অগ্রাধিকার দেয়। আজকের সরকারি ডেটা না পেলে এটি লাইভ বলে ভান না করে সতর্কতা দেখায়।",
-        "price_unit": "৳",
-        "data_age": "ডেটার বয়স",
-        "fresh": "সাম্প্রতিক",
-        "stale": "পুরোনো",
-        "filters": "ফিল্টার",
-        "all": "সব",
-        "source_note": "তারিখ, পণ্য, বাজার, দাম ও উৎস থাকা সারিগুলোই গ্রহণ করা হয়।",
+        "official_ranges": "📌 সর্বশেষ সরকারি মূল্যসীমা",
+        "official_ranges_help": "এই অংশে DAM-এর সরকারি পাবলিক পেইজে পাওয়া সর্বশেষ মূল্যসীমা দেখানো হয়।",
+        "cheapest_market": "🏷️ পণ্যভিত্তিক ঢাকার সবচেয়ে কমদামের বাজার",
+        "cheapest_market_help": "শুধু যাচাইকৃত/সরকারি বাজারভিত্তিক ঢাকার তথ্য পাওয়া গেলে এটি দেখাবে।",
+        "no_marketwise": "আজ এই ডেপ্লয়মেন্টে সরকারি বাজারভিত্তিক ঢাকার সারি পাওয়া যায়নি। তাই ভুয়া কমদামের বাজার না দেখিয়ে সরকারি সামগ্রিক মূল্যসীমা দেখানো হচ্ছে।",
+        "basket": "🧺 পরিবারের বাজার ঝুড়ির হিসাব",
+        "basket_help": "বাজারভিত্তিক তথ্য থাকলে বাজার র‍্যাঙ্ক করবে; না থাকলে সরকারি সামগ্রিক মূল্যসীমা দিয়ে আনুমানিক হিসাব দেখাবে।",
+        "map": "🗺️ ঢাকার বাজার কাভারেজ ম্যাপ",
+        "charts": "📊 মূল্য পার্থক্য ও ট্রেন্ড",
+        "transparency": "🔎 তথ্যের স্বচ্ছতা",
+        "consumer_note": "ভোক্তা নোট",
+        "consumer_note_text": "মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী দাম বদলাতে পারে। এটিকে যাচাইকৃত রেফারেন্স হিসেবে ব্যবহার করুন, দর-কষাকষির নিশ্চয়তা হিসেবে নয়।",
+        "tcb_monitor": "TCB মনিটর",
+        "dam_monitor": "DAM মনিটর",
+        "reload": "সরকারি তথ্য রিফ্রেশ করুন",
+        "download": "বর্তমান তথ্য ডাউনলোড",
+        "market_unavailable": "সরকারি উৎস বাজারভিত্তিক সারি না দেওয়া পর্যন্ত বাজার র‍্যাঙ্কিং পাওয়া যাবে না।",
+        "verified": "যাচাইকৃত",
+        "partial": "আংশিক",
+        "unavailable": "পাওয়া যায়নি",
+        "kg_or_unit": "সরকারি ইউনিট/যেভাবে প্রকাশিত",
     },
 }
 
-COMMODITY_BN = {
-    "Rice (coarse)": "চাল (মোটা)",
-    "Rice (medium)": "চাল (মাঝারি)",
-    "Rice (fine)": "চাল (সরু)",
-    "Lentil (masur)": "মসুর ডাল",
-    "Soybean oil": "সয়াবিন তেল",
-    "Onion": "পেঁয়াজ",
-    "Potato": "আলু",
-    "Egg": "ডিম",
-    "Broiler chicken": "ব্রয়লার মুরগি",
-    "Sugar": "চিনি",
-    "Garlic": "রসুন",
-    "Ginger": "আদা",
-    "Flour (atta)": "আটা",
-}
 
-MARKET_BN = {
-    "Karwan Bazar": "কারওয়ান বাজার",
-    "Shyambazar": "শ্যামবাজার",
-    "Jatrabari Bazar": "যাত্রাবাড়ী বাজার",
-    "Mohammadpur Krishi Market": "মোহাম্মদপুর কৃষি মার্কেট",
-    "Mirpur-1 Kitchen Market": "মিরপুর-১ কাঁচাবাজার",
-    "New Market Kitchen Bazar": "নিউ মার্কেট কাঁচাবাজার",
-    "Uttara Sector 6 Market": "উত্তরা সেক্টর ৬ বাজার",
-    "Rampura Bazar": "রামপুরা বাজার",
-}
-
-DEFAULT_BASKET = {
-    "Rice (medium)": 5.0,
-    "Lentil (masur)": 1.0,
-    "Soybean oil": 2.0,
-    "Onion": 2.0,
-    "Potato": 3.0,
-    "Egg": 1.0,  # dozen
-    "Broiler chicken": 1.5,
-    "Sugar": 1.0,
-}
+def tr(key: str) -> str:
+    lang = st.session_state.get("lang", "English")
+    return TRANSLATIONS.get(lang, TRANSLATIONS["English"]).get(key, key)
 
 
-# -----------------------------
-# Utility functions
-# -----------------------------
-
-def get_secret_or_env(key: str, default: Optional[str] = None) -> Optional[str]:
+def safe_secret(name: str, default: str = "") -> str:
     try:
-        if key in st.secrets:
-            return st.secrets[key]
+        return str(st.secrets.get(name, default) or default)
+    except Exception:
+        return default
+
+
+def now_iso() -> str:
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def fetch_url(url: str, *, params: Optional[dict] = None, timeout: int = 20) -> Tuple[Optional[str], Optional[str]]:
+    try:
+        res = requests.get(url, headers=REQUEST_HEADERS, params=params, timeout=timeout)
+        res.raise_for_status()
+        # Government pages may not always declare encoding cleanly.
+        if not res.encoding or res.encoding.lower() == "iso-8859-1":
+            res.encoding = res.apparent_encoding or "utf-8"
+        return res.text, None
+    except Exception as exc:
+        return None, f"{type(exc).__name__}: {exc}"
+
+
+def clean_text(value: object) -> str:
+    if value is None:
+        return ""
+    text = str(value).replace("\xa0", " ")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def commodity_is_essential(name: str) -> bool:
+    low = name.lower()
+    return any(k in low for k in ESSENTIAL_KEYWORDS)
+
+
+def infer_unit(name: str) -> str:
+    low = name.lower()
+    if "egg" in low:
+        return "as reported"
+    if "soybean" in low or "oil" in low:
+        return "as reported"
+    return "as reported"
+
+
+def parse_dam_recent_prices(html: str) -> pd.DataFrame:
+    """Parse the DAM homepage/report ticker into official aggregate price ranges.
+
+    DAM's public pages include recent price ticker text like:
+    Aman-Fine: 72.00 - 75.00 ▲0.00% ... Onion-local: 60.00 - 64.00 ▲0.00%
+    This is official data, but it is not market-wise. We therefore classify it as
+    data_level='official_range', not as market-level prices.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    raw = clean_text(soup.get_text(" "))
+    pattern = re.compile(
+        r"([A-Za-z][A-Za-z0-9\s\-()/.&]+?):\s*"
+        r"([0-9]+(?:\.[0-9]+)?)\s*-\s*([0-9]+(?:\.[0-9]+)?)\s*"
+        r"(?:[▲▼]?\s*([+-]?[0-9]+(?:\.[0-9]+)?)%)?"
+    )
+    rows = []
+    seen = set()
+    for match in pattern.finditer(raw):
+        commodity = clean_text(match.group(1))
+        # Guard against menu/footer text accidentally being captured.
+        if len(commodity) > 45 or not commodity_is_essential(commodity):
+            continue
+        low_price = float(match.group(2))
+        high_price = float(match.group(3))
+        change_pct = float(match.group(4)) if match.group(4) is not None else np.nan
+        key = (commodity.lower(), low_price, high_price)
+        if key in seen:
+            continue
+        seen.add(key)
+        rows.append({
+            "date": date.today().isoformat(),
+            "commodity": commodity,
+            "market": "Official aggregate range",
+            "area": "Official public source",
+            "unit": infer_unit(commodity),
+            "price": round((low_price + high_price) / 2, 2),
+            "price_min": low_price,
+            "price_max": high_price,
+            "change_pct": change_pct,
+            "source": "Department of Agricultural Marketing (DAM)",
+            "source_url": DAM_HOME_URL,
+            "verified": True,
+            "data_level": "official_range",
+            "fetched_at": now_iso(),
+        })
+    return pd.DataFrame(rows)
+
+
+def parse_tables_to_marketwise(html: str, source_url: str, source_name: str) -> pd.DataFrame:
+    """Best-effort parser for official printable reports.
+
+    It intentionally refuses to manufacture market rows. It only returns rows if
+    the official HTML contains a recognizable commodity/market/price table.
+    """
+    try:
+        tables = pd.read_html(io.StringIO(html))
+    except Exception:
+        return pd.DataFrame()
+
+    out = []
+    for table in tables:
+        if table.empty or table.shape[1] < 3:
+            continue
+        df = table.copy()
+        df.columns = [clean_text(c).lower() for c in df.columns]
+        joined_cols = " ".join(df.columns)
+        # Try flexible column discovery.
+        commodity_col = next((c for c in df.columns if "commodity" in c or "commodities" in c or "পণ্য" in c), None)
+        market_col = next((c for c in df.columns if "market" in c or "বাজার" in c), None)
+        unit_col = next((c for c in df.columns if "unit" in c or "একক" in c), None)
+        price_col = next((c for c in df.columns if "retail" in c or "rate" in c or "price" in c or "দর" in c or "মূল্য" in c), None)
+        if commodity_col is None or price_col is None:
+            # Some DAM printable pages flatten headers. Attempt positional parsing.
+            if df.shape[1] >= 4:
+                commodity_col = df.columns[1]
+                unit_col = df.columns[2]
+                price_col = df.columns[-1]
+            else:
+                continue
+        for _, row in df.iterrows():
+            commodity = clean_text(row.get(commodity_col, ""))
+            if not commodity or commodity.lower() in {"commodities name", "commodity", "nan"}:
+                continue
+            if not commodity_is_essential(commodity):
+                continue
+            market = clean_text(row.get(market_col, "")) if market_col else "Official market report"
+            unit = clean_text(row.get(unit_col, "")) if unit_col else "as reported"
+            price_raw = clean_text(row.get(price_col, ""))
+            nums = re.findall(r"\d+(?:\.\d+)?", price_raw)
+            if not nums:
+                continue
+            nums = [float(x) for x in nums]
+            price_min = min(nums)
+            price_max = max(nums)
+            price = float(np.mean(nums))
+            data_level = "market" if market and market.lower() not in {"official market report", "nan"} else "official_range"
+            out.append({
+                "date": date.today().isoformat(),
+                "commodity": commodity,
+                "market": market or "Official market report",
+                "area": "Dhaka" if "dhaka" in market.lower() or "sadar" in market.lower() else "Official report",
+                "unit": unit or "as reported",
+                "price": round(price, 2),
+                "price_min": round(price_min, 2),
+                "price_max": round(price_max, 2),
+                "change_pct": np.nan,
+                "source": source_name,
+                "source_url": source_url,
+                "verified": True,
+                "data_level": data_level,
+                "fetched_at": now_iso(),
+            })
+    return pd.DataFrame(out).drop_duplicates() if out else pd.DataFrame()
+
+
+def fetch_dam_official_range() -> Tuple[pd.DataFrame, Dict[str, str]]:
+    status = {"name": "DAM recent prices", "url": DAM_HOME_URL, "ok": "false", "message": "Not attempted"}
+    html, err = fetch_url(DAM_HOME_URL)
+    if err or not html:
+        status.update({"ok": "false", "message": err or "Empty response"})
+        return pd.DataFrame(), status
+    df = parse_dam_recent_prices(html)
+    if df.empty:
+        status.update({"ok": "false", "message": "DAM page loaded but no price ticker was parsed."})
+        return df, status
+    status.update({"ok": "true", "message": f"Parsed {len(df)} official price ranges from DAM."})
+    return df, status
+
+
+def fetch_dam_marketwise_best_effort() -> Tuple[pd.DataFrame, Dict[str, str]]:
+    """Attempt official market-wise reports without inventing data.
+
+    The public DAM form uses filters for Division/District/Upazila/Market/Price Type/Date.
+    Some installations require dynamic IDs or session state. This collector tries the
+    printable endpoints and returns rows only if a recognizable official table appears.
+    """
+    status = {"name": "DAM market-wise report", "url": DAM_MARKET_PRINT_URL, "ok": "false", "message": "Not attempted"}
+    urls = [DAM_MARKET_PRINT_URL, DAM_SUBDISTRICT_PRINT_URL]
+    frames = []
+    for url in urls:
+        html, err = fetch_url(url, timeout=25)
+        if err or not html:
+            continue
+        parsed = parse_tables_to_marketwise(html, url, "Department of Agricultural Marketing (DAM)")
+        if not parsed.empty:
+            frames.append(parsed)
+    if not frames:
+        status.update({
+            "ok": "false",
+            "message": "Official report endpoints loaded no usable market-wise Dhaka rows without filters/API access.",
+        })
+        return pd.DataFrame(), status
+    df = pd.concat(frames, ignore_index=True).drop_duplicates()
+    # Keep Dhaka-ish rows if present. If not, keep all official rows but mark as official_range.
+    dhaka_mask = df["market"].astype(str).str.contains("dhaka|karwan|kawran|shyam|jatra|mirpur|uttara|mohammad", case=False, regex=True, na=False)
+    if dhaka_mask.any():
+        df = df[dhaka_mask].copy()
+    status.update({"ok": "true", "message": f"Parsed {len(df)} official report rows."})
+    return df, status
+
+
+def fetch_verified_remote_csv() -> Tuple[pd.DataFrame, Dict[str, str]]:
+    """Optional backend-only source for a verified CSV/API feed.
+
+    This is not visible as a consumer selector. It allows you to connect a formal DAM/TCB
+    CSV, Google Sheet CSV, or verified internal feed later. Rows must include verified=true
+    or source containing DAM/TCB/Government/Official; otherwise they are rejected.
+    """
+    url = safe_secret("OFFICIAL_MARKET_PRICE_CSV_URL", os.getenv("OFFICIAL_MARKET_PRICE_CSV_URL", ""))
+    status = {"name": "Verified CSV/API feed", "url": url or "not configured", "ok": "false", "message": "No backend feed configured."}
+    if not url:
+        return pd.DataFrame(), status
+    try:
+        res = requests.get(url, headers=REQUEST_HEADERS, timeout=25)
+        res.raise_for_status()
+        df = pd.read_csv(io.StringIO(res.text))
+    except Exception as exc:
+        status.update({"ok": "false", "message": f"Could not read verified CSV/API feed: {type(exc).__name__}: {exc}"})
+        return pd.DataFrame(), status
+
+    required = {"date", "commodity", "market", "price"}
+    lower_map = {c: c.strip().lower() for c in df.columns}
+    df = df.rename(columns=lower_map)
+    if not required.issubset(set(df.columns)):
+        status.update({"ok": "false", "message": "Feed rejected: required columns missing: date, commodity, market, price."})
+        return pd.DataFrame(), status
+    if "source" not in df.columns:
+        df["source"] = "Configured verified feed"
+    if "verified" not in df.columns:
+        df["verified"] = df["source"].astype(str).str.contains("dam|tcb|official|government|govt", case=False, regex=True, na=False)
+    else:
+        df["verified"] = df["verified"].astype(str).str.lower().isin(["true", "1", "yes", "y", "verified"])
+    df = df[df["verified"]].copy()
+    if df.empty:
+        status.update({"ok": "false", "message": "Feed rejected: no rows passed verification rule."})
+        return pd.DataFrame(), status
+    for col, default in {
+        "area": "Dhaka", "unit": "as reported", "price_min": np.nan, "price_max": np.nan,
+        "change_pct": np.nan, "source_url": url, "data_level": "market", "fetched_at": now_iso()
+    }.items():
+        if col not in df.columns:
+            df[col] = default
+    df["price"] = pd.to_numeric(df["price"], errors="coerce")
+    df = df.dropna(subset=["price"])
+    df["price_min"] = pd.to_numeric(df["price_min"], errors="coerce").fillna(df["price"])
+    df["price_max"] = pd.to_numeric(df["price_max"], errors="coerce").fillna(df["price"])
+    status.update({"ok": "true", "message": f"Loaded {len(df)} verified rows from backend feed."})
+    return df, status
+
+
+def monitor_tcb_daily_page() -> Dict[str, str]:
+    status = {"name": "TCB daily retail prices", "url": TCB_DAILY_RMPS_URL, "ok": "false", "message": "Not attempted"}
+    html, err = fetch_url(TCB_DAILY_RMPS_URL, timeout=20)
+    if err or not html:
+        status.update({"ok": "false", "message": err or "Empty response"})
+        return status
+    soup = BeautifulSoup(html, "html.parser")
+    text = clean_text(soup.get_text(" "))
+    links = []
+    for a in soup.find_all("a", href=True):
+        href = a.get("href", "")
+        label = clean_text(a.get_text(" "))
+        if any(ext in href.lower() for ext in [".pdf", ".xls", ".xlsx", ".csv", ".doc", ".docx"]) or "download" in label.lower() or "ডাউনলোড" in label:
+            links.append(href)
+    msg = "TCB page loaded. "
+    if links:
+        msg += f"Found {len(links)} possible report/download links."
+    elif "দৈনিক" in text or "খুচরা" in text or "retail" in text.lower():
+        msg += "Daily retail price content was visible, but no direct machine-readable table was parsed."
+    else:
+        msg += "No machine-readable price table found."
+    status.update({"ok": "true", "message": msg})
+    return status
+
+
+def load_cache(path: Path) -> pd.DataFrame:
+    try:
+        if path.exists() and path.stat().st_size > 0:
+            return pd.read_csv(path)
+    except Exception:
+        return pd.DataFrame()
+    return pd.DataFrame()
+
+
+def save_cache(df: pd.DataFrame, path: Path) -> None:
+    try:
+        if not df.empty:
+            df.to_csv(path, index=False)
     except Exception:
         pass
-    return os.environ.get(key, default)
 
 
-def str_to_bool(value: Any, default: bool = False) -> bool:
-    if value is None:
-        return default
-    if isinstance(value, bool):
-        return value
-    return str(value).strip().lower() in {"1", "true", "yes", "y", "on"}
-
-
-def now_bd() -> datetime:
-    # Bangladesh Standard Time = UTC+6. Avoids needing pytz/zoneinfo edge cases.
-    return datetime.utcnow() + timedelta(hours=6)
-
-
-def parse_date_any(value: Any) -> Optional[pd.Timestamp]:
-    if value is None or (isinstance(value, float) and np.isnan(value)):
-        return None
-    text = str(value).strip()
-    if not text:
-        return None
-    # Bangla digits to English digits
-    bn_digits = "০১২৩৪৫৬৭৮৯"
-    for i, d in enumerate(bn_digits):
-        text = text.replace(d, str(i))
-    # Common formats
-    for fmt in ["%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%d %B, %Y", "%d %b, %Y", "%d %B %Y", "%d %b %Y"]:
-        try:
-            return pd.Timestamp(datetime.strptime(text, fmt).date())
-        except Exception:
-            pass
+def append_history(df: pd.DataFrame, path: Path) -> None:
     try:
-        return pd.to_datetime(text, errors="coerce", dayfirst=True)
-    except Exception:
-        return None
-
-
-def clean_price(value: Any) -> Optional[float]:
-    if value is None or (isinstance(value, float) and np.isnan(value)):
-        return None
-    text = str(value)
-    bn_digits = "০১২৩৪৫৬৭৮۹"
-    # includes Arabic/Persian ۹ if accidentally present
-    for i, d in enumerate("۰۱۲۳۴۵۶۷۸۹"):
-        text = text.replace(d, str(i))
-    for i, d in enumerate("০۱۲۳۴۵۶۷۸۹"):
-        text = text.replace(d, str(i))
-    text = text.replace(",", "")
-    nums = re.findall(r"\d+(?:\.\d+)?", text)
-    if not nums:
-        return None
-    # If a range like 60-70, use mid-point for a single comparable price.
-    vals = [float(x) for x in nums[:2]]
-    return float(np.mean(vals))
-
-
-def normalise_columns(df: pd.DataFrame) -> pd.DataFrame:
-    rename_map = {}
-    for col in df.columns:
-        c = str(col).strip().lower().replace(" ", "_")
-        c = re.sub(r"[^a-z0-9_]+", "", c)
-        aliases = {
-            "commodities_name": "commodity",
-            "commodity_name": "commodity",
-            "commodities": "commodity",
-            "product": "commodity",
-            "item": "commodity",
-            "bazaar": "market",
-            "bazar": "market",
-            "market_name": "market",
-            "marketplace": "market",
-            "location": "area",
-            "price_tk": "price",
-            "retail_price": "price",
-            "average_price": "price",
-            "avg_price": "price",
-            "min_price": "price_min",
-            "max_price": "price_max",
-            "maximum_price": "price_max",
-            "minimum_price": "price_min",
-            "lat": "latitude",
-            "lon": "longitude",
-            "lng": "longitude",
-            "verified_status": "verified",
-            "source_link": "source_url",
-            "url": "source_url",
-        }
-        rename_map[col] = aliases.get(c, c)
-    return df.rename(columns=rename_map)
-
-
-def validate_market_price_df(df: pd.DataFrame, source_name: str = "") -> Tuple[pd.DataFrame, List[str]]:
-    warnings: List[str] = []
-    if df is None or df.empty:
-        return pd.DataFrame(), ["Empty dataset"]
-
-    df = normalise_columns(df.copy())
-
-    required = {"date", "market", "commodity"}
-    missing = sorted(required - set(df.columns))
-    if missing:
-        warnings.append(f"Missing required columns: {', '.join(missing)}")
-        return pd.DataFrame(), warnings
-
-    if "price" not in df.columns:
-        if "price_min" in df.columns and "price_max" in df.columns:
-            df["price"] = df[["price_min", "price_max"]].apply(lambda r: np.nanmean([clean_price(r.iloc[0]), clean_price(r.iloc[1])]), axis=1)
-        elif "price_min" in df.columns:
-            df["price"] = df["price_min"].apply(clean_price)
-        elif "price_max" in df.columns:
-            df["price"] = df["price_max"].apply(clean_price)
+        if df.empty:
+            return
+        keep = df.copy()
+        keep["snapshot_saved_at"] = now_iso()
+        if path.exists() and path.stat().st_size > 0:
+            old = pd.read_csv(path)
+            all_df = pd.concat([old, keep], ignore_index=True)
         else:
-            warnings.append("Missing price column")
-            return pd.DataFrame(), warnings
-
-    for col in ["price", "price_min", "price_max", "latitude", "longitude"]:
-        if col in df.columns:
-            df[col] = df[col].apply(clean_price)
-
-    df["date"] = df["date"].apply(parse_date_any)
-    df = df.dropna(subset=["date", "market", "commodity", "price"])
-    df["date"] = pd.to_datetime(df["date"]).dt.date
-    df["market"] = df["market"].astype(str).str.strip()
-    df["commodity"] = df["commodity"].astype(str).str.strip()
-
-    defaults = {
-        "area": "Dhaka",
-        "category": "Essential",
-        "unit": "kg",
-        "source": source_name or "Verified feed",
-        "source_url": "",
-        "verified": True,
-    }
-    for col, val in defaults.items():
-        if col not in df.columns:
-            df[col] = val
-
-    if "price_min" not in df.columns:
-        df["price_min"] = df["price"]
-    if "price_max" not in df.columns:
-        df["price_max"] = df["price"]
-
-    # Merge known coordinates if missing
-    markets = load_markets()
-    if not markets.empty:
-        coord_cols = ["market", "latitude", "longitude", "area"]
-        markets_small = markets[[c for c in coord_cols if c in markets.columns]].drop_duplicates("market")
-        df = df.merge(markets_small, on="market", how="left", suffixes=("", "_known"))
-        for col in ["latitude", "longitude", "area"]:
-            known = f"{col}_known"
-            if known in df.columns:
-                df[col] = df[col].where(df[col].notna() & (df[col].astype(str) != ""), df[known])
-                df = df.drop(columns=[known])
-
-    df["verified"] = df["verified"].apply(lambda x: str_to_bool(x, default=True))
-    df = df[df["verified"] == True].copy()
-    df = df[df["price"] > 0]
-
-    ordered = [
-        "date", "market", "area", "commodity", "category", "unit", "price_min", "price_max", "price",
-        "source", "source_url", "verified", "latitude", "longitude",
-    ]
-    for col in ordered:
-        if col not in df.columns:
-            df[col] = np.nan
-    return df[ordered].sort_values(["date", "commodity", "price", "market"], ascending=[False, True, True, True]), warnings
-
-
-@st.cache_data(ttl=60 * 60 * 24)
-def load_markets() -> pd.DataFrame:
-    try:
-        return pd.read_csv(MARKETS_PATH)
+            all_df = keep
+        subset = [c for c in ["date", "commodity", "market", "price", "price_min", "price_max", "source"] if c in all_df.columns]
+        all_df = all_df.drop_duplicates(subset=subset, keep="last")
+        all_df.to_csv(path, index=False)
     except Exception:
-        return pd.DataFrame()
+        pass
 
 
 @st.cache_data(ttl=60 * 30, show_spinner=False)
-def read_url_text(url: str, timeout: int = 20) -> Tuple[Optional[str], str]:
-    try:
-        headers = {
-            "User-Agent": "Mozilla/5.0 (compatible; BangladeshCommodityDashboard/1.0; +https://streamlit.io)",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        }
-        response = requests.get(url, headers=headers, timeout=timeout)
-        response.raise_for_status()
-        return response.text, "ok"
-    except Exception as exc:
-        return None, str(exc)
+def load_official_data(force_key: int = 0) -> Tuple[pd.DataFrame, List[Dict[str, str]]]:
+    statuses: List[Dict[str, str]] = []
+    frames: List[pd.DataFrame] = []
 
+    remote_df, remote_status = fetch_verified_remote_csv()
+    statuses.append(remote_status)
+    if not remote_df.empty:
+        frames.append(remote_df)
 
-@st.cache_data(ttl=60 * 30, show_spinner=False)
-def read_csv_url(url: str) -> Tuple[pd.DataFrame, str]:
-    try:
-        headers = {"User-Agent": "Mozilla/5.0 (compatible; BangladeshCommodityDashboard/1.0)"}
-        r = requests.get(url, headers=headers, timeout=25)
-        r.raise_for_status()
-        df = pd.read_csv(io.StringIO(r.text))
-        return df, "ok"
-    except Exception as exc:
-        return pd.DataFrame(), str(exc)
+    market_df, market_status = fetch_dam_marketwise_best_effort()
+    statuses.append(market_status)
+    if not market_df.empty:
+        frames.append(market_df)
 
-
-@st.cache_data(ttl=60 * 60, show_spinner=False)
-def fetch_official_monitors() -> Dict[str, Any]:
-    monitors: Dict[str, Any] = {
-        "tcb": {"url": TCB_DAILY_URL, "ok": False, "latest_date": None, "title": "TCB daily retail market prices", "error": None},
-        "dam_daily": {"url": DAM_DAILY_REPORT_URL, "ok": False, "latest_date": None, "title": "DAM Market Daily Price Report", "error": None},
-        "dam_print": {"url": DAM_DAILY_PRINT_URL, "ok": False, "latest_date": None, "title": "DAM print report", "error": None},
-    }
-    # TCB page
-    text, status = read_url_text(TCB_DAILY_URL)
-    if text:
-        monitors["tcb"]["ok"] = True
-        # extract likely dates in Bangla/English from page
-        for i, d in enumerate("০১২৩৪৫۶۷۸۹"):
-            text = text.replace(d, str(i))
-        dates = re.findall(r"\d{1,2}[-/]\d{1,2}[-/]\d{4}|\d{4}[-/]\d{1,2}[-/]\d{1,2}", text)
-        parsed = [parse_date_any(d) for d in dates]
-        parsed = [p for p in parsed if p is not None and not pd.isna(p)]
-        if parsed:
-            monitors["tcb"]["latest_date"] = str(max(parsed).date())
-    else:
-        monitors["tcb"]["error"] = status
-
-    # DAM report page
-    for key, url in [("dam_daily", DAM_DAILY_REPORT_URL), ("dam_print", DAM_DAILY_PRINT_URL)]:
-        text, status = read_url_text(url)
-        if text:
-            monitors[key]["ok"] = True
-            m = re.search(r"Report Date:\s*([^|<]+)", text, flags=re.I)
-            if m:
-                p = parse_date_any(m.group(1).strip())
-                if p is not None and not pd.isna(p):
-                    monitors[key]["latest_date"] = str(p.date())
-        else:
-            monitors[key]["error"] = status
-
-    return monitors
-
-
-@st.cache_data(ttl=60 * 60, show_spinner=False)
-def fetch_dam_print_table() -> Tuple[pd.DataFrame, str]:
-    """Best-effort parser for DAM print report. It may be aggregate, not market-wise."""
-    try:
-        html, status = read_url_text(DAM_DAILY_PRINT_URL)
-        if not html:
-            return pd.DataFrame(), status
-        tables = pd.read_html(io.StringIO(html))
-        if not tables:
-            return pd.DataFrame(), "No tables found"
-        # Choose the largest table
-        raw = max(tables, key=lambda x: x.shape[0] * x.shape[1])
-        raw = normalise_columns(raw)
-        # Only accept if it contains market-wise essentials.
-        useful_cols = set(raw.columns)
-        has_market = any(c in useful_cols for c in ["market", "market_name", "bazar", "bazaar"])
-        has_commodity = any(c in useful_cols for c in ["commodity", "commodities_name", "commodity_name"])
-        has_price = any("price" in c for c in useful_cols)
-        if has_market and has_commodity and has_price:
-            raw["source"] = "Department of Agricultural Marketing (DAM)"
-            raw["source_url"] = DAM_DAILY_PRINT_URL
-            raw["verified"] = True
-            df, warnings = validate_market_price_df(raw, "Department of Agricultural Marketing (DAM)")
-            return df, "; ".join(warnings) if warnings else "ok"
-        return pd.DataFrame(), "DAM page reached, but table is not a complete market-wise price feed"
-    except Exception as exc:
-        return pd.DataFrame(), str(exc)
-
-
-@st.cache_data(ttl=60 * 30, show_spinner=True)
-def load_verified_data() -> Tuple[pd.DataFrame, Dict[str, Any]]:
-    """Load market-wise data without exposing source selection to consumers."""
-    meta: Dict[str, Any] = {
-        "mode": "unavailable",
-        "source_name": "",
-        "source_url": "",
-        "warnings": [],
-        "monitors": {},
-        "loaded_at": now_bd().strftime("%Y-%m-%d %H:%M"),
-    }
-
-    official_csv_url = get_secret_or_env("OFFICIAL_MARKET_PRICE_CSV_URL", "")
-    allow_preview = str_to_bool(get_secret_or_env("ALLOW_PREVIEW_DATA", "true"), default=True)
-
-    # 1) Production verified feed URL (CSV/API export) - hidden from public UI.
-    if official_csv_url:
-        raw, status = read_csv_url(official_csv_url)
-        df, warnings = validate_market_price_df(raw, "Verified Dhaka market-wise feed")
-        if not df.empty:
-            meta.update({
-                "mode": "verified_feed",
-                "source_name": "Verified Dhaka market-wise feed",
-                "source_url": official_csv_url,
-                "warnings": warnings,
-            })
-            return df, meta
-        meta["warnings"].append(f"Verified feed could not be used: {status}; {'; '.join(warnings)}")
-
-    # 2) Official DAM print parser, if market-wise rows are available.
-    dam_df, dam_status = fetch_dam_print_table()
+    dam_df, dam_status = fetch_dam_official_range()
+    statuses.append(dam_status)
     if not dam_df.empty:
-        meta.update({
-            "mode": "official_dam",
-            "source_name": "Department of Agricultural Marketing (DAM)",
-            "source_url": DAM_DAILY_PRINT_URL,
-            "warnings": [] if dam_status == "ok" else [dam_status],
-        })
-        return dam_df, meta
-    meta["warnings"].append(dam_status)
+        frames.append(dam_df)
 
-    # 3) Official monitors are shown, but not used for market-wise cheapest claims.
-    meta["monitors"] = fetch_official_monitors()
+    statuses.append(monitor_tcb_daily_page())
 
-    # 4) Preview seed only for local/demo deployments. It is clearly marked in UI.
-    if allow_preview and os.path.exists(SEED_PATH):
-        raw = pd.read_csv(SEED_PATH)
-        df, warnings = validate_market_price_df(raw, "Bundled preview dataset")
-        if not df.empty:
-            meta.update({
-                "mode": "preview_seed",
-                "source_name": "Bundled preview dataset — replace with verified official feed",
-                "source_url": "",
-                "warnings": meta["warnings"] + warnings,
-            })
-            return df, meta
+    if frames:
+        data = pd.concat(frames, ignore_index=True, sort=False).drop_duplicates()
+        # Prefer market-level rows for market views, but retain official ranges.
+        data["price"] = pd.to_numeric(data["price"], errors="coerce")
+        data["price_min"] = pd.to_numeric(data.get("price_min", data["price"]), errors="coerce").fillna(data["price"])
+        data["price_max"] = pd.to_numeric(data.get("price_max", data["price"]), errors="coerce").fillna(data["price"])
+        data = data.dropna(subset=["price"])
+        save_cache(data, CACHE_DIR / "latest_official_prices.csv")
+        append_history(data, CACHE_DIR / "history_official_prices.csv")
+        return data, statuses
 
-    return pd.DataFrame(), meta
+    cached = load_cache(CACHE_DIR / "latest_official_prices.csv")
+    if not cached.empty:
+        cached["data_level"] = cached.get("data_level", "cached_official")
+        statuses.append({"name": "Local cache", "url": str(CACHE_DIR / "latest_official_prices.csv"), "ok": "true", "message": "Loaded last verified local cache because live official fetch failed."})
+        return cached, statuses
+
+    return pd.DataFrame(), statuses
 
 
-def latest_slice(df: pd.DataFrame) -> pd.DataFrame:
-    if df.empty:
-        return df
-    latest = max(df["date"])
-    return df[df["date"] == latest].copy()
+def build_cheapest_market(df: pd.DataFrame) -> pd.DataFrame:
+    if df.empty or "data_level" not in df.columns:
+        return pd.DataFrame()
+    market_df = df[(df["data_level"] == "market") & (df["verified"] == True)].copy()
+    if market_df.empty:
+        return pd.DataFrame()
+    market_df["price"] = pd.to_numeric(market_df["price"], errors="coerce")
+    market_df = market_df.dropna(subset=["price"])
+    if market_df.empty:
+        return pd.DataFrame()
+    idx = market_df.groupby("commodity")["price"].idxmin()
+    cheapest = market_df.loc[idx].copy().sort_values("price")
+    # Savings vs most expensive market for same commodity.
+    max_prices = market_df.groupby("commodity")["price"].max().rename("max_price").reset_index()
+    cheapest = cheapest.merge(max_prices, on="commodity", how="left")
+    cheapest["saving_vs_highest"] = (cheapest["max_price"] - cheapest["price"]).round(2)
+    return cheapest
 
 
-def translate_value(value: Any, lang: str, kind: str = "commodity") -> Any:
-    if lang != "বাংলা":
-        return value
-    if kind == "commodity":
-        return COMMODITY_BN.get(str(value), value)
-    if kind == "market":
-        return MARKET_BN.get(str(value), value)
-    return value
-
-
-def display_df(df: pd.DataFrame, lang: str, max_rows: int = 30) -> pd.DataFrame:
-    out = df.copy()
-    if "commodity" in out.columns:
-        out["commodity"] = out["commodity"].apply(lambda x: translate_value(x, lang, "commodity"))
-    if "market" in out.columns:
-        out["market"] = out["market"].apply(lambda x: translate_value(x, lang, "market"))
-    return out.head(max_rows)
-
-
-def fmt_tk(value: Any, lang: str = "English") -> str:
-    if value is None or pd.isna(value):
-        return "—"
-    prefix = TEXT[lang]["price_unit"]
-    return f"{prefix}{float(value):,.0f}"
-
-
-def status_badge(meta: Dict[str, Any], latest_date: Optional[date], lang: str) -> str:
-    t = TEXT[lang]
-    mode = meta.get("mode")
-    today = now_bd().date()
-    age_days = None
-    if latest_date:
-        age_days = (today - latest_date).days
-
-    if mode in {"verified_feed", "official_dam"}:
-        cls = "pill-good" if age_days is not None and age_days <= 1 else "pill-warn"
-        label = f"🟢 {t['verified']}" if age_days is not None and age_days <= 1 else f"🟡 {t['partial']}"
-    elif mode == "preview_seed":
-        cls = "pill-warn"
-        label = f"🟡 {t['preview']}"
+def build_basket(df: pd.DataFrame) -> Tuple[pd.DataFrame, str]:
+    basket_path = DATA_DIR / "basket.csv"
+    if basket_path.exists():
+        basket = pd.read_csv(basket_path)
     else:
-        cls = "pill-bad"
-        label = f"🔴 {t['unavailable']}"
-    return f"<span class='pill {cls}'>{label}</span>"
-
-
-def build_cheapest_by_commodity(df_latest: pd.DataFrame) -> pd.DataFrame:
-    if df_latest.empty:
-        return pd.DataFrame()
-    idx = df_latest.groupby("commodity")["price"].idxmin()
-    cheapest = df_latest.loc[idx].copy()
-    spread = df_latest.groupby("commodity")["price"].agg(["min", "max"]).reset_index()
-    spread["spread"] = spread["max"] - spread["min"]
-    cheapest = cheapest.merge(spread[["commodity", "spread", "max"]], on="commodity", how="left")
-    cheapest["saving_vs_highest"] = cheapest["max"] - cheapest["price"]
-    return cheapest.sort_values(["saving_vs_highest", "commodity"], ascending=[False, True])
-
-
-def compute_basket(df_latest: pd.DataFrame, basket: Dict[str, float]) -> pd.DataFrame:
-    rows: List[Dict[str, Any]] = []
-    if df_latest.empty or not basket:
-        return pd.DataFrame()
-    basket_items = {k: v for k, v in basket.items() if v and v > 0}
-    for market, g in df_latest.groupby("market"):
-        total = 0.0
-        covered = 0
-        missing: List[str] = []
-        for commodity, qty in basket_items.items():
-            sub = g[g["commodity"] == commodity]
-            if sub.empty:
-                missing.append(commodity)
-                continue
-            total += float(sub["price"].iloc[0]) * float(qty)
-            covered += 1
-        if covered > 0:
-            first = g.iloc[0]
-            rows.append({
-                "market": market,
-                "area": first.get("area", "Dhaka"),
-                "basket_cost": total,
-                "items_covered": covered,
-                "items_total": len(basket_items),
-                "missing_items": ", ".join(missing),
-                "latitude": first.get("latitude", np.nan),
-                "longitude": first.get("longitude", np.nan),
-            })
-    out = pd.DataFrame(rows)
-    if out.empty:
-        return out
-    max_cost = out["basket_cost"].max()
-    out["saving_vs_most_expensive"] = max_cost - out["basket_cost"]
-    return out.sort_values("basket_cost")
-
-
-def make_alerts(df: pd.DataFrame, df_latest: pd.DataFrame, lang: str) -> List[str]:
-    alerts: List[str] = []
-    if df_latest.empty:
-        return alerts
-    # Spread alerts
-    spread = df_latest.groupby("commodity")["price"].agg(["min", "max"]).reset_index()
-    spread["pct_spread"] = (spread["max"] - spread["min"]) / spread["min"].replace(0, np.nan) * 100
-    high_spread = spread.sort_values("pct_spread", ascending=False).head(3)
-    for _, r in high_spread.iterrows():
-        if pd.notna(r["pct_spread"]) and r["pct_spread"] >= 8:
-            name = translate_value(r["commodity"], lang, "commodity")
-            if lang == "বাংলা":
-                alerts.append(f"⚠️ {name}: বাজারভেদে দামের ফারাক প্রায় {r['pct_spread']:.0f}%। কেনার আগে বাজার তুলনা করুন।")
-            else:
-                alerts.append(f"⚠️ {name}: market-to-market price spread is about {r['pct_spread']:.0f}%. Compare before buying.")
-    # 7-day trend alerts
-    if df["date"].nunique() >= 2:
-        latest_date = max(df["date"])
-        prev_date = max([d for d in df["date"].unique() if d < latest_date], default=None)
-        if prev_date:
-            latest_avg = df[df["date"] == latest_date].groupby("commodity")["price"].mean()
-            prev_avg = df[df["date"] == prev_date].groupby("commodity")["price"].mean()
-            common = latest_avg.index.intersection(prev_avg.index)
-            changes = ((latest_avg[common] - prev_avg[common]) / prev_avg[common].replace(0, np.nan) * 100).sort_values(ascending=False)
-            for commodity, pct in changes.head(2).items():
-                if pd.notna(pct) and abs(pct) >= 4:
-                    name = translate_value(commodity, lang, "commodity")
-                    arrow = "increased" if pct > 0 else "decreased"
-                    if lang == "বাংলা":
-                        word = "বেড়েছে" if pct > 0 else "কমেছে"
-                        alerts.append(f"📈 {name}: আগের আপডেটের তুলনায় গড় দাম {abs(pct):.1f}% {word}।")
-                    else:
-                        alerts.append(f"📈 {name}: average price {arrow} by {abs(pct):.1f}% compared with the previous update.")
-    return alerts[:5]
-
-
-# -----------------------------
-# Sidebar: language only + refresh
-# -----------------------------
-with st.sidebar:
-    lang = st.radio("🌐 Language / ভাষা", ["English", "বাংলা"], horizontal=True)
-    t = TEXT[lang]
-    st.markdown("---")
-    if st.button(f"🔄 {t['latest_button']}", use_container_width=True):
-        st.cache_data.clear()
-        st.rerun()
-    st.caption(t["footer"])
-
-
-# -----------------------------
-# Load data
-# -----------------------------
-with st.spinner("Loading latest verified market data..." if lang == "English" else "সর্বশেষ যাচাইকৃত বাজারদর লোড হচ্ছে..."):
-    df, meta = load_verified_data()
-
-latest = latest_slice(df)
-latest_date = max(df["date"]) if not df.empty else None
-source_name = meta.get("source_name", "")
-source_url = meta.get("source_url", "")
-
-# -----------------------------
-# Hero
-# -----------------------------
-status_html = status_badge(meta, latest_date, lang)
-updated_text = meta.get("loaded_at", now_bd().strftime("%Y-%m-%d %H:%M"))
-coverage_text = "Dhaka metropolitan markets" if lang == "English" else "ঢাকা মহানগরীর বাজারসমূহ"
-source_display = source_name or ("Official DAM/TCB monitor" if lang == "English" else "সরকারি DAM/TCB মনিটর")
-
-st.markdown(
-    f"""
-    <div class="hero">
-        <p class="hero-title">🛒 {t['app_title']}</p>
-        <p class="hero-subtitle">{t['app_subtitle']}</p>
-        <div style="margin-top:10px;">
-            {status_html}
-            <span class="pill">🕒 {t['updated']}: {updated_text}</span>
-            <span class="pill">📍 {t['coverage']}: {coverage_text}</span>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-# -----------------------------
-# Empty / unavailable state
-# -----------------------------
-if df.empty:
-    st.error(t["no_verified"])
-    monitors = meta.get("monitors") or fetch_official_monitors()
-    st.markdown(f"<div class='section-title'>🔎 {t['official_links']}</div>", unsafe_allow_html=True)
-    monitor_rows = []
-    for key, value in monitors.items():
-        monitor_rows.append({
-            "Source": value.get("title"),
-            "Status": "Reached" if value.get("ok") else "Unavailable",
-            "Latest date found": value.get("latest_date") or "—",
-            "URL": value.get("url"),
+        basket = pd.DataFrame([
+            {"commodity_keyword": "Rice", "quantity": 5, "unit_note": "kg"},
+            {"commodity_keyword": "Onion", "quantity": 2, "unit_note": "kg"},
+            {"commodity_keyword": "Potato", "quantity": 2, "unit_note": "kg"},
+            {"commodity_keyword": "Soybean", "quantity": 2, "unit_note": "litre/as reported"},
+            {"commodity_keyword": "Egg", "quantity": 1, "unit_note": "dozen/as reported"},
+            {"commodity_keyword": "Lentil", "quantity": 1, "unit_note": "kg"},
+            {"commodity_keyword": "Sugar", "quantity": 1, "unit_note": "kg"},
+        ])
+    if df.empty:
+        return pd.DataFrame(), "none"
+    market_df = df[(df.get("data_level") == "market") & (df.get("verified") == True)].copy()
+    if not market_df.empty:
+        rows = []
+        for market, g in market_df.groupby("market"):
+            total = 0.0
+            matched = 0
+            details = []
+            for _, b in basket.iterrows():
+                keyword = str(b["commodity_keyword"])
+                qty = float(b["quantity"])
+                matches = g[g["commodity"].astype(str).str.contains(keyword, case=False, na=False)]
+                if matches.empty:
+                    continue
+                selected = matches.sort_values("price").iloc[0]
+                cost = float(selected["price"]) * qty
+                total += cost
+                matched += 1
+                details.append(f"{keyword}: {qty} × {selected['price']}")
+            if matched:
+                rows.append({"market": market, "basket_cost": round(total, 2), "items_matched": matched, "details": "; ".join(details)})
+        if rows:
+            return pd.DataFrame(rows).sort_values("basket_cost"), "market"
+    # Aggregate estimate using official ranges/midpoints.
+    range_df = df[df.get("data_level").astype(str).str.contains("official_range|cached", regex=True, na=False)].copy()
+    if range_df.empty:
+        range_df = df.copy()
+    total_low = total_mid = total_high = 0.0
+    matched = 0
+    rows = []
+    for _, b in basket.iterrows():
+        keyword = str(b["commodity_keyword"])
+        qty = float(b["quantity"])
+        matches = range_df[range_df["commodity"].astype(str).str.contains(keyword, case=False, na=False)]
+        if matches.empty:
+            continue
+        selected = matches.sort_values("price").iloc[0]
+        low = float(selected.get("price_min", selected["price"])) * qty
+        mid = float(selected.get("price", selected["price"])) * qty
+        high = float(selected.get("price_max", selected["price"])) * qty
+        rows.append({
+            "item": selected["commodity"], "quantity": qty, "unit": selected.get("unit", "as reported"),
+            "low_estimate": round(low, 2), "mid_estimate": round(mid, 2), "high_estimate": round(high, 2)
         })
-    st.dataframe(pd.DataFrame(monitor_rows), use_container_width=True, hide_index=True)
-    st.info(t["no_market_level"])
-    st.stop()
+        total_low += low; total_mid += mid; total_high += high; matched += 1
+    if not rows:
+        return pd.DataFrame(), "none"
+    result = pd.DataFrame(rows)
+    result.loc[len(result)] = {"item": "TOTAL", "quantity": np.nan, "unit": "", "low_estimate": round(total_low, 2), "mid_estimate": round(total_mid, 2), "high_estimate": round(total_high, 2)}
+    return result, "range"
 
-# -----------------------------
-# Freshness
-# -----------------------------
-today_bd = now_bd().date()
-age_days = (today_bd - latest_date).days if latest_date else None
-if meta.get("mode") == "preview_seed":
-    st.warning(
-        "This deployment is showing bundled preview data because no verified market-wise feed URL is configured. For public use, set OFFICIAL_MARKET_PRICE_CSV_URL and set ALLOW_PREVIEW_DATA=false."
-        if lang == "English"
-        else "এই ডিপ্লয়মেন্টে যাচাইকৃত মার্কেটভিত্তিক ফিড সেট করা না থাকায় প্রিভিউ ডেটা দেখানো হচ্ছে। পাবলিক ব্যবহারের জন্য OFFICIAL_MARKET_PRICE_CSV_URL সেট করুন এবং ALLOW_PREVIEW_DATA=false করুন।"
-    )
-elif age_days is not None and age_days > 1:
-    st.warning(
-        f"The latest verified market-wise dataset is {age_days} days old. Check source freshness before making buying decisions."
-        if lang == "English"
-        else f"সর্বশেষ যাচাইকৃত মার্কেটভিত্তিক ডেটা {age_days} দিন পুরোনো। কেনাকাটার সিদ্ধান্তের আগে উৎসের আপডেট যাচাই করুন।"
-    )
 
-# -----------------------------
-# Metrics
-# -----------------------------
-cheapest = build_cheapest_by_commodity(latest)
-basket = compute_basket(latest, DEFAULT_BASKET)
+def status_badge(statuses: List[Dict[str, str]]) -> Tuple[str, str]:
+    any_ok = any(s.get("ok") == "true" for s in statuses)
+    market_ok = any(s.get("ok") == "true" and "market" in s.get("name", "").lower() for s in statuses)
+    if market_ok:
+        return "🟢", tr("source_ok")
+    if any_ok:
+        return "🟡", tr("source_partial")
+    return "🔴", tr("source_fail")
 
-best_basket_market = basket.iloc[0]["market"] if not basket.empty else "—"
-best_basket_cost = basket.iloc[0]["basket_cost"] if not basket.empty else np.nan
-highest_spread_value = cheapest["saving_vs_highest"].max() if not cheapest.empty else np.nan
-highest_spread_item = cheapest.sort_values("saving_vs_highest", ascending=False).iloc[0]["commodity"] if not cheapest.empty else "—"
 
-cols = st.columns(5)
-metrics = [
-    ("📅", t["latest_date"], str(latest_date), f"{t['data_age']}: {age_days} day(s)" if lang == "English" else f"{t['data_age']}: {age_days} দিন"),
-    ("🥬", t["commodities"], f"{latest['commodity'].nunique()}", "Essential items tracked" if lang == "English" else "নিত্যপণ্য ট্র্যাক করা হচ্ছে"),
-    ("🏪", t["markets"], f"{latest['market'].nunique()}", "Dhaka market locations" if lang == "English" else "ঢাকার বাজার লোকেশন"),
-    ("🧺", t["best_basket"], translate_value(best_basket_market, lang, "market"), fmt_tk(best_basket_cost, lang)),
-    ("↕️", t["highest_spread"], translate_value(highest_spread_item, lang, "commodity"), fmt_tk(highest_spread_value, lang)),
-]
-for col, (emoji, label, value, help_text) in zip(cols, metrics):
-    col.markdown(
-        f"""
-        <div class="metric-card">
-            <div class="metric-label">{emoji} {label}</div>
-            <div class="metric-value">{value}</div>
-            <div class="metric-help">{help_text}</div>
-        </div>
+def display_metric_cards(df: pd.DataFrame, statuses: List[Dict[str, str]]) -> None:
+    badge, msg = status_badge(statuses)
+    latest_time = df["fetched_at"].max() if not df.empty and "fetched_at" in df.columns else now_iso()
+    data_date = df["date"].max() if not df.empty and "date" in df.columns else "—"
+    verified_rows = int(df["verified"].astype(bool).sum()) if not df.empty and "verified" in df.columns else 0
+    market_rows = int((df.get("data_level", pd.Series(dtype=str)) == "market").sum()) if not df.empty else 0
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric(f"{badge} {tr('verified')}", msg)
+    c2.metric(tr("data_date"), data_date)
+    c3.metric("Verified rows", f"{verified_rows}")
+    c4.metric("Market rows", f"{market_rows}")
+    st.caption(f"{tr('last_updated')}: {latest_time} · App version: {APP_VERSION}")
+
+
+def main() -> None:
+    st.set_page_config(page_title=APP_NAME, page_icon="🛒", layout="wide")
+    st.markdown(
+        """
+        <style>
+        .block-container {padding-top: 1.2rem; padding-bottom: 2rem;}
+        div[data-testid="stMetric"] {background: #ffffff; border: 1px solid #e9edf3; padding: 14px; border-radius: 18px; box-shadow: 0 1px 6px rgba(0,0,0,.04);}
+        .hero {padding: 1.2rem 1.4rem; border-radius: 22px; background: linear-gradient(135deg, #f8fafc 0%, #eef7ff 55%, #fff8ec 100%); border: 1px solid #e8eef7; margin-bottom: 1rem;}
+        .hero h1 {margin-bottom: .25rem;}
+        .soft-card {padding: 1rem; border: 1px solid #e9edf3; border-radius: 16px; background: #fff;}
+        .tiny {font-size: 0.85rem; color: #64748b;}
+        </style>
         """,
         unsafe_allow_html=True,
     )
 
-# -----------------------------
-# Filters/search
-# -----------------------------
-st.markdown(f"<div class='section-title'>🔍 {t['filters']}</div>", unsafe_allow_html=True)
-f1, f2 = st.columns([1.2, 1])
-search_text = f1.text_input(t["search"], placeholder="onion, rice, egg..." if lang == "English" else "পেঁয়াজ, চাল, ডিম...")
-category_options = [t["all"]] + sorted(latest["category"].dropna().astype(str).unique().tolist())
-category_filter = f2.selectbox("Category" if lang == "English" else "ধরন", category_options)
+    if "lang" not in st.session_state:
+        st.session_state.lang = "English"
+    top_l, top_r = st.columns([3, 1])
+    with top_r:
+        st.session_state.lang = st.selectbox(tr("language"), ["English", "বাংলা"], index=0 if st.session_state.lang == "English" else 1)
 
-filtered_latest = latest.copy()
-if search_text:
-    q = search_text.strip().lower()
-    filtered_latest = filtered_latest[
-        filtered_latest["commodity"].str.lower().str.contains(q, na=False)
-        | filtered_latest["market"].str.lower().str.contains(q, na=False)
-        | filtered_latest["area"].str.lower().str.contains(q, na=False)
-    ]
-if category_filter != t["all"]:
-    filtered_latest = filtered_latest[filtered_latest["category"].astype(str) == category_filter]
+    with top_l:
+        st.markdown(f"<div class='hero'><h1>{tr('title')}</h1><p>{tr('subtitle')}</p></div>", unsafe_allow_html=True)
 
-# -----------------------------
-# Cheapest by commodity table
-# -----------------------------
-st.markdown(f"<div class='section-title'>🏷️ {t['todays_cheapest']}</div>", unsafe_allow_html=True)
-st.markdown(f"<div class='section-caption'>{t['todays_cheapest_caption']}</div>", unsafe_allow_html=True)
-cheapest_filtered = build_cheapest_by_commodity(filtered_latest)
-if cheapest_filtered.empty:
-    st.info("No matching commodity found." if lang == "English" else "মিল থাকা পণ্য পাওয়া যায়নি।")
-else:
-    table = cheapest_filtered[["commodity", "market", "area", "unit", "price", "saving_vs_highest", "source"]].rename(columns={
-        "commodity": t["commodity"],
-        "market": t["market"],
-        "area": t["area"],
-        "unit": t["unit"],
-        "price": t["lowest_price"],
-        "saving_vs_highest": t["saving"],
-        "source": t["source"],
-    })
-    if lang == "বাংলা":
-        table[t["commodity"]] = table[t["commodity"]].map(lambda x: translate_value(x, lang, "commodity"))
-        table[t["market"]] = table[t["market"]].map(lambda x: translate_value(x, lang, "market"))
-    st.dataframe(
-        table,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            t["lowest_price"]: st.column_config.NumberColumn(format="৳ %.0f"),
-            t["saving"]: st.column_config.NumberColumn(format="৳ %.0f"),
-        },
+    refresh_key = 0
+    if st.button(f"🔄 {tr('reload')}"):
+        st.cache_data.clear()
+        refresh_key = int(time.time())
+
+    with st.spinner("Fetching official public sources..."):
+        df, statuses = load_official_data(refresh_key)
+
+    display_metric_cards(df, statuses)
+
+    if df.empty:
+        st.error("No verified official price data could be loaded and no cache exists yet. Please check internet access or official source availability.")
+        with st.expander(tr("transparency"), expanded=True):
+            for s in statuses:
+                st.write(f"**{s['name']}** — {s['message']}")
+                st.caption(s.get("url", ""))
+        return
+
+    # Download data
+    st.download_button(
+        f"⬇️ {tr('download')}",
+        df.to_csv(index=False).encode("utf-8"),
+        file_name=f"official_commodity_prices_{date.today().isoformat()}.csv",
+        mime="text/csv",
     )
 
-# -----------------------------
-# Basket calculator
-# -----------------------------
-st.markdown(f"<div class='section-title'>🧺 {t['basket_title']}</div>", unsafe_allow_html=True)
-st.markdown(f"<div class='section-caption'>{t['basket_caption']}</div>", unsafe_allow_html=True)
+    market_df = df[df.get("data_level") == "market"].copy() if "data_level" in df.columns else pd.DataFrame()
+    official_range_df = df[df.get("data_level").astype(str).str.contains("official_range|cached", regex=True, na=False)].copy() if "data_level" in df.columns else df.copy()
 
-with st.expander(f"⚙️ {t['basket_settings']}", expanded=False):
-    available_items = sorted(latest["commodity"].unique().tolist())
-    default_items = [x for x in DEFAULT_BASKET.keys() if x in available_items]
-    selected_items = st.multiselect(
-        t["select_commodities"],
-        options=available_items,
-        default=default_items,
-        format_func=lambda x: translate_value(x, lang, "commodity"),
-    )
-    custom_basket: Dict[str, float] = {}
-    bcols = st.columns(4)
-    for i, item in enumerate(selected_items):
-        default_qty = DEFAULT_BASKET.get(item, 1.0)
-        custom_basket[item] = bcols[i % 4].number_input(
-            f"{translate_value(item, lang, 'commodity')} ({latest[latest['commodity']==item]['unit'].iloc[0]})",
-            min_value=0.0,
-            value=float(default_qty),
-            step=0.5,
+    st.subheader(tr("cheapest_market"))
+    st.caption(tr("cheapest_market_help"))
+    cheapest = build_cheapest_market(df)
+    if cheapest.empty:
+        st.warning(tr("no_marketwise"))
+    else:
+        show = cheapest[["commodity", "market", "area", "unit", "price", "saving_vs_highest", "source"]].copy()
+        show = show.rename(columns={
+            "commodity": "Commodity", "market": "Market", "area": "Area", "unit": "Unit",
+            "price": "Lowest price", "saving_vs_highest": "Saving vs highest", "source": "Source",
+        })
+        st.dataframe(show, use_container_width=True, hide_index=True)
+
+    st.subheader(tr("official_ranges"))
+    st.caption(tr("official_ranges_help"))
+    if official_range_df.empty:
+        st.info("No aggregate official range data parsed from DAM today.")
+    else:
+        display_cols = [c for c in ["commodity", "price_min", "price_max", "price", "unit", "change_pct", "source"] if c in official_range_df.columns]
+        table = official_range_df[display_cols].copy()
+        table = table.rename(columns={
+            "commodity": "Commodity", "price_min": "Low", "price_max": "High", "price": "Midpoint", "unit": "Unit", "change_pct": "Change %", "source": "Source",
+        })
+        st.dataframe(table.sort_values("Commodity"), use_container_width=True, hide_index=True)
+
+    st.subheader(tr("basket"))
+    st.caption(tr("basket_help"))
+    basket_df, basket_mode = build_basket(df)
+    if basket_df.empty:
+        st.info("Basket could not be calculated because matching official commodity rows were not found.")
+    elif basket_mode == "market":
+        st.success("Market-wise basket ranking available from verified market rows.")
+        st.dataframe(basket_df, use_container_width=True, hide_index=True)
+    else:
+        st.info("Market-wise basket ranking is not shown because market-level data was not available. This is an official aggregate basket estimate.")
+        st.dataframe(basket_df, use_container_width=True, hide_index=True)
+
+    st.subheader(tr("charts"))
+    chart_df = official_range_df.copy() if not official_range_df.empty else df.copy()
+    if not chart_df.empty:
+        chart_df["spread"] = pd.to_numeric(chart_df.get("price_max", chart_df["price"]), errors="coerce") - pd.to_numeric(chart_df.get("price_min", chart_df["price"]), errors="coerce")
+        chart_df = chart_df.dropna(subset=["price"])
+        c1, c2 = st.columns(2)
+        with c1:
+            top = chart_df.sort_values("price", ascending=False).head(15)
+            fig = px.bar(top, x="price", y="commodity", orientation="h", title="Higher-price essentials / উচ্চমূল্যের পণ্য", labels={"price": "Price", "commodity": "Commodity"})
+            fig.update_layout(height=520, yaxis={"categoryorder": "total ascending"})
+            st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            sp = chart_df.sort_values("spread", ascending=False).head(15)
+            fig2 = px.bar(sp, x="spread", y="commodity", orientation="h", title="Official low-high spread / মূল্যসীমার পার্থক্য", labels={"spread": "Spread", "commodity": "Commodity"})
+            fig2.update_layout(height=520, yaxis={"categoryorder": "total ascending"})
+            st.plotly_chart(fig2, use_container_width=True)
+
+    st.subheader(tr("map"))
+    map_df = DHAKA_MARKETS.copy()
+    if not market_df.empty:
+        # Add average price count by market when available.
+        avg = market_df.groupby("market", as_index=False).agg(avg_price=("price", "mean"), rows=("price", "size"))
+        map_df = map_df.merge(avg, on="market", how="left")
+    st.map(map_df.rename(columns={"lat": "latitude", "lon": "longitude"}), latitude="latitude", longitude="longitude", zoom=11)
+    if market_df.empty:
+        st.caption(tr("market_unavailable"))
+
+    st.subheader(tr("transparency"))
+    with st.expander("Official source monitor", expanded=True):
+        for s in statuses:
+            icon = "🟢" if s.get("ok") == "true" else "🟡"
+            st.markdown(f"{icon} **{s.get('name','Source')}** — {s.get('message','')}")
+            if s.get("url"):
+                st.caption(s["url"])
+        st.info(f"{tr('consumer_note')}: {tr('consumer_note_text')}")
+        st.markdown(
+            "This app uses only verified official/public-source data or a backend-configured verified official feed. "
+            "It no longer displays 'PREVIEW ONLY' fake prices. If official market-wise data is not available, the app clearly says so."
         )
 
-basket_df = compute_basket(latest, custom_basket if 'custom_basket' in locals() and custom_basket else DEFAULT_BASKET)
-if not basket_df.empty:
-    b1, b2 = st.columns([1.1, 1])
-    basket_table = basket_df[["market", "area", "basket_cost", "saving_vs_most_expensive", "items_covered", "items_total"]].rename(columns={
-        "market": t["market"],
-        "area": t["area"],
-        "basket_cost": t["basket_cost"],
-        "saving_vs_most_expensive": t["saving"],
-        "items_covered": "Items covered" if lang == "English" else "কভার করা পণ্য",
-        "items_total": "Total items" if lang == "English" else "মোট পণ্য",
-    })
-    if lang == "বাংলা":
-        basket_table[t["market"]] = basket_table[t["market"]].map(lambda x: translate_value(x, lang, "market"))
-    b1.dataframe(
-        basket_table,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            t["basket_cost"]: st.column_config.NumberColumn(format="৳ %.0f"),
-            t["saving"]: st.column_config.NumberColumn(format="৳ %.0f"),
-        },
-    )
-    fig_basket = px.bar(
-        basket_df.sort_values("basket_cost"),
-        x="market",
-        y="basket_cost",
-        hover_data=["area", "saving_vs_most_expensive"],
-        labels={"market": t["market"], "basket_cost": t["basket_cost"]},
-        title="",
-    )
-    fig_basket.update_layout(height=390, xaxis_tickangle=-30, margin=dict(l=5, r=5, t=15, b=5))
-    b2.plotly_chart(fig_basket, use_container_width=True)
-else:
-    st.info("Basket cannot be calculated with the current data." if lang == "English" else "বর্তমান ডেটা দিয়ে ঝুড়ির খরচ হিসাব করা যাচ্ছে না।")
 
-# -----------------------------
-# Map
-# -----------------------------
-st.markdown(f"<div class='section-title'>🗺️ {t['map_title']}</div>", unsafe_allow_html=True)
-map_data = latest.dropna(subset=["latitude", "longitude"]).copy()
-if map_data.empty:
-    st.info("Market coordinates are not available in the current feed." if lang == "English" else "বর্তমান ফিডে বাজারের স্থানাঙ্ক পাওয়া যায়নি।")
-else:
-    market_avg = map_data.groupby(["market", "area", "latitude", "longitude"], as_index=False).agg(
-        avg_price=("price", "mean"),
-        items=("commodity", "nunique"),
-    )
-    if not basket_df.empty:
-        market_avg = market_avg.merge(basket_df[["market", "basket_cost"]], on="market", how="left")
-    fig_map = px.scatter_mapbox(
-        market_avg,
-        lat="latitude",
-        lon="longitude",
-        size="items",
-        color="basket_cost" if "basket_cost" in market_avg.columns else "avg_price",
-        hover_name="market",
-        hover_data={"area": True, "items": True, "avg_price": ":.0f", "latitude": False, "longitude": False},
-        zoom=10.5,
-        height=520,
-    )
-    fig_map.update_layout(mapbox_style="open-street-map", margin=dict(l=0, r=0, t=0, b=0))
-    st.plotly_chart(fig_map, use_container_width=True)
-
-# -----------------------------
-# Trends and graphics
-# -----------------------------
-st.markdown(f"<div class='section-title'>📊 {t['trend_title']}</div>", unsafe_allow_html=True)
-trend_col1, trend_col2 = st.columns(2)
-
-# Price spread by commodity
-spread_df = latest.groupby("commodity")["price"].agg(["min", "max", "mean"]).reset_index()
-spread_df["spread"] = spread_df["max"] - spread_df["min"]
-spread_df = spread_df.sort_values("spread", ascending=False).head(12)
-fig_spread = px.bar(
-    spread_df,
-    x="commodity",
-    y="spread",
-    hover_data=["min", "max", "mean"],
-    labels={"commodity": t["commodity"], "spread": t["price_range"]},
-)
-fig_spread.update_layout(height=390, xaxis_tickangle=-35, margin=dict(l=5, r=5, t=15, b=5))
-trend_col1.plotly_chart(fig_spread, use_container_width=True)
-
-# Multi-date trend chart for selected commodities
-trend_items = sorted(df["commodity"].unique().tolist())
-default_trend = [x for x in ["Onion", "Potato", "Egg", "Broiler chicken", "Rice (medium)"] if x in trend_items]
-selected_trend = trend_col2.multiselect(
-    "Trend items" if lang == "English" else "প্রবণতার পণ্য",
-    trend_items,
-    default=default_trend[:4],
-    format_func=lambda x: translate_value(x, lang, "commodity"),
-)
-trend_data = df[df["commodity"].isin(selected_trend)].groupby(["date", "commodity"], as_index=False)["price"].mean()
-fig_trend = px.line(
-    trend_data,
-    x="date",
-    y="price",
-    color="commodity",
-    markers=True,
-    labels={"date": t["date"], "price": t["price"], "commodity": t["commodity"]},
-)
-fig_trend.update_layout(height=340, margin=dict(l=5, r=5, t=15, b=5))
-trend_col2.plotly_chart(fig_trend, use_container_width=True)
-
-# -----------------------------
-# Alerts
-# -----------------------------
-st.markdown(f"<div class='section-title'>🚨 {t['alerts_title']}</div>", unsafe_allow_html=True)
-alerts = make_alerts(df, latest, lang)
-if alerts:
-    for alert in alerts:
-        st.markdown(f"<div class='alert-card'>{alert}</div>", unsafe_allow_html=True)
-else:
-    st.markdown(
-        f"<div class='ok-card'>✅ {'No major price-spread alert detected in the latest verified dataset.' if lang == 'English' else 'সর্বশেষ যাচাইকৃত ডেটায় বড় ধরনের দাম-ফারাক সতর্কতা পাওয়া যায়নি।'}</div>",
-        unsafe_allow_html=True,
-    )
-
-# -----------------------------
-# Source transparency
-# -----------------------------
-st.markdown(f"<div class='section-title'>🧾 {t['source_title']}</div>", unsafe_allow_html=True)
-source_lines = [
-    f"<b>{t['source']}:</b> {source_display}",
-    f"<b>{t['last_verified']}:</b> {latest_date}",
-    f"<b>{t['coverage']}:</b> {coverage_text}",
-    f"<span class='small-muted'>{t['source_note']}</span>",
-]
-if source_url:
-    source_lines.append(f"<b>Feed URL:</b> {source_url}")
-source_lines.append(f"<b>{t['official_links']}:</b> <a href='{TCB_DAILY_URL}' target='_blank'>TCB daily retail prices</a> · <a href='{DAM_DAILY_REPORT_URL}' target='_blank'>DAM daily market report</a>")
-st.markdown("<div class='source-box'>" + "<br>".join(source_lines) + "</div>", unsafe_allow_html=True)
-
-if meta.get("warnings"):
-    with st.expander("Technical data notes" if lang == "English" else "প্রযুক্তিগত ডেটা নোট"):
-        for w in meta.get("warnings", []):
-            st.write("-", w)
-
-# Download latest verified dataset for transparency
-csv = df.to_csv(index=False).encode("utf-8")
-st.download_button(
-    "⬇️ Download verified dataset" if lang == "English" else "⬇️ যাচাইকৃত ডেটাসেট ডাউনলোড করুন",
-    data=csv,
-    file_name=f"dhaka_verified_market_prices_{latest_date}.csv",
-    mime="text/csv",
-)
-
-st.caption(t["footer"])
+if __name__ == "__main__":
+    main()
