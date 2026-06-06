@@ -34,10 +34,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-APP_VERSION = "7.0.0-map-safe"
+APP_VERSION = "8.0.0-history-trend"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(APP_DIR, "data")
 OFFICIAL_CACHE_PATH = os.path.join(DATA_DIR, "official_reference_cache.csv")
+HISTORY_PATH = os.path.join(APP_DIR, "cache", "official_price_history.csv")
 MARKETS_PATH = os.path.join(DATA_DIR, "dhaka_markets.csv")
 
 TCB_DAILY_URL = "https://tcb.gov.bd/pages/daily-rmps"
@@ -108,7 +109,7 @@ TEXT = {
         "verified":"Official data", "cached":"Cached official snapshot", "unavailable":"Unavailable",
         "updated":"Updated", "date":"Date", "coverage":"Dhaka", "items":"Items", "markets":"Markets",
         "basket":"Basket", "source":"Source", "today":"Today", "basket_tab":"Basket", "markets_tab":"Markets",
-        "charts":"Charts", "source_tab":"Source", "official_prices":"Latest official price ranges",
+        "charts":"Charts", "source_tab":"Source", "trend_title":"Historical trend", "trend_caption":"Uses stored daily official snapshots. On a new deployment, the chart starts with today and becomes richer as the app collects future days.", "official_prices":"Latest official price ranges",
         "official_caption":"Cards are easier to read on mobile. Every item shows unit and low-high range.",
         "search":"Search item", "range":"Range", "price":"Price", "alerts":"Price alerts",
         "basket_title":"Smart shopping basket", "basket_caption":"Change quantities and see an official low-average-high estimate.",
@@ -125,7 +126,7 @@ TEXT = {
         "verified":"সরকারি ডেটা", "cached":"ক্যাশড সরকারি স্ন্যাপশট", "unavailable":"পাওয়া যায়নি",
         "updated":"আপডেট", "date":"তারিখ", "coverage":"ঢাকা", "items":"পণ্য", "markets":"বাজার",
         "basket":"ঝুড়ি", "source":"উৎস", "today":"আজ", "basket_tab":"ঝুড়ি", "markets_tab":"বাজার",
-        "charts":"চার্ট", "source_tab":"উৎস", "official_prices":"সর্বশেষ সরকারি দাম-রেঞ্জ",
+        "charts":"চার্ট", "source_tab":"উৎস", "trend_title":"ঐতিহাসিক প্রবণতা", "trend_caption":"সংরক্ষিত দৈনিক সরকারি snapshot দিয়ে তৈরি। নতুন deployment-এ আজকের ডেটা দিয়ে শুরু হয় এবং পরের দিনগুলো জমলে সমৃদ্ধ হবে।", "official_prices":"সর্বশেষ সরকারি দাম-রেঞ্জ",
         "official_caption":"মোবাইলে সহজে পড়ার জন্য কার্ড ভিউ। প্রতিটি পণ্যে একক ও কম-বেশি রেঞ্জ দেখানো হয়েছে।",
         "search":"পণ্য খুঁজুন", "range":"রেঞ্জ", "price":"দাম", "alerts":"দাম সতর্কতা",
         "basket_title":"স্মার্ট বাজার-ঝুড়ি", "basket_caption":"পরিমাণ বদলে সরকারি কম-গড়-বেশি আনুমানিক হিসাব দেখুন।",
@@ -458,6 +459,43 @@ def latest_official(df: pd.DataFrame) -> pd.DataFrame:
     dd = pd.to_datetime(df["date"]).dt.date
     return df[dd == max(dd)].copy()
 
+
+def load_and_update_history(official_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Build a historical series from daily official snapshots.
+    This avoids fake historical data. The first deployment may only have one day.
+    """
+    try:
+        import os
+        os.makedirs(os.path.dirname(HISTORY_PATH), exist_ok=True)
+        existing = pd.DataFrame()
+        if os.path.exists(HISTORY_PATH):
+            existing = pd.read_csv(HISTORY_PATH)
+        current = official_df.copy()
+        if not current.empty:
+            current["date"] = pd.to_datetime(current["date"]).dt.date.astype(str)
+            current["snapshot_saved_at"] = now_bd().strftime("%Y-%m-%d %H:%M:%S")
+        if existing.empty:
+            combined = current
+        elif current.empty:
+            combined = existing
+        else:
+            combined = pd.concat([existing, current], ignore_index=True)
+        if combined.empty:
+            return combined
+        for col in ["low", "high", "midpoint"]:
+            if col in combined.columns:
+                combined[col] = pd.to_numeric(combined[col], errors="coerce")
+        combined["date"] = pd.to_datetime(combined["date"], errors="coerce").dt.date.astype(str)
+        combined = combined.dropna(subset=["date", "commodity", "midpoint"])
+        combined = combined.drop_duplicates(subset=["date", "commodity", "unit"], keep="last")
+        combined = combined.sort_values(["commodity", "date"])
+        combined.to_csv(HISTORY_PATH, index=False)
+        return combined
+    except Exception:
+        # Never crash app because of local cache write/read failure.
+        return official_df.copy() if not official_df.empty else pd.DataFrame()
+
 def basket_estimate(official_df: pd.DataFrame, basket: Dict[str, float]):
     low = mid = high = 0.0
     used = []
@@ -537,6 +575,7 @@ if st.button(f"🔄 {t['updated']}", use_container_width=True):
 market_df, official_df, meta = load_data()
 latest_m = latest_market(market_df)
 latest_o = latest_official(official_df)
+history_df = load_and_update_history(official_df)
 
 latest_date = None
 if not latest_o.empty:
@@ -739,8 +778,42 @@ with tab_markets:
                 st.markdown(f"""<div class="card market-card"><div class="item-card"><div><div class="item-name">{medal} {tr_market(row['market'], lang)}</div><div class="item-meta">{row.get('area','Dhaka')} · {row['covered']} items covered</div></div><div class="price-pill">{money(row['basket_cost'], lang)}<div class="price-sub">{t['basket']}</div></div></div></div>""", unsafe_allow_html=True)
 
 with tab_charts:
-    section(f"📊 {t['charts']}")
+    section(f"📈 {t['trend_title']}", t["trend_caption"])
     plot_config = {"displayModeBar": False, "responsive": True}
+
+    if not history_df.empty:
+        hdf = history_df.copy()
+        hdf["date"] = pd.to_datetime(hdf["date"], errors="coerce")
+        hdf = hdf.dropna(subset=["date", "commodity", "midpoint"])
+        commodities = sorted(hdf["commodity"].dropna().unique().tolist())
+        preferred = [x for x in ["Onion-local", "Potato", "Egg Farm-Red", "Soybean", "Boro-Coarse"] if x in commodities]
+        selected = st.multiselect(
+            "Trend items" if lang == "English" else "প্রবণতার পণ্য",
+            commodities,
+            default=preferred[:4] if preferred else commodities[:4],
+            format_func=lambda x: tr_item(x, lang),
+        )
+        trend = hdf[hdf["commodity"].isin(selected)].copy()
+        trend["item"] = trend["commodity"].apply(lambda x: tr_item(x, lang))
+        if trend.empty:
+            notice("info", "Select at least one item." if lang == "English" else "কমপক্ষে একটি পণ্য নির্বাচন করুন।")
+        else:
+            fig_trend = px.line(
+                trend.sort_values("date"),
+                x="date",
+                y="midpoint",
+                color="item",
+                markers=True,
+                labels={"date": t["date"], "midpoint": t["price"], "item": t["items"]},
+            )
+            fig_trend.update_layout(height=400, margin=dict(l=0, r=0, t=10, b=0))
+            st.plotly_chart(fig_trend, use_container_width=True, config=plot_config)
+            if trend["date"].nunique() < 2:
+                notice("info", "Only one official snapshot is stored so far. The line will become a real historical trend after daily snapshots accumulate." if lang == "English" else "এখনো শুধু এক দিনের সরকারি snapshot আছে। প্রতিদিন snapshot জমলে এটি আসল historical trend হবে।")
+    else:
+        notice("info", "Historical data is not available yet." if lang == "English" else "ঐতিহাসিক ডেটা এখনো পাওয়া যায়নি।")
+
+    section(f"📊 {t['charts']}")
     if not latest_o.empty:
         plot_df = latest_o.copy()
         plot_df["item"] = plot_df["commodity"].apply(lambda x: tr_item(x, lang))
@@ -775,6 +848,8 @@ with tab_source:
             for n in meta["notes"]:
                 st.write("-", n)
     st.download_button(f"⬇️ {t['download']} — official", latest_o.to_csv(index=False).encode("utf-8"), "official_reference_prices.csv", "text/csv", use_container_width=True)
+    if not history_df.empty:
+        st.download_button(f"⬇️ {t['download']} — history", history_df.to_csv(index=False).encode("utf-8"), "official_price_history.csv", "text/csv", use_container_width=True)
     if not latest_m.empty:
         st.download_button(f"⬇️ {t['download']} — market-wise", latest_m.to_csv(index=False).encode("utf-8"), "marketwise_prices.csv", "text/csv", use_container_width=True)
     with st.expander("Full data table" if lang=="English" else "পূর্ণ ডেটা টেবিল"):
