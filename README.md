@@ -1,29 +1,26 @@
-# Dhaka Daily Price Watch — Mobile First Consumer Edition
+# Dhaka Daily Price Watch — Full Mobile Consumer App
 
-Version: 4.2.0-mobile-first-public-safe
+Version: 5.0.0-full-app-resilient
 
-## Fixes in this version
-- Raw SSL/JSON errors are no longer shown to consumers.
-- If TCB fails because of SSL certificate verification, the app shows a clean public message.
-- DAM remains the active official source when DAM is reachable.
-- Source status is shown as Available / Temporarily unavailable.
-- Technical details are hidden inside an expander for debugging only.
-- Public UI avoids fake cheapest-market claims unless a verified market-wise feed is connected.
+## Fixes
+- Full app no longer disappears when one source/parser fails.
+- DAM live official data is tried first.
+- If live parsing fails, the app shows a cached official DAM reference snapshot instead of stopping.
+- TCB SSL errors are hidden from public UI and kept only in technical details.
+- No public preview-market dataset is shown.
+- Bangla table view localizes visible columns and mapped commodity names.
+- Cheapest-market ranking is shown only if a verified market-wise CSV/API feed is connected.
 
-## Run locally
+## Run
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Streamlit Cloud secrets
-
-For an authentic market-wise production version, add a verified CSV/API feed:
+## Production market-wise feed
 
 ```toml
 OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-marketwise-feed.csv"
 ALLOW_PREVIEW_DATA = "false"
 ```
-
-Without a verified market-wise feed, the app shows official aggregate price ranges and basket estimates, but it will not claim which market is cheapest.
