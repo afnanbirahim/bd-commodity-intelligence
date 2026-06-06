@@ -1,30 +1,28 @@
 # Dhaka Daily Price Watch — Mobile First Consumer Edition
 
-A Streamlit consumer app for Bangladesh/Dhaka commodity prices.
+Version: 4.1.0-mobile-first-official
 
-## Version
-4.0.0-mobile-first
-
-## What changed
-- Mobile-first app layout with tabs and cards
-- No public data-source selector
-- High-contrast light theme to avoid unreadable mobile cards
-- Compact official price cards instead of wide tables
-- Basket estimator and market ranking when verified market-wise rows exist
-- English/Bangla toggle
+## Main fixes
+- Active tab/click styling no longer turns dark.
+- Public default uses official DAM aggregate price ranges, not bundled preview data.
+- Preview market-wise rows are hidden from the public full-data table.
+- Bangla mode localizes the visible data table labels and commodity names where mappings exist.
+- Cheapest-market claims are disabled unless a verified market-wise feed is connected.
 
 ## Run locally
+
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Production secrets
-Set these in Streamlit Cloud secrets:
+## Streamlit Cloud secrets
+
+For an authentic market-wise production version, add a verified CSV/API feed:
 
 ```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed.csv"
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-marketwise-feed.csv"
 ALLOW_PREVIEW_DATA = "false"
 ```
 
-If no verified market-wise CSV is connected, the app will not make unsupported cheapest-market claims.
+Without a verified market-wise feed, the app shows official aggregate price ranges and basket estimates, but it will not claim which market is cheapest.

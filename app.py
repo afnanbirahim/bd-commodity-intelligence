@@ -250,11 +250,26 @@ div[data-testid="stMetric"] {
   font-weight: 800;
 }
 .stTabs [aria-selected="true"] {
-  background: #0f172a !important;
-  color: #ffffff !important;
+  background: var(--green-bg) !important;
+  color: #14532d !important;
+  border: 1px solid #86efac !important;
+}
+.stTabs [data-baseweb="tab"]:focus,
+.stTabs [data-baseweb="tab"]:active {
+  background: var(--green-bg) !important;
+  color: #14532d !important;
 }
 button[kind="secondary"] {
   border-radius: 14px !important;
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line) !important;
+}
+button[kind="secondary"]:active,
+button[kind="secondary"]:focus {
+  background: var(--green-bg) !important;
+  color: #14532d !important;
+  border-color: #86efac !important;
 }
 @media (max-width: 760px) {
   .main .block-container {
@@ -742,7 +757,7 @@ def load_data() -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Any]]:
     }
 
     verified_url = get_secret_or_env("OFFICIAL_MARKET_PRICE_CSV_URL", "")
-    allow_preview = to_bool(get_secret_or_env("ALLOW_PREVIEW_DATA", "true"), True)
+    allow_preview = to_bool(get_secret_or_env("ALLOW_PREVIEW_DATA", "false"), False)
 
     market_df = pd.DataFrame()
 
@@ -760,13 +775,19 @@ def load_data() -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Any]]:
         if not market_df.empty:
             meta.update({"mode": "preview", "source": "Preview dataset — replace with official verified feed", "source_url": ""})
 
-    # Official aggregate cards: first best-effort from official page, otherwise aggregate from market data.
+    # Official aggregate cards: first best-effort from official DAM page.
     official_df = fetch_official_aggregate_best_effort()
+
+    # Only aggregate preview/market-wise data if explicitly allowed and no official aggregate exists.
     if official_df.empty and not market_df.empty:
         official_df = official_aggregate_from_market(market_df, meta["source"])
 
-    if not official_df.empty and meta["mode"] == "unavailable":
-        meta.update({"mode": "official_aggregate", "source": str(official_df["source"].iloc[0]), "source_url": DAM_COMMODITY_PRINT_URL})
+    if not official_df.empty:
+        # Official aggregate is the public source for the consumer interface.
+        if str(official_df["source"].iloc[0]).startswith("Department of Agricultural Marketing"):
+            meta.update({"mode": "official_aggregate", "source": "Department of Agricultural Marketing (DAM)", "source_url": DAM_DAILY_REPORT_URL})
+        elif meta["mode"] == "unavailable":
+            meta.update({"mode": "official_aggregate", "source": str(official_df["source"].iloc[0]), "source_url": ""})
 
     return market_df, official_df, meta
 
@@ -896,6 +917,48 @@ def dataframe_download(df: pd.DataFrame, file_name: str, label: str) -> None:
     st.download_button(label, df.to_csv(index=False).encode("utf-8"), file_name=file_name, mime="text/csv", use_container_width=True)
 
 
+def localize_official_df(df: pd.DataFrame, lang: str) -> pd.DataFrame:
+    out = df.copy()
+    if out.empty:
+        return out
+    if lang == "বাংলা":
+        out["commodity"] = out["commodity"].apply(lambda x: tr_item(x, lang))
+        out = out.rename(columns={
+            "date": "তারিখ",
+            "commodity": "পণ্য",
+            "unit": "একক",
+            "low": "সর্বনিম্ন",
+            "high": "সর্বোচ্চ",
+            "midpoint": "মধ্যমান",
+            "source": "উৎস",
+        })
+    return out
+
+
+def localize_market_df(df: pd.DataFrame, lang: str) -> pd.DataFrame:
+    out = df.copy()
+    if out.empty:
+        return out
+    if lang == "বাংলা":
+        out["commodity"] = out["commodity"].apply(lambda x: tr_item(x, lang))
+        out["market"] = out["market"].apply(lambda x: tr_market(x, lang))
+        out = out.rename(columns={
+            "date": "তারিখ",
+            "market": "বাজার",
+            "area": "এলাকা",
+            "commodity": "পণ্য",
+            "category": "ধরন",
+            "unit": "একক",
+            "price_min": "সর্বনিম্ন দাম",
+            "price_max": "সর্বোচ্চ দাম",
+            "price": "দাম",
+            "source": "উৎস",
+            "source_url": "উৎস লিংক",
+            "verified": "যাচাইকৃত",
+        })
+    return out
+
+
 # ---------------------------------------------------------------------
 # Load + language
 # ---------------------------------------------------------------------
@@ -959,7 +1022,7 @@ market_count = int(latest_m["market"].nunique()) if not latest_m.empty else 0
 best_market = "—"
 best_cost = np.nan
 basket_df = pd.DataFrame()
-if not latest_m.empty:
+if not latest_m.empty and mode != "preview":
     basket_df = basket_costs(latest_m, DEFAULT_BASKET)
     if not basket_df.empty:
         best_market = tr_market(basket_df.iloc[0]["market"], lang)
@@ -969,7 +1032,7 @@ st.markdown("<div class='grid grid-4'>", unsafe_allow_html=True)
 render_stat(f"📦 {t['items']}", str(item_count), t["official_prices"])
 render_stat(f"🏪 {t['market_count']}", str(market_count) if market_count else "—", t["cheapest_caption"])
 render_stat(f"🧺 {t['basket']}", money(best_cost, lang) if pd.notna(best_cost) else "—", best_market)
-render_stat(f"🧾 {t['source']}", meta["source"][:34] if meta["source"] else "—", f"v{APP_VERSION}")
+render_stat(f"🧾 {t['source']}", "DAM" if "Department of Agricultural Marketing" in meta.get("source","") else (meta["source"][:26] if meta["source"] else "—"), f"v{APP_VERSION}")
 st.markdown("</div>", unsafe_allow_html=True)
 
 
@@ -1046,7 +1109,7 @@ with tab_basket:
                 key=f"qty_{item}",
             )
 
-    if not latest_m.empty:
+    if not latest_m.empty and mode != "preview":
         bdf = basket_costs(latest_m, basket)
         if not bdf.empty:
             st.markdown("<div class='grid grid-3'>", unsafe_allow_html=True)
@@ -1092,7 +1155,7 @@ with tab_basket:
 with tab_markets:
     render_section(f"🏪 {t['market_ranking']}", t["cheapest_caption"])
 
-    if latest_m.empty:
+    if latest_m.empty or mode == "preview":
         render_notice("warn", t["no_market"])
     else:
         cb = cheapest_by_item(latest_m)
@@ -1172,8 +1235,10 @@ with tab_source:
 
     with st.expander("Full data table" if lang == "English" else "পূর্ণ ডেটা টেবিল"):
         if not latest_o.empty:
-            st.dataframe(latest_o, use_container_width=True, hide_index=True)
-        if not latest_m.empty:
-            st.dataframe(latest_m, use_container_width=True, hide_index=True)
+            st.dataframe(localize_official_df(latest_o, lang), use_container_width=True, hide_index=True)
+        if not latest_m.empty and meta.get("mode") != "preview":
+            st.dataframe(localize_market_df(latest_m, lang), use_container_width=True, hide_index=True)
+        elif meta.get("mode") == "preview":
+            render_notice("info", "Preview market-wise rows are hidden from the public table. Connect a verified market-wise feed to show real market data." if lang == "English" else "প্রিভিউ market-wise row পাবলিক টেবিলে লুকানো আছে। আসল বাজারভিত্তিক ডেটা দেখাতে যাচাইকৃত ফিড যুক্ত করুন।")
 
 st.caption(t["footer"])
