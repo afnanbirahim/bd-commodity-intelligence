@@ -34,7 +34,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-APP_VERSION = "9.0.0-dam-marketwise-parser"
+APP_VERSION = "10.0.0-consumer-clean"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(APP_DIR, "data")
 OFFICIAL_CACHE_PATH = os.path.join(DATA_DIR, "official_reference_cache.csv")
@@ -113,8 +113,8 @@ TEXT = {
         "official_caption":"Cards are easier to read on mobile. Every item shows unit and low-high range.",
         "search":"Search item", "range":"Range", "price":"Price", "alerts":"Price alerts",
         "basket_title":"Smart shopping basket", "basket_caption":"Change quantities and see an official low-average-high estimate.",
-        "market_title":"Market comparison", "map_title":"Dhaka market map", "map_caption":"All listed Dhaka market locations are shown. Cheapest item per market appears only with verified market-wise rows.", "cheapest_item":"Cheapest listed item", "no_market":"Verified market-wise Dhaka rows are not connected yet, so the app does not show fake cheapest-market claims.",
-        "connect_market":"The app now tries DAM’s market-wise parser automatically. If it still cannot find clean rows, connect a verified CSV/API feed in Streamlit secrets.",
+        "market_title":"Market comparison", "map_title":"Dhaka market map", "map_caption":"All listed Dhaka market locations are shown. Cheapest item per market appears only with verified market-wise rows.", "cheapest_item":"Cheapest listed item", "no_market":"Market-wise verified Dhaka prices are not available from the current official public response.",
+        "connect_market":"The official public response currently provides reference price ranges. Market-by-market cheapest prices will appear here when verified market-wise rows are available.",
         "source_title":"Source transparency", "download":"Download data", "status":"Status", "footer":"The app uses official DAM data when available and avoids unsupported cheapest-market claims.",
         "technical":"Technical details", "available":"Available", "temp_unavailable":"Temporarily unavailable",
         "cached_note":"Live DAM parsing was not available, so the app is showing the latest bundled official reference snapshot instead of stopping.",
@@ -130,8 +130,8 @@ TEXT = {
         "official_caption":"মোবাইলে সহজে পড়ার জন্য কার্ড ভিউ। প্রতিটি পণ্যে একক ও কম-বেশি রেঞ্জ দেখানো হয়েছে।",
         "search":"পণ্য খুঁজুন", "range":"রেঞ্জ", "price":"দাম", "alerts":"দাম সতর্কতা",
         "basket_title":"স্মার্ট বাজার-ঝুড়ি", "basket_caption":"পরিমাণ বদলে সরকারি কম-গড়-বেশি আনুমানিক হিসাব দেখুন।",
-        "market_title":"বাজার তুলনা", "map_title":"ঢাকার বাজার মানচিত্র", "map_caption":"ঢাকার তালিকাভুক্ত বাজারগুলো মানচিত্রে দেখানো হয়েছে। যাচাইকৃত market-wise row থাকলেই প্রতি বাজারের সবচেয়ে কম দামের পণ্য দেখাবে।", "cheapest_item":"সবচেয়ে কম দামের তালিকাভুক্ত পণ্য", "no_market":"ঢাকার যাচাইকৃত বাজারভিত্তিক সারি এখনো যুক্ত নেই, তাই অ্যাপটি ভুয়া সবচেয়ে সস্তা বাজার দেখাচ্ছে না।",
-        "connect_market":"অ্যাপ এখন DAM market-wise parser স্বয়ংক্রিয়ভাবে চেষ্টা করে। clean row না পেলে Streamlit secrets-এ যাচাইকৃত CSV/API feed যুক্ত করুন।",
+        "market_title":"বাজার তুলনা", "map_title":"ঢাকার বাজার মানচিত্র", "map_caption":"ঢাকার তালিকাভুক্ত বাজারগুলো মানচিত্রে দেখানো হয়েছে। যাচাইকৃত market-wise row থাকলেই প্রতি বাজারের সবচেয়ে কম দামের পণ্য দেখাবে।", "cheapest_item":"সবচেয়ে কম দামের তালিকাভুক্ত পণ্য", "no_market":"বর্তমান সরকারি public response থেকে ঢাকার যাচাইকৃত বাজারভিত্তিক দাম পাওয়া যাচ্ছে না।",
+        "connect_market":"সরকারি public response বর্তমানে reference price range দেয়। যাচাইকৃত market-wise row পাওয়া গেলে এখানে বাজারভিত্তিক সবচেয়ে কম দাম দেখাবে।",
         "source_title":"উৎসের স্বচ্ছতা", "download":"ডেটা ডাউনলোড", "status":"অবস্থা", "footer":"অ্যাপটি DAM সরকারি ডেটা ব্যবহার করে এবং অসমর্থিত cheapest-market দাবি এড়ায়।",
         "technical":"প্রযুক্তিগত বিস্তারিত", "available":"চালু", "temp_unavailable":"সাময়িকভাবে পাওয়া যায়নি",
         "cached_note":"লাইভ DAM parsing পাওয়া যায়নি, তাই অ্যাপ বন্ধ না করে সর্বশেষ bundled official reference snapshot দেখাচ্ছে।",
@@ -961,7 +961,7 @@ with tab_markets:
             st.map(fallback_map, latitude="lat", longitude="lon", size=80)
 
         if cheapest_items.empty:
-            notice("info", t["no_market"] + " " + t["connect_market"])
+            notice("info", t["no_market"])
             section(f"🏪 {t['markets_tab']}", "")
             for _, row in market_locations.sort_values("market").iterrows():
                 st.markdown(
@@ -1042,7 +1042,7 @@ with tab_charts:
 
 with tab_source:
     section(f"🧾 {t['source_title']}", t["footer"])
-    st.markdown(f"""<div class="card"><div class="item-name">{meta.get('source') or '—'}</div><div class="item-meta">{t['status']}: {meta.get('mode')}<br>{t['date']}: {fmt_date(latest_date)}<br>App version: {APP_VERSION}<br>DAM market-wise parser: {"connected" if not latest_m.empty else "not available from public response yet"}</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class="card"><div class="item-name">{meta.get('source') or '—'}</div><div class="item-meta">{t['status']}: {meta.get('mode')}<br>{t['date']}: {fmt_date(latest_date)}<br>App version: {APP_VERSION}<br>{"Market-wise data: available" if not latest_m.empty else "Market-wise data: not available in public official response"}</div></div>""", unsafe_allow_html=True)
     statuses = fetch_source_status()
     source_rows = []
     for name, value in statuses.items():
@@ -1058,6 +1058,40 @@ with tab_source:
         if meta.get("notes"):
             for n in meta["notes"]:
                 st.write("-", n)
+
+    with st.expander("Admin setup for market-wise cheapest prices" if lang=="English" else "বাজারভিত্তিক কম দাম দেখানোর অ্যাডমিন সেটআপ"):
+        st.markdown(
+            """
+To show true cheapest markets, provide a verified market-wise CSV/API with columns:
+
+`date, market, area, commodity, unit, price, source, verified, latitude, longitude`
+
+Then add this in Streamlit secrets:
+
+```toml
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-marketwise-feed.csv"
+ALLOW_PREVIEW_DATA = "false"
+```
+
+The public app will keep showing official reference prices even without this feed.
+"""
+            if lang=="English"
+            else
+            """
+সত্যিকারের বাজারভিত্তিক সবচেয়ে কম দাম দেখাতে একটি যাচাইকৃত market-wise CSV/API দরকার:
+
+`date, market, area, commodity, unit, price, source, verified, latitude, longitude`
+
+তারপর Streamlit secrets-এ দিন:
+
+```toml
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-marketwise-feed.csv"
+ALLOW_PREVIEW_DATA = "false"
+```
+
+এই feed না থাকলেও public app সরকারি reference price দেখাবে।
+"""
+        )
     st.download_button(f"⬇️ {t['download']} — official", latest_o.to_csv(index=False).encode("utf-8"), "official_reference_prices.csv", "text/csv", use_container_width=True)
     if not history_df.empty:
         st.download_button(f"⬇️ {t['download']} — history", history_df.to_csv(index=False).encode("utf-8"), "official_price_history.csv", "text/csv", use_container_width=True)
