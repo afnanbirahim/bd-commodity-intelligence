@@ -1,17 +1,25 @@
 # Dhaka Daily Price Watch — Full Mobile Consumer App
 
-Version: 8.0.0-history-trend
+Version: 9.0.0-dam-marketwise-parser
 
 ## Latest update
-- Adds a visible Historical trend chart in the Charts tab.
-- The chart uses stored daily official snapshots, not fake historical data.
-- On a new deployment, the chart may start with one day only.
-- As the app runs on future days, it appends official snapshots to `cache/official_price_history.csv`.
-- Keeps the Dhaka market map from v7.
-- Cheapest-market ranking still requires verified market-wise rows.
+- Added an experimental DAM market-wise parser.
+- The app now tries DAM form/print endpoints automatically.
+- If DAM returns clean market-wise rows, the Markets tab will show cheapest markets and cheapest listed item per market.
+- If DAM only returns aggregate ranges, the app keeps using official aggregate prices and clearly avoids fake cheapest-market claims.
+- You can also provide `DAM_MARKETWISE_PRINT_URL` in Streamlit secrets if you discover a working DAM print URL for a selected Dhaka market/report.
 
-## Important
-Official DAM public data gives aggregate price ranges. It does not automatically provide a clean authenticated Dhaka market-wise feed inside this app. For true cheapest-market ranking, connect a verified market-wise CSV/API.
+## Optional Streamlit secrets
+
+```toml
+# Best production option:
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-marketwise-feed.csv"
+
+# Optional experimental DAM direct print/export URL:
+DAM_MARKETWISE_PRINT_URL = "https://market.dam.gov.bd/market_daily_price_report/print?..."
+
+ALLOW_PREVIEW_DATA = "false"
+```
 
 ## Run
 
@@ -20,12 +28,5 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Production market-wise feed
-
-```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-marketwise-feed.csv"
-ALLOW_PREVIEW_DATA = "false"
-```
-
-Required market-wise fields:
+Required market-wise fields for verified feed:
 `date, market, area, commodity, unit, price, source, verified, latitude, longitude`

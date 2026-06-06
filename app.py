@@ -34,7 +34,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-APP_VERSION = "8.0.0-history-trend"
+APP_VERSION = "9.0.0-dam-marketwise-parser"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(APP_DIR, "data")
 OFFICIAL_CACHE_PATH = os.path.join(DATA_DIR, "official_reference_cache.csv")
@@ -114,7 +114,7 @@ TEXT = {
         "search":"Search item", "range":"Range", "price":"Price", "alerts":"Price alerts",
         "basket_title":"Smart shopping basket", "basket_caption":"Change quantities and see an official low-average-high estimate.",
         "market_title":"Market comparison", "map_title":"Dhaka market map", "map_caption":"All listed Dhaka market locations are shown. Cheapest item per market appears only with verified market-wise rows.", "cheapest_item":"Cheapest listed item", "no_market":"Verified market-wise Dhaka rows are not connected yet, so the app does not show fake cheapest-market claims.",
-        "connect_market":"To show cheapest markets, connect a verified market-wise CSV/API feed in Streamlit secrets.",
+        "connect_market":"The app now tries DAM’s market-wise parser automatically. If it still cannot find clean rows, connect a verified CSV/API feed in Streamlit secrets.",
         "source_title":"Source transparency", "download":"Download data", "status":"Status", "footer":"The app uses official DAM data when available and avoids unsupported cheapest-market claims.",
         "technical":"Technical details", "available":"Available", "temp_unavailable":"Temporarily unavailable",
         "cached_note":"Live DAM parsing was not available, so the app is showing the latest bundled official reference snapshot instead of stopping.",
@@ -131,7 +131,7 @@ TEXT = {
         "search":"পণ্য খুঁজুন", "range":"রেঞ্জ", "price":"দাম", "alerts":"দাম সতর্কতা",
         "basket_title":"স্মার্ট বাজার-ঝুড়ি", "basket_caption":"পরিমাণ বদলে সরকারি কম-গড়-বেশি আনুমানিক হিসাব দেখুন।",
         "market_title":"বাজার তুলনা", "map_title":"ঢাকার বাজার মানচিত্র", "map_caption":"ঢাকার তালিকাভুক্ত বাজারগুলো মানচিত্রে দেখানো হয়েছে। যাচাইকৃত market-wise row থাকলেই প্রতি বাজারের সবচেয়ে কম দামের পণ্য দেখাবে।", "cheapest_item":"সবচেয়ে কম দামের তালিকাভুক্ত পণ্য", "no_market":"ঢাকার যাচাইকৃত বাজারভিত্তিক সারি এখনো যুক্ত নেই, তাই অ্যাপটি ভুয়া সবচেয়ে সস্তা বাজার দেখাচ্ছে না।",
-        "connect_market":"সবচেয়ে সস্তা বাজার দেখাতে Streamlit secrets-এ যাচাইকৃত market-wise CSV/API feed যুক্ত করুন।",
+        "connect_market":"অ্যাপ এখন DAM market-wise parser স্বয়ংক্রিয়ভাবে চেষ্টা করে। clean row না পেলে Streamlit secrets-এ যাচাইকৃত CSV/API feed যুক্ত করুন।",
         "source_title":"উৎসের স্বচ্ছতা", "download":"ডেটা ডাউনলোড", "status":"অবস্থা", "footer":"অ্যাপটি DAM সরকারি ডেটা ব্যবহার করে এবং অসমর্থিত cheapest-market দাবি এড়ায়।",
         "technical":"প্রযুক্তিগত বিস্তারিত", "available":"চালু", "temp_unavailable":"সাময়িকভাবে পাওয়া যায়নি",
         "cached_note":"লাইভ DAM parsing পাওয়া যায়নি, তাই অ্যাপ বন্ধ না করে সর্বশেষ bundled official reference snapshot দেখাচ্ছে।",
@@ -377,6 +377,210 @@ def parse_dam_text(html: str) -> pd.DataFrame:
         })
     return pd.DataFrame(rows)
 
+
+def parse_marketwise_price_table(html: str, source_url: str) -> pd.DataFrame:
+    """
+    Best-effort parser for DAM market daily price print result.
+    It looks for rows containing market, commodity and price columns.
+    If the page only contains aggregate ticker ranges, returns empty.
+    """
+    try:
+        tables = pd.read_html(io.StringIO(html))
+    except Exception:
+        return pd.DataFrame()
+
+    candidates = []
+    for raw in tables:
+        if raw is None or raw.empty or raw.shape[0] < 2:
+            continue
+        df = normalize_columns(raw)
+        cols = list(df.columns)
+
+        # Flatten multi-index columns if needed.
+        df.columns = [re.sub(r"[^a-z0-9_]+", "", str(c).strip().lower().replace(" ", "_")) for c in df.columns]
+        cols = list(df.columns)
+
+        market_col = next((c for c in cols if "market" in c or "bazar" in c or "bazaar" in c), None)
+        commodity_col = next((c for c in cols if "commodity" in c or "commodities" in c or "product" in c or "item" in c), None)
+        price_col = next((c for c in cols if c in {"price", "retail_price", "wholesale_price", "average_price", "avg_price"} or ("price" in c and "type" not in c)), None)
+
+        # Some DAM tables use positional columns. Try inference.
+        if commodity_col is None and len(cols) >= 2:
+            commodity_col = cols[1] if "market" in cols[0] else cols[0]
+        if market_col is None:
+            # Market might be in filter header, not row; then this is not truly market-wise.
+            continue
+        if price_col is None:
+            numeric_cols = []
+            for c in cols:
+                vals = df[c].apply(clean_number)
+                if vals.notna().sum() >= max(2, len(vals) * 0.25):
+                    numeric_cols.append(c)
+            if numeric_cols:
+                price_col = numeric_cols[-1]
+        if not market_col or not commodity_col or not price_col:
+            continue
+
+        tmp = pd.DataFrame()
+        tmp["date"] = now_bd().date()
+        tmp["market"] = df[market_col].astype(str).str.strip()
+        tmp["commodity"] = df[commodity_col].astype(str).str.strip()
+        tmp["price"] = df[price_col].apply(clean_number)
+        tmp["unit"] = tmp["commodity"].apply(infer_unit)
+        tmp["area"] = "Dhaka"
+        tmp["source"] = "Department of Agricultural Marketing (DAM) market-wise parser"
+        tmp["source_url"] = source_url
+        tmp["verified"] = True
+        tmp = tmp.dropna(subset=["market", "commodity", "price"])
+        tmp = tmp[~tmp["market"].str.lower().str.contains("market|select|total|nan", na=False)]
+        tmp = tmp[~tmp["commodity"].str.lower().str.contains("commodity|select|total|nan", na=False)]
+        if not tmp.empty and tmp["market"].nunique() >= 1 and tmp["commodity"].nunique() >= 2:
+            candidates.append(tmp)
+
+    if not candidates:
+        return pd.DataFrame()
+
+    out = max(candidates, key=len)
+    # Add coordinates if market matches known map file.
+    try:
+        loc = load_market_locations()
+        if not loc.empty:
+            out = out.merge(loc[["market", "area", "latitude", "longitude"]], on="market", how="left", suffixes=("", "_loc"))
+            for col in ["area", "latitude", "longitude"]:
+                loc_col = f"{col}_loc"
+                if loc_col in out.columns:
+                    out[col] = out[col].where(out[col].notna() & (out[col].astype(str) != ""), out[loc_col])
+                    out = out.drop(columns=[loc_col])
+    except Exception:
+        pass
+
+    return validate_market_df(out, "Department of Agricultural Marketing (DAM) market-wise parser")
+
+
+@st.cache_data(ttl=60*60, show_spinner=False)
+def fetch_dam_marketwise_experimental() -> pd.DataFrame:
+    """
+    Experimental DAM market-wise connector.
+
+    It tries:
+    1) a user-provided direct print/export URL in secrets;
+    2) DAM form discovery + POST/GET submission;
+    3) common print endpoint parameter names.
+
+    If DAM does not expose market-wise rows cleanly, returns empty.
+    """
+    direct_url = get_secret_or_env("DAM_MARKETWISE_PRINT_URL", "")
+    session = requests.Session()
+    session.headers.update({"User-Agent": "Mozilla/5.0"})
+
+    urls_to_try = []
+    if direct_url:
+        urls_to_try.append(direct_url)
+
+    today = now_bd().strftime("%Y-%m-%d")
+    date_alt = now_bd().strftime("%d-%m-%Y")
+    common_payloads = [
+        {"division": "Dhaka", "district": "Dhaka", "price_type": "Retail", "date": today, "L": "E"},
+        {"division_id": "Dhaka", "district_id": "Dhaka", "price_type": "Retail", "date": today, "L": "E"},
+        {"division": "Dhaka", "district": "Dhaka", "price_type": "Retail", "report_date": today, "L": "E"},
+        {"division": "Dhaka", "district": "Dhaka", "price_type": "Retail", "date": date_alt, "L": "E"},
+    ]
+    print_endpoint = DAM_DAILY_REPORT_URL.replace("market_daily_price_report?L=E", "market_daily_price_report/print")
+
+    # Direct URLs / common GET params.
+    for payload in common_payloads:
+        try:
+            r = session.get(print_endpoint, params=payload, timeout=22)
+            if r.ok:
+                parsed = parse_marketwise_price_table(r.text, r.url)
+                if not parsed.empty:
+                    return parsed
+        except Exception:
+            pass
+
+    for url in urls_to_try:
+        try:
+            r = session.get(url, timeout=22)
+            if r.ok:
+                parsed = parse_marketwise_price_table(r.text, r.url)
+                if not parsed.empty:
+                    return parsed
+        except Exception:
+            pass
+
+    # Form discovery and submit.
+    try:
+        form_page = session.get(DAM_DAILY_REPORT_URL, timeout=22)
+        form_page.raise_for_status()
+        soup = BeautifulSoup(form_page.text, "html.parser")
+        forms = soup.find_all("form")
+        for form in forms:
+            form_text = form.get_text(" ", strip=True).lower()
+            if "daily price" not in form_text and "market" not in form_text:
+                continue
+
+            action = form.get("action") or print_endpoint
+            if action.startswith("/"):
+                action = "https://market.dam.gov.bd" + action
+            elif not action.startswith("http"):
+                action = print_endpoint
+
+            payload = {}
+            selects = form.find_all("select")
+            # Infer select order from DAM page: Division, District, Upazila, Market, Price Type
+            desired_by_order = ["Dhaka", "Dhaka", "", "", "Retail"]
+            for i, sel in enumerate(selects):
+                name = sel.get("name")
+                if not name:
+                    continue
+                desired = desired_by_order[i] if i < len(desired_by_order) else ""
+                chosen = ""
+                for opt in sel.find_all("option"):
+                    opt_text = opt.get_text(" ", strip=True)
+                    opt_val = opt.get("value", "")
+                    if desired and desired.lower() in opt_text.lower():
+                        chosen = opt_val or opt_text
+                        break
+                if not chosen:
+                    # choose blank/all/default if available
+                    opt = sel.find("option")
+                    chosen = opt.get("value", "") if opt else ""
+                payload[name] = chosen
+
+            for inp in form.find_all("input"):
+                name = inp.get("name")
+                if not name:
+                    continue
+                typ = (inp.get("type") or "").lower()
+                val = inp.get("value", "")
+                if "date" in name.lower():
+                    val = today
+                if typ not in {"submit", "button", "reset", "file"}:
+                    payload[name] = val
+
+            # Force likely date/price fields if absent.
+            for k in ["date", "report_date", "price_date"]:
+                payload.setdefault(k, today)
+            for k in ["price_type", "priceType", "price_type_id"]:
+                payload.setdefault(k, "Retail")
+
+            for method in ["post", "get"]:
+                try:
+                    if method == "post":
+                        resp = session.post(action, data=payload, timeout=25)
+                    else:
+                        resp = session.get(action, params=payload, timeout=25)
+                    if resp.ok:
+                        parsed = parse_marketwise_price_table(resp.text, resp.url)
+                        if not parsed.empty:
+                            return parsed
+                except Exception:
+                    continue
+    except Exception:
+        pass
+
+    return pd.DataFrame()
+
 @st.cache_data(ttl=60*60, show_spinner=False)
 def fetch_dam_live_aggregate() -> pd.DataFrame:
     for url in [DAM_DAILY_REPORT_URL, DAM_COMMODITY_PRINT_URL]:
@@ -433,6 +637,13 @@ def load_data() -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Any]]:
                 meta.update({"mode":"verified_marketwise","source":"Verified Dhaka market-wise feed","source_url":verified_url})
         except Exception as exc:
             meta["notes"].append(f"Verified market-wise feed unavailable: {exc.__class__.__name__}")
+
+    if market_df.empty:
+        market_df = fetch_dam_marketwise_experimental()
+        if not market_df.empty:
+            meta.update({"mode":"dam_marketwise_experimental","source":"DAM experimental market-wise parser","source_url":DAM_DAILY_REPORT_URL})
+        else:
+            meta["notes"].append("DAM experimental market-wise parser did not return clean market-wise rows.")
 
     official_df = fetch_dam_live_aggregate()
     if not official_df.empty:
@@ -583,7 +794,7 @@ if not latest_o.empty:
 elif not latest_m.empty:
     latest_date = max(latest_m["date"])
 
-if meta["mode"] == "official_live" or meta["mode"] == "verified_marketwise":
+if meta["mode"] in {"official_live", "verified_marketwise", "dam_marketwise_experimental"}:
     badge = f"<span class='badge badge-green'>🟢 {t['verified']}</span>"
 elif meta["mode"] == "official_cache":
     badge = f"<span class='badge badge-amber'>🟡 {t['cached']}</span>"
@@ -831,7 +1042,7 @@ with tab_charts:
 
 with tab_source:
     section(f"🧾 {t['source_title']}", t["footer"])
-    st.markdown(f"""<div class="card"><div class="item-name">{meta.get('source') or '—'}</div><div class="item-meta">{t['status']}: {meta.get('mode')}<br>{t['date']}: {fmt_date(latest_date)}<br>App version: {APP_VERSION}</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class="card"><div class="item-name">{meta.get('source') or '—'}</div><div class="item-meta">{t['status']}: {meta.get('mode')}<br>{t['date']}: {fmt_date(latest_date)}<br>App version: {APP_VERSION}<br>DAM market-wise parser: {"connected" if not latest_m.empty else "not available from public response yet"}</div></div>""", unsafe_allow_html=True)
     statuses = fetch_source_status()
     source_rows = []
     for name, value in statuses.items():
