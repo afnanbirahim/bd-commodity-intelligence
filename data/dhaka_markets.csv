@@ -1,11 +1,9 @@
-market,area,lat,lon
-Karwan Bazar,Tejgaon,23.7509,90.3935
-Shyambazar,Old Dhaka,23.7104,90.4092
-Jatrabari Bazar,Jatrabari,23.7109,90.4347
-Mohammadpur Krishi Market,Mohammadpur,23.7665,90.3586
-Mirpur-1 Kitchen Market,Mirpur,23.8044,90.3533
-Uttara Bazar,Uttara,23.8759,90.3795
-New Market,New Market,23.7335,90.3854
-Rampura Bazar,Rampura,23.7630,90.4200
-Malibagh Bazar,Malibagh,23.7481,90.4186
-Khilgaon Bazar,Khilgaon,23.7508,90.4261
+market,area,latitude,longitude
+Karwan Bazar,Tejgaon,23.7516,90.3935
+Shyambazar,Old Dhaka,23.7116,90.4127
+Jatrabari Bazar,Jatrabari,23.7102,90.4344
+Mohammadpur Krishi Market,Mohammadpur,23.7650,90.3589
+Mirpur-1 Kitchen Market,Mirpur,23.7994,90.3530
+New Market Kitchen Bazar,New Market,23.7336,90.3847
+Uttara Sector 6 Market,Uttara,23.8746,90.4001
+Rampura Bazar,Rampura,23.7633,90.4243

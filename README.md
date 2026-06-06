@@ -1,117 +1,120 @@
-# Bangladesh Commodity Intelligence
+# Bangladesh Commodity Intelligence Platform — Dhaka Consumer Edition
 
-A consumer-facing Streamlit website for Bangladesh essential commodity prices.
+A consumer-facing Streamlit app for Dhaka essential commodity prices.
 
-## What this app does
+The app is designed for **latest verified data only**. Consumers do not choose data sources. The app automatically tries to use a verified market-wise feed and monitors official Bangladesh public sources such as TCB and DAM.
 
-- Shows the latest verified official/public commodity price ranges where available.
-- Shows the **price unit everywhere**: per kg, per litre, per piece, per packet, or official unit.
-- Supports English and Bangla UI, including commodity names, numbers, dates, table labels, chart labels, map markers, and unit labels.
-- Treats egg prices as **single egg / ১টি ডিম** everywhere. If the official source gives egg price as **hali / 4 eggs**, the app divides by 4 and shows the per-egg value.
-- Shows a ready-made weekly household basket estimate.
-- Adds a **Smart Shopping Basket** where users can enter quantities such as 5 kg rice, 2 kg onion, 30 eggs, and 2 litres oil.
-- Shows **price alert cards** when official data indicates notable increases, decreases, or wide low-high spreads.
-- Stores daily snapshots for **historical trend charts** as the app runs over time.
-- Shows charts, price spreads, high-price essentials, and a Dhaka market coverage map.
-- Shows **Dhaka market comparison / cheapest market** only if verified market-wise Dhaka rows are available.
-- Never displays demo/preview prices as real prices.
+## Main features
 
-## Unit policy
+- 🛒 Latest Dhaka essential commodity prices
+- 🏷️ Cheapest market by commodity
+- 🧺 Cheapest household basket calculator
+- 🗺️ Dhaka market map
+- 📊 Price trends and market-to-market spread charts
+- 🚨 Consumer price-spread alerts
+- 🌐 English / Bangla interface
+- 🧾 Source transparency panel
+- 🔒 No public data-source selector
 
-The app makes units explicit because commodity prices are meaningless without the quantity basis.
+## Important data policy
 
-Typical normalized units:
+This app is intentionally strict:
 
-| Commodity type | Displayed unit |
-|---|---|
-| Rice, flour/ata, dal, onion, potato, chicken, beef, mutton, sugar, salt | per kg / প্রতি কেজি |
-| Soybean oil / edible oil | per litre / প্রতি লিটার |
-| Egg | per piece / প্রতি পিস |
-| Packeted items where applicable | per packet / প্রতি প্যাকেট |
+- It should use **official or verified market-wise data**.
+- If verified data is missing, it warns users instead of pretending prices are live.
+- The bundled seed data is for local preview only and must not be used as public live data.
 
-If an official page does not expose a clean machine-readable unit column, the app infers the usual consumer unit from the commodity name and explains this in the transparency note.
+## Expected production CSV/API schema
 
-## Existing Bangladesh systems
+Set a CSV/API URL in Streamlit secrets using this schema:
 
-Bangladesh already has official price-report systems, especially TCB and DAM. This app does not replace them. It repackages verified public data into a simpler consumer interface with clearer cards, Bangla localization, smart basket estimates, trend storage, alerts, map labels, explicit units, and source transparency.
+```csv
+date,market,area,commodity,category,unit,price_min,price_max,price,source,source_url,verified,latitude,longitude
+2026-06-06,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,66,70,68,Department of Agricultural Marketing,https://market.dam.gov.bd/,true,23.7516,90.3935
+```
 
-## Authenticity rule
+Required columns:
 
-Official aggregate prices are shown as verified reference ranges. Market-wise “cheapest market” results are displayed only when verified market-level Dhaka data is available. If market-wise data is unavailable, the app clearly says so instead of inventing a ranking.
+- `date`
+- `market`
+- `commodity`
+- `price`
 
-## Best features added
+Strongly recommended columns:
 
-### Smart Shopping Basket
-Users choose their own quantities and the app calculates low, average, and high estimated cost from verified official price ranges.
+- `area`
+- `unit`
+- `source`
+- `source_url`
+- `verified`
+- `latitude`
+- `longitude`
 
-### Historical Trends
-The app saves daily snapshots into `cache/history_official_prices.csv`. As the app runs every day, the trend section becomes more useful.
-
-### Price Alerts
-The app highlights notable official price changes and wide price spreads.
-
-### Market Comparison
-If verified Dhaka market-wise rows are available from DAM/TCB or a backend official feed, the app compares markets and shows the cheapest market by commodity. If not available, it does not fake it.
-
-## Run locally
+## Local run
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Deploy on Streamlit Cloud
+## Production configuration
 
-Upload the extracted project contents to GitHub so the repository root contains:
-
-```text
-app.py
-requirements.txt
-README.md
-DEPLOYMENT.md
-data/
-scripts/
-.streamlit/
-.github/
-cache/
-```
-
-Then select `app.py` as the main file in Streamlit Cloud.
-
-## Optional verified backend feed
-
-For production use, you can configure a verified CSV/API source through Streamlit secrets:
+Create `.streamlit/secrets.toml` from the example:
 
 ```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed.csv"
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
+ALLOW_PREVIEW_DATA = "false"
 ```
 
-Expected columns can include:
+For Streamlit Community Cloud, add these in:
+
+**App → Settings → Secrets**
+
+```toml
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
+ALLOW_PREVIEW_DATA = "false"
+```
+
+## Official public sources monitored
+
+- TCB daily retail market price page: `https://tcb.gov.bd/pages/daily-rmps`
+- DAM market daily price report: `https://market.dam.gov.bd/market_daily_price_report?L=E`
+- DAM print report endpoint: `https://market.dam.gov.bd/market_daily_price_report/print?L=E`
+
+Because government pages may be forms, PDFs, or dynamically generated reports, the most reliable production setup is:
+
+1. collect/verify the official market-wise rows,  
+2. publish them as a structured CSV/API,  
+3. connect that feed to this app using `OFFICIAL_MARKET_PRICE_CSV_URL`.
+
+## Repository structure
 
 ```text
-date, commodity, market, area, price, price_min, price_max, unit, source, source_url, data_level
+.
+├── app.py
+├── requirements.txt
+├── README.md
+├── DEPLOYMENT.md
+├── data/
+│   ├── dhaka_markets.csv
+│   └── verified_dhaka_market_prices_seed.csv
+├── scripts/
+│   └── validate_feed.py
+├── .streamlit/
+│   ├── config.toml
+│   └── secrets.toml.example
+└── .github/
+    └── workflows/
+        └── validate.yml
 ```
 
-For market comparison, set:
+## Public use checklist
 
-```text
-data_level = market
-```
+Before sharing the app publicly:
 
-Recommended unit values for backend rows:
-
-```text
-kg, litre, piece, packet
-```
-
-## Disclaimer
-
-Prices can vary by quality, brand, package size, shop, and time of day. This app is a verified reference dashboard, not a purchase-price guarantee.
-
-## v10 additions
-
-- Commodity search box for quick consumer lookup.
-- Unit-audit table showing original unit, display unit, conversion factor, and price basis.
-- Stronger disclaimer: this is a verified-reference consumer app, not an official legal price order.
-- Historical storage/export remains enabled through `cache/history_official_prices.csv`.
-
+- [ ] Set `OFFICIAL_MARKET_PRICE_CSV_URL`
+- [ ] Set `ALLOW_PREVIEW_DATA = "false"`
+- [ ] Confirm latest date is today or yesterday
+- [ ] Confirm each row has a source/source URL
+- [ ] Confirm coordinates for market map
+- [ ] Confirm no preview warning appears on the homepage
