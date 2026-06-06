@@ -1,35 +1,91 @@
 # Deployment Guide
 
-## Streamlit Community Cloud
+## 1. Upload to GitHub correctly
 
-1. Push the folder to GitHub.
-2. Go to Streamlit Community Cloud.
-3. Choose the repository and set `app.py` as the entry point.
-4. In Streamlit secrets, add:
+Do **not** upload the ZIP file itself.
+
+Extract the ZIP, then upload the contents so your repository root shows:
+
+```text
+app.py
+requirements.txt
+README.md
+DEPLOYMENT.md
+data/
+scripts/
+.streamlit/
+.github/
+cache/
+```
+
+## 2. Deploy on Streamlit Community Cloud
+
+1. Go to Streamlit Community Cloud.
+2. Sign in with GitHub.
+3. Click **New app**.
+4. Select your repository.
+5. Set main file path:
+
+```text
+app.py
+```
+
+6. Deploy.
+
+## 3. Add production secrets
+
+In Streamlit Cloud:
+
+**App → Settings → Secrets**
+
+Add:
 
 ```toml
-MARKET_PRICE_CSV_URL = "https://docs.google.com/spreadsheets/d/<SHEET_ID>/export?format=csv&gid=<GID>"
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
+ALLOW_PREVIEW_DATA = "false"
 ```
 
-5. Deploy.
+## 4. Data feed recommendation
 
-## Local/VPS deployment
+For the most authentic consumer app, do not let the public upload CSV files. Instead, maintain one verified feed from official or formally verified sources.
 
-```bash
-pip install -r requirements.txt
-export MARKET_PRICE_CSV_URL="https://docs.google.com/spreadsheets/d/<SHEET_ID>/export?format=csv&gid=<GID>"
-streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+Recommended workflow:
+
+1. DAM/TCB official report is checked daily.
+2. Market-wise rows are entered/validated in a controlled Google Sheet or small database.
+3. The sheet/database exposes a CSV/API endpoint.
+4. This app consumes that endpoint automatically.
+5. The app shows the latest verified date and source.
+
+## 5. Common deployment errors
+
+### Error: `File does not exist: app.py`
+
+Your files are probably inside another folder or ZIP.
+
+Fix: repository root must contain `app.py` directly.
+
+### Error: package not found
+
+Check `requirements.txt` is named exactly:
+
+```text
+requirements.txt
 ```
 
-## Making it properly daily-changing
+not `requirements` and not `requirements.txt.txt`.
 
-The key is not the Streamlit code. The key is the source data.
+### App shows preview warning
 
-Use one of these:
+This means no verified feed URL has been configured.
 
-1. A Google Sheet updated daily by enumerators.
-2. A custom admin panel where market officers submit price rows.
-3. A formal TCB/DAM API/data feed.
-4. A scheduled scraper only as a temporary prototype.
+Fix: add Streamlit secrets:
 
-The dashboard updates whenever the CSV/API updates and the Streamlit cache expires.
+```toml
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
+ALLOW_PREVIEW_DATA = "false"
+```
+
+### App says verified data unavailable
+
+That is expected if no clean market-wise verified feed is connected. The app is strict by design and will not invent cheapest-market claims.

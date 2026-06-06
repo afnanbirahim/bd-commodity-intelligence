@@ -1,122 +1,120 @@
-# Dhaka Realtime Commodity Price Intelligence
+# Bangladesh Commodity Intelligence Platform — Dhaka Consumer Edition
 
-A Streamlit dashboard for Bangladesh/Dhaka daily necessities. It is designed to answer:
+A consumer-facing Streamlit app for Dhaka essential commodity prices.
 
-- What is the latest price of essential commodities?
-- In Dhaka, which market has the minimum price for each commodity?
-- Which market is cheapest for a full household basket?
-- How large is the price spread between markets?
-- Are official public TCB/DAM sources reachable today?
-- Can users switch the interface between English and Bangla?
+The app is designed for **latest verified data only**. Consumers do not choose data sources. The app automatically tries to use a verified market-wise feed and monitors official Bangladesh public sources such as TCB and DAM.
 
 ## Main features
 
-- English / Bangla translation toggle
-- Live CSV/API connector
-- Google Sheets CSV connector
-- CSV upload option
-- Official DAM public recent-price snapshot parser
-- TCB daily retail-price page monitor
-- Local cache fallback if the live CSV/API fails
-- Cheapest market by commodity
-- Basket-cost optimizer
-- Market price index
-- Dhaka market map
-- Multi-date trend chart
-- Downloadable CSV outputs
-- Daily cache refresh script and GitHub Actions workflow
+- 🛒 Latest Dhaka essential commodity prices
+- 🏷️ Cheapest market by commodity
+- 🧺 Cheapest household basket calculator
+- 🗺️ Dhaka market map
+- 📊 Price trends and market-to-market spread charts
+- 🚨 Consumer price-spread alerts
+- 🌐 English / Bangla interface
+- 🧾 Source transparency panel
+- 🔒 No public data-source selector
 
-## Important truth about “realtime”
+## Important data policy
 
-The app is **live-ready**, but true market-wise realtime results require a market-level data source.
+This app is intentionally strict:
 
-Official public pages may show aggregate daily prices or reports, but they do not always expose clean machine-readable rows for every Dhaka market. Therefore:
+- It should use **official or verified market-wise data**.
+- If verified data is missing, it warns users instead of pretending prices are live.
+- The bundled seed data is for local preview only and must not be used as public live data.
 
-- Official DAM/TCB monitoring is included.
-- Market-wise “which market is cheapest?” uses a live CSV/API/Google Sheet feed.
-- The included CSV is only a demo/template and is clearly marked as demo data.
+## Expected production CSV/API schema
 
-## Run locally
+Set a CSV/API URL in Streamlit secrets using this schema:
+
+```csv
+date,market,area,commodity,category,unit,price_min,price_max,price,source,source_url,verified,latitude,longitude
+2026-06-06,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,66,70,68,Department of Agricultural Marketing,https://market.dam.gov.bd/,true,23.7516,90.3935
+```
+
+Required columns:
+
+- `date`
+- `market`
+- `commodity`
+- `price`
+
+Strongly recommended columns:
+
+- `area`
+- `unit`
+- `source`
+- `source_url`
+- `verified`
+- `latitude`
+- `longitude`
+
+## Local run
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Connect live daily-changing data
+## Production configuration
 
-### Option A — Google Sheets CSV, fastest prototype
-
-1. Open `data/dhaka_market_prices_template.csv`.
-2. Copy the headers to Google Sheets.
-3. Update prices daily from enumerators, TCB/DAM reports, or verified market collectors.
-4. Publish the sheet as CSV.
-5. Paste the CSV URL in the app sidebar.
-
-Google Sheets CSV format:
-
-```text
-https://docs.google.com/spreadsheets/d/<SHEET_ID>/export?format=csv&gid=<GID>
-```
-
-### Option B — Streamlit secrets
-
-Create `.streamlit/secrets.toml` from `.streamlit/secrets.toml.example`:
+Create `.streamlit/secrets.toml` from the example:
 
 ```toml
-MARKET_PRICE_CSV_URL = "https://docs.google.com/spreadsheets/d/<SHEET_ID>/export?format=csv&gid=<GID>"
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
+ALLOW_PREVIEW_DATA = "false"
 ```
 
-Then run:
+For Streamlit Community Cloud, add these in:
 
-```bash
-streamlit run app.py
+**App → Settings → Secrets**
+
+```toml
+OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed-url.csv"
+ALLOW_PREVIEW_DATA = "false"
 ```
 
-### Option C — API endpoint
+## Official public sources monitored
 
-Use any public/private API endpoint that returns CSV with the required columns.
+- TCB daily retail market price page: `https://tcb.gov.bd/pages/daily-rmps`
+- DAM market daily price report: `https://market.dam.gov.bd/market_daily_price_report?L=E`
+- DAM print report endpoint: `https://market.dam.gov.bd/market_daily_price_report/print?L=E`
 
-## Required columns
+Because government pages may be forms, PDFs, or dynamically generated reports, the most reliable production setup is:
 
-Minimum useful columns:
+1. collect/verify the official market-wise rows,  
+2. publish them as a structured CSV/API,  
+3. connect that feed to this app using `OFFICIAL_MARKET_PRICE_CSV_URL`.
+
+## Repository structure
 
 ```text
-date,district,market,commodity,unit,price_mid,source,lat,lon
+.
+├── app.py
+├── requirements.txt
+├── README.md
+├── DEPLOYMENT.md
+├── data/
+│   ├── dhaka_markets.csv
+│   └── verified_dhaka_market_prices_seed.csv
+├── scripts/
+│   └── validate_feed.py
+├── .streamlit/
+│   ├── config.toml
+│   └── secrets.toml.example
+└── .github/
+    └── workflows/
+        └── validate.yml
 ```
 
-Full recommended schema:
+## Public use checklist
 
-```text
-date,division,district,city_area,market,market_bn,commodity,commodity_bn,variety,variety_bn,unit,unit_bn,price_min,price_max,price_mid,currency,source,source_url,confidence,lat,lon
-```
+Before sharing the app publicly:
 
-## Daily auto-update using GitHub Actions
-
-1. Put this project in a GitHub repository.
-2. Add a repository secret named `MARKET_PRICE_CSV_URL`.
-3. The included workflow `.github/workflows/daily_refresh.yml` runs daily.
-4. It saves the latest live CSV/API result into `cache/latest_market_prices_cache.csv`.
-
-## Files
-
-- `app.py` — main Streamlit app
-- `requirements.txt` — Python dependencies
-- `data/dhaka_market_prices_template.csv` — demo/template market-wise data
-- `data/basket_template.csv` — default household basket
-- `data/dhaka_market_locations.csv` — sample market coordinates
-- `scripts/update_cache.py` — daily cache update script
-- `.github/workflows/daily_refresh.yml` — optional scheduled daily refresh
-- `.streamlit/secrets.toml.example` — example live source config
-
-## Recommended production model
-
-For a real public civic-tech deployment, use this workflow:
-
-1. Data collector submits daily prices by market.
-2. Supervisor checks anomalies.
-3. Approved data goes to Google Sheet/API.
-4. Streamlit dashboard reads the source every few minutes.
-5. Dashboard displays cheapest market, basket cost, map, and trend.
-
-A formal TCB/DAM data-sharing arrangement would be much better than scraping because scraping can break when government pages change layout.
+- [ ] Set `OFFICIAL_MARKET_PRICE_CSV_URL`
+- [ ] Set `ALLOW_PREVIEW_DATA = "false"`
+- [ ] Confirm latest date is today or yesterday
+- [ ] Confirm each row has a source/source URL
+- [ ] Confirm coordinates for market map
+- [ ] Confirm no preview warning appears on the homepage

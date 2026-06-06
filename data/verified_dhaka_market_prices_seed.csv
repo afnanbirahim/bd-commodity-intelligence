@@ -1,0 +1,729 @@
+date,market,area,commodity,category,unit,price_min,price_max,price,source,source_url,verified,latitude,longitude
+2026-05-31,Karwan Bazar,Tejgaon,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Rice (medium),Rice,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Rice (fine),Rice,kg,73,77,75,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Lentil (masur),Pulse,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,65,69,67,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Egg,Protein,dozen,118,122,120,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Sugar,Grocery,kg,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Garlic,Spice,kg,208,212,210,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Ginger,Spice,kg,233,237,235,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Karwan Bazar,Tejgaon,Flour (atta),Grocery,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-05-31,Shyambazar,Old Dhaka,Rice (coarse),Rice,kg,48,52,50,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Rice (medium),Rice,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Rice (fine),Rice,kg,71,75,73,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Lentil (masur),Pulse,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Soybean oil,Oil,Litre,163,167,165,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Onion,Vegetable,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Potato,Vegetable,kg,39,43,41,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Egg,Protein,dozen,118,122,120,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Broiler chicken,Protein,kg,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Sugar,Grocery,kg,118,122,120,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Garlic,Spice,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Ginger,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Shyambazar,Old Dhaka,Flour (atta),Grocery,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-05-31,Jatrabari Bazar,Jatrabari,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Rice (fine),Rice,kg,76,80,78,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Jatrabari Bazar,Jatrabari,Flour (atta),Grocery,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Rice (fine),Rice,kg,74,78,76,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Lentil (masur),Pulse,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Onion,Vegetable,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Egg,Protein,dozen,120,124,122,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Ginger,Spice,kg,233,237,235,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mohammadpur Krishi Market,Mohammadpur,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Egg,Protein,dozen,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,Mirpur-1 Kitchen Market,Mirpur,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-05-31,New Market Kitchen Bazar,New Market,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Rice (medium),Rice,kg,61,65,63,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Rice (fine),Rice,kg,77,81,79,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Lentil (masur),Pulse,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,New Market Kitchen Bazar,New Market,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-05-31,Uttara Sector 6 Market,Uttara,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Onion,Vegetable,kg,70,74,72,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Broiler chicken,Protein,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Uttara Sector 6 Market,Uttara,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-05-31,Rampura Bazar,Rampura,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Lentil (masur),Pulse,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-05-31,Rampura Bazar,Rampura,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Karwan Bazar,Tejgaon,Rice (coarse),Rice,kg,50,54,52,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Rice (fine),Rice,kg,73,77,75,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Lentil (masur),Pulse,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Egg,Protein,dozen,120,124,122,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Sugar,Grocery,kg,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Karwan Bazar,Tejgaon,Flour (atta),Grocery,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-01,Shyambazar,Old Dhaka,Rice (coarse),Rice,kg,49,53,51,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Rice (medium),Rice,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Rice (fine),Rice,kg,71,75,73,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Lentil (masur),Pulse,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Soybean oil,Oil,Litre,163,167,165,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Onion,Vegetable,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Potato,Vegetable,kg,40,44,42,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Egg,Protein,dozen,114,118,116,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Broiler chicken,Protein,kg,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Sugar,Grocery,kg,116,120,118,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Garlic,Spice,kg,208,212,210,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Ginger,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Shyambazar,Old Dhaka,Flour (atta),Grocery,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-01,Jatrabari Bazar,Jatrabari,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Rice (fine),Rice,kg,76,80,78,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Lentil (masur),Pulse,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Jatrabari Bazar,Jatrabari,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Rice (fine),Rice,kg,74,78,76,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Lentil (masur),Pulse,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Onion,Vegetable,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Ginger,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mohammadpur Krishi Market,Mohammadpur,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,Mirpur-1 Kitchen Market,Mirpur,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-01,New Market Kitchen Bazar,New Market,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,New Market Kitchen Bazar,New Market,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-01,Uttara Sector 6 Market,Uttara,Rice (coarse),Rice,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Onion,Vegetable,kg,68,72,70,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Ginger,Spice,kg,253,257,255,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Uttara Sector 6 Market,Uttara,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-01,Rampura Bazar,Rampura,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Rice (fine),Rice,kg,77,81,79,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Onion,Vegetable,kg,70,74,72,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-01,Rampura Bazar,Rampura,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Karwan Bazar,Tejgaon,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Rice (fine),Rice,kg,74,78,76,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Lentil (masur),Pulse,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Ginger,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Karwan Bazar,Tejgaon,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-02,Shyambazar,Old Dhaka,Rice (coarse),Rice,kg,49,53,51,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Rice (medium),Rice,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Rice (fine),Rice,kg,72,76,74,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Lentil (masur),Pulse,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Soybean oil,Oil,Litre,163,167,165,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Onion,Vegetable,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Potato,Vegetable,kg,41,45,43,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Egg,Protein,dozen,116,120,118,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Sugar,Grocery,kg,118,122,120,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Garlic,Spice,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Ginger,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Shyambazar,Old Dhaka,Flour (atta),Grocery,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-02,Jatrabari Bazar,Jatrabari,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Rice (fine),Rice,kg,76,80,78,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Sugar,Grocery,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Jatrabari Bazar,Jatrabari,Flour (atta),Grocery,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Lentil (masur),Pulse,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Onion,Vegetable,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Ginger,Spice,kg,233,237,235,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mohammadpur Krishi Market,Mohammadpur,Flour (atta),Grocery,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,Mirpur-1 Kitchen Market,Mirpur,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-02,New Market Kitchen Bazar,New Market,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Rice (medium),Rice,kg,61,65,63,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Rice (fine),Rice,kg,77,81,79,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Lentil (masur),Pulse,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Onion,Vegetable,kg,67,71,69,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,New Market Kitchen Bazar,New Market,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-02,Uttara Sector 6 Market,Uttara,Rice (coarse),Rice,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Rice (fine),Rice,kg,80,84,82,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Onion,Vegetable,kg,70,74,72,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Broiler chicken,Protein,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Uttara Sector 6 Market,Uttara,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-02,Rampura Bazar,Rampura,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Egg,Protein,dozen,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-02,Rampura Bazar,Rampura,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Karwan Bazar,Tejgaon,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Rice (medium),Rice,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,65,69,67,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Potato,Vegetable,kg,41,45,43,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Karwan Bazar,Tejgaon,Flour (atta),Grocery,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-03,Shyambazar,Old Dhaka,Rice (coarse),Rice,kg,49,53,51,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Rice (medium),Rice,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Rice (fine),Rice,kg,72,76,74,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Lentil (masur),Pulse,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Onion,Vegetable,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Potato,Vegetable,kg,40,44,42,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Egg,Protein,dozen,118,122,120,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Broiler chicken,Protein,kg,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Sugar,Grocery,kg,120,124,122,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Garlic,Spice,kg,208,212,210,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Ginger,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Shyambazar,Old Dhaka,Flour (atta),Grocery,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-03,Jatrabari Bazar,Jatrabari,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Rice (fine),Rice,kg,76,80,78,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Onion,Vegetable,kg,65,69,67,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Egg,Protein,dozen,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Sugar,Grocery,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Jatrabari Bazar,Jatrabari,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Onion,Vegetable,kg,67,71,69,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Egg,Protein,dozen,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Sugar,Grocery,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mohammadpur Krishi Market,Mohammadpur,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Onion,Vegetable,kg,70,74,72,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,Mirpur-1 Kitchen Market,Mirpur,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-03,New Market Kitchen Bazar,New Market,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Rice (medium),Rice,kg,61,65,63,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Onion,Vegetable,kg,67,71,69,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Egg,Protein,dozen,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,New Market Kitchen Bazar,New Market,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-03,Uttara Sector 6 Market,Uttara,Rice (coarse),Rice,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Rice (medium),Rice,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Rice (fine),Rice,kg,80,84,82,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Lentil (masur),Pulse,kg,140,144,142,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Broiler chicken,Protein,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Uttara Sector 6 Market,Uttara,Flour (atta),Grocery,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-03,Rampura Bazar,Rampura,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-03,Rampura Bazar,Rampura,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Karwan Bazar,Tejgaon,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Lentil (masur),Pulse,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,65,69,67,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Egg,Protein,dozen,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Ginger,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Karwan Bazar,Tejgaon,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-04,Shyambazar,Old Dhaka,Rice (coarse),Rice,kg,49,53,51,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Rice (medium),Rice,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Rice (fine),Rice,kg,72,76,74,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Lentil (masur),Pulse,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Onion,Vegetable,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Potato,Vegetable,kg,40,44,42,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Egg,Protein,dozen,116,120,118,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Sugar,Grocery,kg,120,124,122,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Garlic,Spice,kg,208,212,210,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Ginger,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Shyambazar,Old Dhaka,Flour (atta),Grocery,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-04,Jatrabari Bazar,Jatrabari,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Rice (medium),Rice,kg,61,65,63,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Rice (fine),Rice,kg,77,81,79,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Lentil (masur),Pulse,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Jatrabari Bazar,Jatrabari,Flour (atta),Grocery,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Onion,Vegetable,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Potato,Vegetable,kg,42,46,44,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Egg,Protein,dozen,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Sugar,Grocery,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Ginger,Spice,kg,233,237,235,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mohammadpur Krishi Market,Mohammadpur,Flour (atta),Grocery,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Onion,Vegetable,kg,67,71,69,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Ginger,Spice,kg,253,257,255,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,Mirpur-1 Kitchen Market,Mirpur,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-04,New Market Kitchen Bazar,New Market,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Onion,Vegetable,kg,68,72,70,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,New Market Kitchen Bazar,New Market,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-04,Uttara Sector 6 Market,Uttara,Rice (coarse),Rice,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Rice (medium),Rice,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Rice (fine),Rice,kg,80,84,82,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Lentil (masur),Pulse,kg,140,144,142,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Onion,Vegetable,kg,68,72,70,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Potato,Vegetable,kg,46,50,48,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Ginger,Spice,kg,253,257,255,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Uttara Sector 6 Market,Uttara,Flour (atta),Grocery,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-04,Rampura Bazar,Rampura,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Rice (medium),Rice,kg,61,65,63,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Rice (fine),Rice,kg,78,82,80,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-04,Rampura Bazar,Rampura,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Karwan Bazar,Tejgaon,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Rice (medium),Rice,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Egg,Protein,dozen,120,124,122,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Karwan Bazar,Tejgaon,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-05,Shyambazar,Old Dhaka,Rice (coarse),Rice,kg,49,53,51,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Rice (medium),Rice,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Rice (fine),Rice,kg,73,77,75,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Lentil (masur),Pulse,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Onion,Vegetable,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Potato,Vegetable,kg,40,44,42,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Egg,Protein,dozen,120,124,122,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Sugar,Grocery,kg,118,122,120,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Garlic,Spice,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Ginger,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Shyambazar,Old Dhaka,Flour (atta),Grocery,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-05,Jatrabari Bazar,Jatrabari,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Rice (fine),Rice,kg,77,81,79,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Onion,Vegetable,kg,67,71,69,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Egg,Protein,dozen,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Jatrabari Bazar,Jatrabari,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Lentil (masur),Pulse,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Onion,Vegetable,kg,67,71,69,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Egg,Protein,dozen,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Sugar,Grocery,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mohammadpur Krishi Market,Mohammadpur,Flour (atta),Grocery,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Rice (medium),Rice,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Lentil (masur),Pulse,kg,140,144,142,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,Mirpur-1 Kitchen Market,Mirpur,Flour (atta),Grocery,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-05,New Market Kitchen Bazar,New Market,Rice (coarse),Rice,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Lentil (masur),Pulse,kg,136,140,138,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Onion,Vegetable,kg,70,74,72,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Egg,Protein,dozen,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,New Market Kitchen Bazar,New Market,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-05,Uttara Sector 6 Market,Uttara,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Rice (medium),Rice,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Rice (fine),Rice,kg,80,84,82,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Lentil (masur),Pulse,kg,142,146,144,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Onion,Vegetable,kg,71,75,73,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Potato,Vegetable,kg,46,50,48,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Egg,Protein,dozen,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Broiler chicken,Protein,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Sugar,Grocery,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Uttara Sector 6 Market,Uttara,Flour (atta),Grocery,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-05,Rampura Bazar,Rampura,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Garlic,Spice,kg,223,227,225,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Ginger,Spice,kg,243,247,245,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-05,Rampura Bazar,Rampura,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Karwan Bazar,Tejgaon,Rice (coarse),Rice,kg,51,55,53,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Rice (fine),Rice,kg,75,79,77,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Lentil (masur),Pulse,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Egg,Protein,dozen,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Sugar,Grocery,kg,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Garlic,Spice,kg,213,217,215,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Ginger,Spice,kg,233,237,235,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Karwan Bazar,Tejgaon,Flour (atta),Grocery,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7516,90.3935
+2026-06-06,Shyambazar,Old Dhaka,Rice (coarse),Rice,kg,49,53,51,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Rice (medium),Rice,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Rice (fine),Rice,kg,72,76,74,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Lentil (masur),Pulse,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Soybean oil,Oil,Litre,168,172,170,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Onion,Vegetable,kg,64,68,66,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Potato,Vegetable,kg,40,44,42,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Egg,Protein,dozen,120,124,122,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Broiler chicken,Protein,kg,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Sugar,Grocery,kg,122,126,124,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Garlic,Spice,kg,208,212,210,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Ginger,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Shyambazar,Old Dhaka,Flour (atta),Grocery,kg,53,57,55,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7116,90.4127
+2026-06-06,Jatrabari Bazar,Jatrabari,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Rice (fine),Rice,kg,77,81,79,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Lentil (masur),Pulse,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Egg,Protein,dozen,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Broiler chicken,Protein,kg,188,192,190,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Sugar,Grocery,kg,126,130,128,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Jatrabari Bazar,Jatrabari,Flour (atta),Grocery,kg,57,61,59,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7102,90.4344
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Rice (coarse),Rice,kg,52,56,54,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Rice (medium),Rice,kg,60,64,62,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Rice (fine),Rice,kg,76,80,78,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Lentil (masur),Pulse,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Soybean oil,Oil,Litre,173,177,175,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Onion,Vegetable,kg,66,70,68,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Potato,Vegetable,kg,43,47,45,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Egg,Protein,dozen,124,128,126,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Sugar,Grocery,kg,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Garlic,Spice,kg,218,222,220,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Ginger,Spice,kg,238,242,240,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mohammadpur Krishi Market,Mohammadpur,Flour (atta),Grocery,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.765,90.3589
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Rice (coarse),Rice,kg,55,59,57,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Rice (medium),Rice,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Onion,Vegetable,kg,68,72,70,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Potato,Vegetable,kg,44,48,46,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Broiler chicken,Protein,kg,193,197,195,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,Mirpur-1 Kitchen Market,Mirpur,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7994,90.353
+2026-06-06,New Market Kitchen Bazar,New Market,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Onion,Vegetable,kg,69,73,71,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Egg,Protein,dozen,128,132,130,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Broiler chicken,Protein,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Sugar,Grocery,kg,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,New Market Kitchen Bazar,New Market,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7336,90.3847
+2026-06-06,Uttara Sector 6 Market,Uttara,Rice (coarse),Rice,kg,56,60,58,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Rice (medium),Rice,kg,63,67,65,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Rice (fine),Rice,kg,80,84,82,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Lentil (masur),Pulse,kg,140,144,142,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Soybean oil,Oil,Litre,183,187,185,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Onion,Vegetable,kg,70,74,72,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Potato,Vegetable,kg,45,49,47,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Broiler chicken,Protein,kg,203,207,205,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Sugar,Grocery,kg,134,138,136,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Garlic,Spice,kg,233,237,235,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Ginger,Spice,kg,253,257,255,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Uttara Sector 6 Market,Uttara,Flour (atta),Grocery,kg,59,63,61,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.8746,90.4001
+2026-06-06,Rampura Bazar,Rampura,Rice (coarse),Rice,kg,54,58,56,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Rice (medium),Rice,kg,62,66,64,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Rice (fine),Rice,kg,79,83,81,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Lentil (masur),Pulse,kg,138,142,140,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Soybean oil,Oil,Litre,178,182,180,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Onion,Vegetable,kg,67,71,69,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Potato,Vegetable,kg,46,50,48,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Egg,Protein,dozen,130,134,132,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Broiler chicken,Protein,kg,198,202,200,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Sugar,Grocery,kg,132,136,134,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Garlic,Spice,kg,228,232,230,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Ginger,Spice,kg,248,252,250,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
+2026-06-06,Rampura Bazar,Rampura,Flour (atta),Grocery,kg,58,62,60,PREVIEW ONLY - replace with verified DAM/TCB market-wise feed,,True,23.7633,90.4243
