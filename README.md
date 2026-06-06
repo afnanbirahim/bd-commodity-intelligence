@@ -1,24 +1,53 @@
-# Dhaka Daily Price Watch — Consumer Clean Version
+# Dhaka Daily Price Watch — GitHub CSV Archive Edition
 
-Version: 10.0.0-consumer-clean
+Version: 11.0.0-github-csv-archive
 
-## Latest change
-- Removed developer-facing “connect CSV/API feed” message from the consumer Markets tab.
-- Markets tab now uses consumer-friendly wording.
-- Admin setup instructions are moved to the Source tab under an expander.
-- App still tries DAM market-wise parser automatically.
-- If market-wise rows are unavailable, it shows official reference price ranges without fake cheapest-market claims.
+## What this version adds
 
-## Run
+- Historical prices are archived in `data/official_price_history.csv`.
+- GitHub Actions updates this CSV every day.
+- The Charts tab reads this repository CSV for historical trend charts.
+- The app no longer depends only on temporary Streamlit local cache for history.
+- No Google Sheets or Google Cloud setup required.
+
+## New files
+
+```text
+scripts/fetch_dam_prices.py
+.github/workflows/update_prices.yml
+data/official_price_history.csv
+GITHUB_ACTIONS_ARCHIVE.md
+```
+
+## Run locally
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Optional market-wise feed
+## Run the updater locally
 
-```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-marketwise-feed.csv"
-ALLOW_PREVIEW_DATA = "false"
+```bash
+python scripts/fetch_dam_prices.py
 ```
+
+## GitHub Actions setup
+
+In your GitHub repository:
+
+```text
+Settings → Actions → General → Workflow permissions → Read and write permissions
+```
+
+Then go to:
+
+```text
+Actions → Update official DAM price history → Run workflow
+```
+
+The workflow also runs daily automatically.
+
+## Market-wise cheapest prices
+
+This version still shows official aggregate prices and historical trends. True market-wise cheapest prices require verified market-wise rows.

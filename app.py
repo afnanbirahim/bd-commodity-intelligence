@@ -34,11 +34,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-APP_VERSION = "10.0.0-consumer-clean"
+APP_VERSION = "11.0.0-github-csv-archive"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(APP_DIR, "data")
 OFFICIAL_CACHE_PATH = os.path.join(DATA_DIR, "official_reference_cache.csv")
-HISTORY_PATH = os.path.join(APP_DIR, "cache", "official_price_history.csv")
+HISTORY_PATH = os.path.join(DATA_DIR, "official_price_history.csv")
 MARKETS_PATH = os.path.join(DATA_DIR, "dhaka_markets.csv")
 
 TCB_DAILY_URL = "https://tcb.gov.bd/pages/daily-rmps"
@@ -673,38 +673,42 @@ def latest_official(df: pd.DataFrame) -> pd.DataFrame:
 
 def load_and_update_history(official_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Build a historical series from daily official snapshots.
-    This avoids fake historical data. The first deployment may only have one day.
+    Read historical official price snapshots from the GitHub-tracked CSV archive.
+
+    The Streamlit app itself does not commit to GitHub.
+    A GitHub Action updates data/official_price_history.csv daily.
+    For immediate display, today's fetched official_df is merged in memory.
     """
     try:
-        import os
-        os.makedirs(os.path.dirname(HISTORY_PATH), exist_ok=True)
-        existing = pd.DataFrame()
+        history = pd.DataFrame()
         if os.path.exists(HISTORY_PATH):
-            existing = pd.read_csv(HISTORY_PATH)
+            history = pd.read_csv(HISTORY_PATH)
+
         current = official_df.copy()
         if not current.empty:
             current["date"] = pd.to_datetime(current["date"]).dt.date.astype(str)
-            current["snapshot_saved_at"] = now_bd().strftime("%Y-%m-%d %H:%M:%S")
-        if existing.empty:
+            if "snapshot_saved_at" not in current.columns:
+                current["snapshot_saved_at"] = now_bd().strftime("%Y-%m-%d %H:%M:%S")
+
+        if history.empty:
             combined = current
         elif current.empty:
-            combined = existing
+            combined = history
         else:
-            combined = pd.concat([existing, current], ignore_index=True)
+            combined = pd.concat([history, current], ignore_index=True)
+
         if combined.empty:
-            return combined
+            return pd.DataFrame()
+
         for col in ["low", "high", "midpoint"]:
             if col in combined.columns:
                 combined[col] = pd.to_numeric(combined[col], errors="coerce")
+
         combined["date"] = pd.to_datetime(combined["date"], errors="coerce").dt.date.astype(str)
         combined = combined.dropna(subset=["date", "commodity", "midpoint"])
         combined = combined.drop_duplicates(subset=["date", "commodity", "unit"], keep="last")
-        combined = combined.sort_values(["commodity", "date"])
-        combined.to_csv(HISTORY_PATH, index=False)
-        return combined
+        return combined.sort_values(["commodity", "date"])
     except Exception:
-        # Never crash app because of local cache write/read failure.
         return official_df.copy() if not official_df.empty else pd.DataFrame()
 
 def basket_estimate(official_df: pd.DataFrame, basket: Dict[str, float]):
