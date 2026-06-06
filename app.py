@@ -34,7 +34,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-APP_VERSION = "5.0.0-full-app-resilient"
+APP_VERSION = "6.0.0-market-map"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(APP_DIR, "data")
 OFFICIAL_CACHE_PATH = os.path.join(DATA_DIR, "official_reference_cache.csv")
@@ -112,7 +112,7 @@ TEXT = {
         "official_caption":"Cards are easier to read on mobile. Every item shows unit and low-high range.",
         "search":"Search item", "range":"Range", "price":"Price", "alerts":"Price alerts",
         "basket_title":"Smart shopping basket", "basket_caption":"Change quantities and see an official low-average-high estimate.",
-        "market_title":"Market comparison", "no_market":"Verified market-wise Dhaka rows are not connected yet, so the app does not show fake cheapest-market claims.",
+        "market_title":"Market comparison", "map_title":"Dhaka market map", "map_caption":"All listed Dhaka market locations are shown. Cheapest item per market appears only with verified market-wise rows.", "cheapest_item":"Cheapest listed item", "no_market":"Verified market-wise Dhaka rows are not connected yet, so the app does not show fake cheapest-market claims.",
         "connect_market":"To show cheapest markets, connect a verified market-wise CSV/API feed in Streamlit secrets.",
         "source_title":"Source transparency", "download":"Download data", "status":"Status", "footer":"The app uses official DAM data when available and avoids unsupported cheapest-market claims.",
         "technical":"Technical details", "available":"Available", "temp_unavailable":"Temporarily unavailable",
@@ -129,7 +129,7 @@ TEXT = {
         "official_caption":"মোবাইলে সহজে পড়ার জন্য কার্ড ভিউ। প্রতিটি পণ্যে একক ও কম-বেশি রেঞ্জ দেখানো হয়েছে।",
         "search":"পণ্য খুঁজুন", "range":"রেঞ্জ", "price":"দাম", "alerts":"দাম সতর্কতা",
         "basket_title":"স্মার্ট বাজার-ঝুড়ি", "basket_caption":"পরিমাণ বদলে সরকারি কম-গড়-বেশি আনুমানিক হিসাব দেখুন।",
-        "market_title":"বাজার তুলনা", "no_market":"ঢাকার যাচাইকৃত বাজারভিত্তিক সারি এখনো যুক্ত নেই, তাই অ্যাপটি ভুয়া সবচেয়ে সস্তা বাজার দেখাচ্ছে না।",
+        "market_title":"বাজার তুলনা", "map_title":"ঢাকার বাজার মানচিত্র", "map_caption":"ঢাকার তালিকাভুক্ত বাজারগুলো মানচিত্রে দেখানো হয়েছে। যাচাইকৃত market-wise row থাকলেই প্রতি বাজারের সবচেয়ে কম দামের পণ্য দেখাবে।", "cheapest_item":"সবচেয়ে কম দামের তালিকাভুক্ত পণ্য", "no_market":"ঢাকার যাচাইকৃত বাজারভিত্তিক সারি এখনো যুক্ত নেই, তাই অ্যাপটি ভুয়া সবচেয়ে সস্তা বাজার দেখাচ্ছে না।",
         "connect_market":"সবচেয়ে সস্তা বাজার দেখাতে Streamlit secrets-এ যাচাইকৃত market-wise CSV/API feed যুক্ত করুন।",
         "source_title":"উৎসের স্বচ্ছতা", "download":"ডেটা ডাউনলোড", "status":"অবস্থা", "footer":"অ্যাপটি DAM সরকারি ডেটা ব্যবহার করে এবং অসমর্থিত cheapest-market দাবি এড়ায়।",
         "technical":"প্রযুক্তিগত বিস্তারিত", "available":"চালু", "temp_unavailable":"সাময়িকভাবে পাওয়া যায়নি",
@@ -290,6 +290,35 @@ def validate_market_df(df: pd.DataFrame, source_name: str) -> pd.DataFrame:
         df["price_max"] = df["price"]
     df["date"] = pd.to_datetime(df["date"]).dt.date
     return df[df["price"] > 0].copy()
+
+
+@st.cache_data(ttl=60*60*24, show_spinner=False)
+def load_market_locations() -> pd.DataFrame:
+    """Load known Dhaka market coordinates for the public map."""
+    try:
+        df = pd.read_csv(MARKETS_PATH)
+        needed = {"market", "area", "latitude", "longitude"}
+        if not needed.issubset(set(df.columns)):
+            return pd.DataFrame()
+        df["latitude"] = df["latitude"].apply(clean_number)
+        df["longitude"] = df["longitude"].apply(clean_number)
+        df = df.dropna(subset=["market", "latitude", "longitude"])
+        return df.drop_duplicates("market")
+    except Exception:
+        return pd.DataFrame()
+
+
+def market_cheapest_items(latest_m: pd.DataFrame) -> pd.DataFrame:
+    """For each market, return the lowest listed item from verified market-wise data."""
+    if latest_m.empty:
+        return pd.DataFrame()
+    df = latest_m.dropna(subset=["market", "commodity", "price"]).copy()
+    if df.empty:
+        return pd.DataFrame()
+    idx = df.groupby("market")["price"].idxmin()
+    out = df.loc[idx, ["market", "commodity", "unit", "price", "area", "latitude", "longitude"]].copy()
+    out = out.rename(columns={"commodity": "cheapest_item", "price": "cheapest_price"})
+    return out
 
 @st.cache_data(ttl=60*60, show_spinner=False)
 def fetch_source_status() -> Dict[str, Dict[str, Any]]:
@@ -610,6 +639,80 @@ with tab_basket:
         notice("danger", t["unavailable"])
 
 with tab_markets:
+    section(f"🗺️ {t['map_title']}", t["map_caption"])
+
+    market_locations = load_market_locations()
+    cheapest_items = market_cheapest_items(latest_m)
+
+    if market_locations.empty:
+        notice("warn", "Market coordinates are missing." if lang == "English" else "বাজারের লোকেশন ডেটা পাওয়া যায়নি।")
+    else:
+        map_df = market_locations.copy()
+        map_df["display_market"] = map_df["market"].apply(lambda x: tr_market(x, lang))
+        map_df["display_area"] = map_df["area"]
+
+        if not cheapest_items.empty:
+            map_df = map_df.merge(
+                cheapest_items[["market", "cheapest_item", "cheapest_price", "unit"]],
+                on="market",
+                how="left",
+            )
+            map_df["tooltip"] = map_df.apply(
+                lambda r: (
+                    f"{r['display_market']}<br>{r['display_area']}<br>{t['cheapest_item']}: "
+                    f"{tr_item(r['cheapest_item'], lang)} · {money(r['cheapest_price'], lang)} / {r['unit']}"
+                    if pd.notna(r.get("cheapest_item")) else f"{r['display_market']}<br>{r['display_area']}"
+                ),
+                axis=1,
+            )
+            color_col = "cheapest_price"
+        else:
+            map_df["tooltip"] = map_df.apply(lambda r: f"{r['display_market']}<br>{r['display_area']}", axis=1)
+            map_df["cheapest_price"] = 1
+            color_col = "cheapest_price"
+
+        fig_map = px.scatter_mapbox(
+            map_df,
+            lat="latitude",
+            lon="longitude",
+            hover_name="display_market",
+            hover_data={
+                "display_area": True,
+                "cheapest_item": False if "cheapest_item" in map_df.columns else False,
+                "cheapest_price": False,
+                "latitude": False,
+                "longitude": False,
+            },
+            size=[13] * len(map_df),
+            color=color_col,
+            zoom=10.4,
+            height=430,
+        )
+        fig_map.update_layout(
+            mapbox_style="open-street-map",
+            margin=dict(l=0, r=0, t=0, b=0),
+            coloraxis_showscale=False,
+        )
+        st.plotly_chart(fig_map, use_container_width=True, config={"displayModeBar": False, "responsive": True})
+
+        if cheapest_items.empty:
+            notice("info", t["no_market"] + " " + t["connect_market"])
+            section(f"🏪 {t['markets_tab']}", "")
+            for _, row in market_locations.sort_values("market").iterrows():
+                st.markdown(
+                    f"""<div class="card"><div class="item-name">📍 {tr_market(row['market'], lang)}</div><div class="item-meta">{row.get('area','Dhaka')} · {t['cheapest_item']}: {'Not available yet' if lang == 'English' else 'এখনো পাওয়া যায়নি'}</div></div>""",
+                    unsafe_allow_html=True,
+                )
+        else:
+            section(f"🏷️ {t['cheapest_item']}", "")
+            for _, row in cheapest_items.sort_values("market").iterrows():
+                render_card(
+                    tr_market(row["market"], lang),
+                    money(row["cheapest_price"], lang),
+                    str(row["unit"]),
+                    f"{tr_item(row['cheapest_item'], lang)} · {row.get('area','Dhaka')}",
+                )
+
     section(f"🏪 {t['market_title']}", t["connect_market"])
     if latest_m.empty:
         notice("warn", t["no_market"])
