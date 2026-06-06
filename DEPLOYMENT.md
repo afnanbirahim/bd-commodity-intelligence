@@ -59,4 +59,4 @@ If deployed with the included GitHub Actions workflow or opened daily, the histo
 - Dhaka Map
 - Verified-only Market Comparison
 - Bangla/English UI
-- Egg unit correction: hali / 4 eggs
+- Egg unit correction: single egg (converted from hali / 4 eggs when official source uses hali)

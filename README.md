@@ -6,7 +6,7 @@ A consumer-facing Streamlit website for Bangladesh essential commodity prices.
 
 - Shows the latest verified official/public commodity price ranges where available.
 - Supports English and Bangla UI, including commodity names, numbers, dates, table labels, chart labels, and map markers.
-- Treats egg prices as **hali / 4 eggs** where applicable, not as the price of a single egg.
+- Treats egg prices as **single egg (converted from hali / 4 eggs when official source uses hali)** where applicable, not as the price of a single egg.
 - Shows a ready-made weekly household basket estimate.
 - Adds a **Smart Shopping Basket** where users can enter quantities such as 5 kg rice, 2 kg onion, 2 hali eggs, and 2 litres oil.
 - Shows **price alert cards** when official data indicates notable increases, decreases, or wide low-high spreads.

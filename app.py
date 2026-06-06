@@ -81,7 +81,7 @@ TRANSLATIONS = {
         "available": "Available",
         "not_available": "Unavailable",
         "official_ranges": "📌 Latest official price ranges",
-        "official_ranges_help": "Official aggregate/range prices parsed from public DAM data. Egg prices are shown as hali / 4 eggs where applicable.",
+        "official_ranges_help": "Official aggregate/range prices parsed from public DAM data. Egg prices are normalized from hali / 4 eggs to single egg price where applicable.",
         "key_prices": "💳 Today's key official prices",
         "key_prices_help": "Consumer-friendly view of essential items from the latest verified official data.",
         "cheapest_market": "🏷️ Cheapest Dhaka market by commodity",
@@ -93,7 +93,7 @@ TRANSLATIONS = {
         "charts": "📊 Price spread and trend view",
         "transparency": "🔎 Data transparency",
         "consumer_note": "Consumer note",
-        "consumer_note_text": "Prices can vary by quality, brand, package size, retail shop, and time of day. Egg prices are treated as hali / 4 eggs where applicable. Use this as a verified reference, not a bargaining guarantee.",
+        "consumer_note_text": "Prices can vary by quality, brand, package size, retail shop, and time of day. Egg prices are normalized from hali / 4 eggs to single egg price where applicable. Use this as a verified reference, not a bargaining guarantee.",
         "reload": "Refresh official data",
         "download": "Download current data",
         "market_unavailable": "Market-wise ranking is unavailable until the official source returns market-level Dhaka rows.",
@@ -101,8 +101,9 @@ TRANSLATIONS = {
         "partial": "Verified",
         "unavailable": "Unavailable",
         "unit_published": "As published",
-        "unit_hali": "Hali / 4 eggs",
-        "egg_unit_note": "Egg prices from the official source are treated as hali / 4 eggs, not per single egg.",
+        "unit_hali": "Single egg",
+        "unit_single_egg": "Single egg",
+        "egg_unit_note": "Egg prices are converted from official hali / 4 eggs values into a single-egg estimate.",
         "source_monitor": "Official source monitor",
         "smart_basket": "🛒 Smart shopping basket",
         "smart_basket_help": "Choose your own quantities. The app calculates low, average, and high cost using the latest verified official prices.",
@@ -163,7 +164,7 @@ TRANSLATIONS = {
         "available": "উপলব্ধ",
         "not_available": "অনুপলব্ধ",
         "official_ranges": "📌 সর্বশেষ সরকারি মূল্যসীমা",
-        "official_ranges_help": "DAM-এর পাবলিক সরকারি তথ্য থেকে পাওয়া সামগ্রিক/মূল্যসীমা। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি হিসেবে দেখানো হয়েছে।",
+        "official_ranges_help": "DAM-এর পাবলিক সরকারি তথ্য থেকে পাওয়া সামগ্রিক/মূল্যসীমা। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি থেকে ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে।",
         "key_prices": "💳 আজকের গুরুত্বপূর্ণ সরকারি দাম",
         "key_prices_help": "সর্বশেষ যাচাইকৃত সরকারি তথ্য থেকে ভোক্তাবান্ধব নিত্যপণ্যের তালিকা।",
         "cheapest_market": "🏷️ পণ্যভিত্তিক ঢাকার সবচেয়ে কমদামের বাজার",
@@ -175,7 +176,7 @@ TRANSLATIONS = {
         "charts": "📊 মূল্য পার্থক্য ও ট্রেন্ড",
         "transparency": "🔎 তথ্যের স্বচ্ছতা",
         "consumer_note": "ভোক্তা নোট",
-        "consumer_note_text": "মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী দাম বদলাতে পারে। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি হিসেবে ধরা হয়েছে। এটিকে যাচাইকৃত রেফারেন্স হিসেবে ব্যবহার করুন, দর-কষাকষির নিশ্চয়তা হিসেবে নয়।",
+        "consumer_note_text": "মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী দাম বদলাতে পারে। ডিমের দাম প্রযোজ্য ক্ষেত্রে হালি / ৪টি থেকে ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে। এটিকে যাচাইকৃত রেফারেন্স হিসেবে ব্যবহার করুন, দর-কষাকষির নিশ্চয়তা হিসেবে নয়।",
         "reload": "সরকারি তথ্য রিফ্রেশ করুন",
         "download": "বর্তমান তথ্য ডাউনলোড",
         "market_unavailable": "সরকারি উৎস বাজারভিত্তিক ঢাকার সারি না দেওয়া পর্যন্ত বাজার র‍্যাঙ্কিং পাওয়া যাবে না।",
@@ -183,8 +184,9 @@ TRANSLATIONS = {
         "partial": "যাচাইকৃত",
         "unavailable": "পাওয়া যায়নি",
         "unit_published": "প্রকাশিত রূপে",
-        "unit_hali": "হালি / ৪টি",
-        "egg_unit_note": "সরকারি উৎসের ডিমের দাম ১টি নয়, হালি / ৪টি হিসেবে ধরা হয়েছে।",
+        "unit_hali": "১টি ডিম",
+        "unit_single_egg": "১টি ডিম",
+        "egg_unit_note": "সরকারি উৎসে ডিমের দাম হালি / ৪টি হলে সেটি ১টি ডিমের আনুমানিক দামে রূপান্তর করা হয়েছে।",
         "source_monitor": "সরকারি উৎস মনিটর",
         "smart_basket": "🛒 স্মার্ট বাজার ঝুড়ি",
         "smart_basket_help": "নিজের প্রয়োজনমতো পরিমাণ দিন। সর্বশেষ যাচাইকৃত সরকারি দামের ভিত্তিতে কম, গড় ও বেশি খরচ হিসাব করা হবে।",
@@ -358,12 +360,38 @@ def is_egg_name(value: object) -> bool:
 
 def display_unit(unit: object, commodity: object = "", item: object = "") -> str:
     if is_egg_name(commodity) or is_egg_name(item):
-        return tr("unit_hali")
+        return tr("unit_single_egg")
     raw = clean_text(unit)
     if raw.lower() in {"as published", "", "nan", "none"}:
         return tr("unit_published")
     return bn_digits(raw) if is_bn() else raw
 
+
+
+def normalize_egg_prices_to_single(df: pd.DataFrame) -> pd.DataFrame:
+    """Convert official egg prices from hali / 4 eggs into single-egg prices.
+
+    DAM-style Bangladesh egg rows are commonly published as a hali (4 eggs).
+    For consumer clarity, this app displays and calculates eggs as a single unit.
+    To avoid accidental repeated conversion, rows already marked as single egg are skipped.
+    """
+    if df.empty or "commodity" not in df.columns:
+        return df
+    out = df.copy()
+    unit_text = out.get("unit", pd.Series([""] * len(out))).astype(str).str.lower()
+    egg_mask = out["commodity"].astype(str).str.contains("egg|ডিম", case=False, regex=True, na=False)
+    already_single = unit_text.str.contains("single|১টি|1 egg|per egg", case=False, regex=True, na=False)
+    # Official hali values are usually above Tk 20. Per-egg rows around Tk 10-15 should not be divided again.
+    numeric_price = pd.to_numeric(out.get("price", pd.Series([np.nan] * len(out))), errors="coerce")
+    needs_conversion = egg_mask & (~already_single) & (numeric_price > 20)
+    for col in ["price", "price_min", "price_max"]:
+        if col in out.columns:
+            vals = pd.to_numeric(out[col], errors="coerce")
+            out.loc[needs_conversion, col] = (vals.loc[needs_conversion] / 4.0).round(2)
+    if "unit" not in out.columns:
+        out["unit"] = "As published"
+    out.loc[egg_mask, "unit"] = "Single egg"
+    return out
 
 def display_market(name: object) -> str:
     txt = clean_text(name)
@@ -784,6 +812,7 @@ def load_official_data(force_key: int = 0) -> Tuple[pd.DataFrame, List[Dict[str,
         data["price_min"] = pd.to_numeric(data.get("price_min", data["price"]), errors="coerce").fillna(data["price"])
         data["price_max"] = pd.to_numeric(data.get("price_max", data["price"]), errors="coerce").fillna(data["price"])
         data = data.dropna(subset=["price"])
+        data = normalize_egg_prices_to_single(data)
         save_cache(data, CACHE_DIR / "latest_official_prices.csv")
         append_history(data, CACHE_DIR / "history_official_prices.csv")
         return data, statuses
@@ -793,7 +822,7 @@ def load_official_data(force_key: int = 0) -> Tuple[pd.DataFrame, List[Dict[str,
         if "data_level" not in cached.columns:
             cached["data_level"] = "cached_official"
         statuses.append({"name": "Local cache", "url": str(CACHE_DIR / "latest_official_prices.csv"), "ok": "true", "message": "Loaded last verified local cache because live official fetch failed."})
-        return cached, statuses
+        return normalize_egg_prices_to_single(cached), statuses
 
     return pd.DataFrame(), statuses
 
@@ -828,7 +857,7 @@ def load_basket() -> pd.DataFrame:
             {"item_label": "Onion", "commodity_pattern": "onion", "quantity": 2, "unit_note": "kg/as published"},
             {"item_label": "Potato", "commodity_pattern": "potato", "quantity": 2, "unit_note": "kg/as published"},
             {"item_label": "Soybean oil", "commodity_pattern": "soybean|oil", "quantity": 2, "unit_note": "litre/as published"},
-            {"item_label": "Egg", "commodity_pattern": "egg", "quantity": 1, "unit_note": "hali / 4 eggs"},
+            {"item_label": "Egg", "commodity_pattern": "egg", "quantity": 12, "unit_note": "single egg"},
             {"item_label": "Chicken/Hen", "commodity_pattern": "chicken|hen", "quantity": 1, "unit_note": "kg/as published"},
             {"item_label": "Sugar", "commodity_pattern": "sugar", "quantity": 1, "unit_note": "kg/as published"},
             {"item_label": "Salt", "commodity_pattern": "salt", "quantity": 1, "unit_note": "kg/as published"},
@@ -1069,7 +1098,7 @@ def render_smart_basket(official_range_df: pd.DataFrame) -> None:
         ("Onion", "onion", 2.0),
         ("Potato", "potato", 2.0),
         ("Soybean oil", "soybean|oil", 2.0),
-        ("Egg", "egg", 2.0),
+        ("Egg", "egg", 30.0),
         ("Chicken/Hen", "hen|chicken", 1.0),
         ("Sugar", "sugar", 1.0),
         ("Salt", "salt", 1.0),
