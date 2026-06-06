@@ -20,7 +20,7 @@ from bs4 import BeautifulSoup
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 APP_NAME = "Bangladesh Commodity Intelligence"
-APP_VERSION = "3.1.0-unit-clear-consumer-final"
+APP_VERSION = "3.2.0-final-v10-search-units-history"
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_DIR = BASE_DIR / "cache"
 DATA_DIR = BASE_DIR / "data"
@@ -158,6 +158,18 @@ TRANSLATIONS = {
         "positioning": "How this app differs",
         "positioning_text": "Bangladesh already has official TCB and DAM price-report portals. This app does not replace them; it repackages verified public data into a mobile-friendly consumer view with Bangla/English UI, basket estimates, charts, map labels, and clear source transparency.",
         "official_not_marketwise": "Official prices are authentic as reference price ranges. Cheapest-market claims are shown only when verified market-wise Dhaka rows are available.",
+        "search": "🔍 Search commodity",
+        "search_placeholder": "Type rice, onion, egg, oil...",
+        "search_result": "Search result",
+        "search_no_result": "No matching verified commodity found.",
+        "unit_audit": "🧾 Unit audit",
+        "unit_audit_help": "Shows original unit, display unit, and conversion factor used by the app for transparency.",
+        "original_unit": "Original unit",
+        "display_unit": "Display unit",
+        "conversion_factor": "Conversion factor",
+        "price_basis": "Price basis",
+        "disclaimer_title": "Disclaimer",
+        "disclaimer_text": "This app presents verified public/official reference prices. Actual retail prices may vary by market, quality, brand, packet size, shop, and time of day. It is not an official government app and should not be treated as a legal price order.",
     },
     "বাংলা": {
         "title": "🛒 বাংলাদেশ কমোডিটি ইন্টেলিজেন্স",
@@ -251,6 +263,18 @@ TRANSLATIONS = {
         "positioning": "এই অ্যাপের পার্থক্য",
         "positioning_text": "বাংলাদেশে TCB ও DAM-এর সরকারি মূল্যতথ্য পোর্টাল আগে থেকেই আছে। এই অ্যাপ সেগুলোর বিকল্প নয়; যাচাইকৃত পাবলিক তথ্যকে ভোক্তাবান্ধব মোবাইল ভিউ, বাংলা/ইংরেজি UI, বাজার ঝুড়ির হিসাব, চার্ট, ম্যাপ লেবেল ও উৎস-স্বচ্ছতার মাধ্যমে সহজ করে দেখায়।",
         "official_not_marketwise": "সরকারি দামগুলো রেফারেন্স মূল্যসীমা হিসেবে প্রামাণ্য। যাচাইকৃত ঢাকার বাজারভিত্তিক সারি পাওয়া গেলেই শুধু সবচেয়ে কমদামের বাজার দেখানো হবে।",
+        "search": "🔍 পণ্য খুঁজুন",
+        "search_placeholder": "চাল, পেঁয়াজ, ডিম, তেল লিখুন...",
+        "search_result": "সার্চ ফলাফল",
+        "search_no_result": "মিল পাওয়া যাচাইকৃত পণ্য নেই।",
+        "unit_audit": "🧾 একক যাচাই",
+        "unit_audit_help": "অ্যাপ কোন মূল একক, প্রদর্শিত একক ও রূপান্তর ফ্যাক্টর ব্যবহার করেছে তা স্বচ্ছভাবে দেখায়।",
+        "original_unit": "মূল একক",
+        "display_unit": "প্রদর্শিত একক",
+        "conversion_factor": "রূপান্তর ফ্যাক্টর",
+        "price_basis": "দামের ভিত্তি",
+        "disclaimer_title": "দায়বদ্ধতা সীমা",
+        "disclaimer_text": "এই অ্যাপ যাচাইকৃত পাবলিক/সরকারি রেফারেন্স দাম দেখায়। বাস্তব খুচরা দাম বাজার, মান, ব্র্যান্ড, প্যাকেট সাইজ, দোকান ও দিনের সময় অনুযায়ী বদলাতে পারে। এটি সরকারি অ্যাপ নয় এবং আইনি মূল্য আদেশ হিসেবে বিবেচ্য নয়।",
     },
 }
 
@@ -349,6 +373,10 @@ COLUMN_BN = {
     "Basket estimate": "বাজার ঝুড়ির আনুমানিক খরচ",
     "Items matched": "মিল পাওয়া পণ্য",
     "Details": "বিস্তারিত",
+    "Original unit": "মূল একক",
+    "Display unit": "প্রদর্শিত একক",
+    "Conversion factor": "রূপান্তর ফ্যাক্টর",
+    "Price basis": "দামের ভিত্তি",
 }
 
 BN_DIGITS = str.maketrans("0123456789", "০১২৩৪৫৬৭৮৯")
@@ -470,25 +498,73 @@ def normalize_egg_prices_to_single(df: pd.DataFrame) -> pd.DataFrame:
 
     DAM-style Bangladesh egg rows are commonly published as a hali (4 eggs).
     For consumer clarity, this app displays and calculates eggs as a single unit.
-    To avoid accidental repeated conversion, rows already marked as single egg are skipped.
+    The function also stores audit columns so every converted price can be traced.
     """
     if df.empty or "commodity" not in df.columns:
         return df
     out = df.copy()
+    if "unit" not in out.columns:
+        out["unit"] = "As published"
+    if "original_unit" not in out.columns:
+        out["original_unit"] = out["unit"].astype(str)
+    if "display_unit" not in out.columns:
+        out["display_unit"] = out["unit"].astype(str)
+    if "conversion_factor" not in out.columns:
+        out["conversion_factor"] = 1.0
+    if "price_basis" not in out.columns:
+        out["price_basis"] = "As published"
+
     unit_text = out.get("unit", pd.Series([""] * len(out))).astype(str).str.lower()
     egg_mask = out["commodity"].astype(str).str.contains("egg|ডিম", case=False, regex=True, na=False)
     already_single = unit_text.str.contains("single|১টি|1 egg|per egg", case=False, regex=True, na=False)
-    # Official hali values are usually above Tk 20. Per-egg rows around Tk 10-15 should not be divided again.
     numeric_price = pd.to_numeric(out.get("price", pd.Series([np.nan] * len(out))), errors="coerce")
     needs_conversion = egg_mask & (~already_single) & (numeric_price > 20)
+
+    out.loc[needs_conversion, "original_unit"] = "Hali / 4 eggs"
+    out.loc[needs_conversion, "conversion_factor"] = 0.25
+    out.loc[needs_conversion, "price_basis"] = "Converted from hali to single egg"
     for col in ["price", "price_min", "price_max"]:
         if col in out.columns:
             vals = pd.to_numeric(out[col], errors="coerce")
             out.loc[needs_conversion, col] = (vals.loc[needs_conversion] / 4.0).round(2)
+    out.loc[egg_mask, "unit"] = "Single egg"
+    out.loc[egg_mask, "display_unit"] = "Single egg"
+    out.loc[egg_mask & (~needs_conversion), "price_basis"] = "Single egg"
+    return out
+
+
+def add_unit_audit_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Ensure every row contains transparent unit metadata."""
+    if df.empty:
+        return df
+    out = df.copy()
     if "unit" not in out.columns:
         out["unit"] = "As published"
-    out.loc[egg_mask, "unit"] = "Single egg"
+    if "original_unit" not in out.columns:
+        out["original_unit"] = out["unit"].astype(str)
+    if "display_unit" not in out.columns:
+        out["display_unit"] = out["unit"].astype(str)
+    if "conversion_factor" not in out.columns:
+        out["conversion_factor"] = 1.0
+    if "price_basis" not in out.columns:
+        out["price_basis"] = "As published"
+    for idx, row in out.iterrows():
+        key = unit_key_for(row.get("commodity", ""), "", row.get("unit", ""))
+        if not is_egg_name(row.get("commodity", "")):
+            if key == "kg":
+                out.at[idx, "display_unit"] = "per kg"
+                out.at[idx, "price_basis"] = "Per kg"
+            elif key == "litre":
+                out.at[idx, "display_unit"] = "per litre"
+                out.at[idx, "price_basis"] = "Per litre"
+            elif key == "piece":
+                out.at[idx, "display_unit"] = "per piece"
+                out.at[idx, "price_basis"] = "Per piece"
+            elif key == "packet":
+                out.at[idx, "display_unit"] = "per packet"
+                out.at[idx, "price_basis"] = "Per packet"
     return out
+
 
 def display_market(name: object) -> str:
     txt = clean_text(name)
@@ -909,7 +985,7 @@ def load_official_data(force_key: int = 0) -> Tuple[pd.DataFrame, List[Dict[str,
         data["price_min"] = pd.to_numeric(data.get("price_min", data["price"]), errors="coerce").fillna(data["price"])
         data["price_max"] = pd.to_numeric(data.get("price_max", data["price"]), errors="coerce").fillna(data["price"])
         data = data.dropna(subset=["price"])
-        data = normalize_egg_prices_to_single(data)
+        data = add_unit_audit_columns(normalize_egg_prices_to_single(data))
         save_cache(data, CACHE_DIR / "latest_official_prices.csv")
         append_history(data, CACHE_DIR / "history_official_prices.csv")
         return data, statuses
@@ -919,7 +995,7 @@ def load_official_data(force_key: int = 0) -> Tuple[pd.DataFrame, List[Dict[str,
         if "data_level" not in cached.columns:
             cached["data_level"] = "cached_official"
         statuses.append({"name": "Local cache", "url": str(CACHE_DIR / "latest_official_prices.csv"), "ok": "true", "message": "Loaded last verified local cache because live official fetch failed."})
-        return normalize_egg_prices_to_single(cached), statuses
+        return add_unit_audit_columns(normalize_egg_prices_to_single(cached)), statuses
 
     return pd.DataFrame(), statuses
 
@@ -1263,6 +1339,51 @@ def render_history() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
 
+def render_search(official_range_df: pd.DataFrame) -> None:
+    st.subheader(tr("search"))
+    query = st.text_input(tr("search"), placeholder=tr("search_placeholder"), label_visibility="collapsed")
+    if not query:
+        return
+    if official_range_df.empty:
+        st.info(tr("search_no_result"))
+        return
+    q = query.strip().lower()
+    work = official_range_df.copy()
+    names = work["commodity"].astype(str)
+    bn_names = names.map(lambda x: COMMODITY_BN.get(clean_text(x), ""))
+    mask = names.str.lower().str.contains(re.escape(q), na=False) | bn_names.str.contains(re.escape(query.strip()), na=False)
+    found = work[mask].copy()
+    if found.empty:
+        st.info(tr("search_no_result"))
+        return
+    st.markdown(f"### {tr('search_result')}")
+    show = pd.DataFrame({
+        "Commodity": [display_commodity(x) for x in found["commodity"]],
+        "Official price range": [fmt_range(a, b, c) for a, b, c in zip(found["price_min"], found["price_max"], found["price"])],
+        "Midpoint": [fmt_tk(x) for x in found["price"]],
+        "Price unit": [display_unit(u, c) for u, c in zip(found.get("unit", "As published"), found["commodity"])],
+        "Price basis": [clean_text(x) for x in found.get("price_basis", "As published")],
+        "Source": [source_short(x) for x in found.get("source", "Official")],
+    })
+    st.dataframe(localize_columns(show), use_container_width=True, hide_index=True)
+
+
+def render_unit_audit(official_range_df: pd.DataFrame) -> None:
+    with st.expander(tr("unit_audit"), expanded=False):
+        st.caption(tr("unit_audit_help"))
+        if official_range_df.empty:
+            st.info(tr("official_ranges_none"))
+            return
+        audit = pd.DataFrame({
+            "Commodity": [display_commodity(x) for x in official_range_df["commodity"]],
+            "Original unit": [bn_digits(x) if is_bn() else clean_text(x) for x in official_range_df.get("original_unit", official_range_df.get("unit", "As published"))],
+            "Display unit": [display_unit(u, c) for u, c in zip(official_range_df.get("unit", "As published"), official_range_df["commodity"])],
+            "Conversion factor": [fmt_num(x) for x in official_range_df.get("conversion_factor", 1.0)],
+            "Price basis": [clean_text(x) for x in official_range_df.get("price_basis", "As published")],
+        })
+        st.dataframe(localize_columns(audit), use_container_width=True, hide_index=True)
+
+
 def render_market_comparison(df: pd.DataFrame, market_df: pd.DataFrame) -> None:
     st.subheader(tr("market_comparison"))
     st.caption(tr("market_comparison_help"))
@@ -1346,6 +1467,8 @@ def main() -> None:
         st.info(tr("key_prices_fail"))
     else:
         st.dataframe(localize_columns(key_table), use_container_width=True, hide_index=True)
+
+    render_search(official_range_df)
 
     render_alerts(official_range_df)
 
@@ -1459,6 +1582,8 @@ def main() -> None:
 
     st.subheader(tr("transparency"))
     st.info(f"{tr('consumer_note')}: {tr('consumer_note_text')}")
+    st.warning(f"**{tr('disclaimer_title')}**: {tr('disclaimer_text')}")
+    render_unit_audit(official_range_df)
     with st.expander(tr("source_monitor"), expanded=False):
         for s in statuses:
             icon = "🟢" if s.get("ok") == "true" else "🟡"

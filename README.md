@@ -107,3 +107,11 @@ kg, litre, piece, packet
 ## Disclaimer
 
 Prices can vary by quality, brand, package size, shop, and time of day. This app is a verified reference dashboard, not a purchase-price guarantee.
+
+## v10 additions
+
+- Commodity search box for quick consumer lookup.
+- Unit-audit table showing original unit, display unit, conversion factor, and price basis.
+- Stronger disclaimer: this is a verified-reference consumer app, not an official legal price order.
+- Historical storage/export remains enabled through `cache/history_official_prices.csv`.
+

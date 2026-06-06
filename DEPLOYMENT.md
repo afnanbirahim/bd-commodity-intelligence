@@ -1,8 +1,8 @@
 # Deployment Guide
 
-## 1. Upload to GitHub
+## GitHub upload
 
-Do not upload the ZIP itself. Extract the ZIP and upload the contents so the repository root contains:
+Do not upload the ZIP itself. Extract it first, then upload the contents so the repository root contains:
 
 ```text
 app.py
@@ -16,65 +16,21 @@ scripts/
 cache/
 ```
 
-## 2. Deploy on Streamlit Community Cloud
+## Streamlit Cloud
 
 1. Go to Streamlit Community Cloud.
 2. Connect your GitHub repository.
-3. Select the repository.
-4. Set main file path:
+3. Select `app.py` as the main file.
+4. Deploy.
 
-```text
-app.py
-```
+## Data behavior
 
-5. Deploy.
+The app tries official/public source collection first, then uses the latest verified local cache if live fetching fails. It does not show fake market rankings. Market comparison activates only when verified Dhaka market-wise rows are present.
 
-## 3. Optional production secret
+## Unit policy
 
-For a verified official/backend market-wise CSV feed, add this Streamlit secret:
+Egg values are displayed as single-egg prices. If the official feed is hali / 4 eggs, the app divides by 4 and stores this in the unit audit table.
 
-```toml
-OFFICIAL_MARKET_PRICE_CSV_URL = "https://your-verified-feed.csv"
-```
+## Recommended production step
 
-Expected columns:
-
-```text
-date, commodity, market, area, price, price_min, price_max, unit, source, source_url, data_level, verified
-```
-
-For market comparison, use:
-
-```text
-data_level = market
-verified = true
-```
-
-Recommended units:
-
-```text
-kg
-litre
-piece
-packet
-```
-
-Egg rows should preferably be sent as `piece`. If an official/public source provides egg as hali / 4 eggs, the app normalizes it to a single-egg price.
-
-## 4. Daily refresh
-
-The package includes a GitHub Actions workflow under:
-
-```text
-.github/workflows/daily_refresh.yml
-```
-
-This can run a daily refresh script and commit cached data snapshots, depending on repository permissions.
-
-## 5. Consumer data rule
-
-The public app should not show demo prices as real prices. It should show:
-
-- verified official price ranges when available;
-- verified market-wise ranking only when verified market-wise rows exist;
-- clear unavailable status when market-wise data is absent.
+Keep daily refresh enabled so `cache/history_official_prices.csv` grows into a trend database.
