@@ -14,12 +14,13 @@ import requests
 import urllib3
 import streamlit as st
 import plotly.express as px
+import pydeck as pdk
 from bs4 import BeautifulSoup
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 APP_NAME = "Bangladesh Commodity Intelligence"
-APP_VERSION = "2.2.0-bangla-localized"
+APP_VERSION = "2.3.0-consumer-final"
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_DIR = BASE_DIR / "cache"
 DATA_DIR = BASE_DIR / "data"
@@ -70,7 +71,7 @@ TRANSLATIONS = {
         "subtitle": "Latest verified essential commodity prices for consumers. Official data only. No demo prices. No fake market ranking.",
         "language": "Language",
         "source_ok": "Official data loaded",
-        "source_partial": "Official data partially available",
+        "source_partial": "Official price ranges are available; Dhaka market ranking is unavailable today.",
         "source_fail": "Official data unavailable right now",
         "last_updated": "Last updated",
         "data_date": "Data date",
@@ -97,7 +98,7 @@ TRANSLATIONS = {
         "download": "Download current data",
         "market_unavailable": "Market-wise ranking is unavailable until the official source returns market-level Dhaka rows.",
         "verified": "Verified",
-        "partial": "Partial",
+        "partial": "Prices available",
         "unavailable": "Unavailable",
         "unit_published": "As published",
         "source_monitor": "Official source monitor",
@@ -106,13 +107,28 @@ TRANSLATIONS = {
         "low": "Low",
         "mid": "Average",
         "high": "High",
+        "spinner": "Fetching official public sources...",
+        "no_data_error": "No verified official price data could be loaded and no cache exists yet. Please check internet access or official source availability.",
+        "key_prices_fail": "Key official prices could not be summarized today.",
+        "basket_fail": "Basket could not be calculated because matching official commodity rows were not found.",
+        "basket_market_ok": "Market-wise basket ranking is available from verified market rows.",
+        "basket_no_market": "Market-wise basket ranking is not shown because market-level data was not available. This is an official aggregate weekly basket estimate.",
+        "official_ranges_none": "No aggregate official range data parsed from DAM today.",
+        "chart_price_title": "Higher-price essentials",
+        "chart_spread_title": "Official low-high spread",
+        "axis_price": "Price",
+        "axis_spread": "Spread",
+        "axis_commodity": "Commodity",
+        "map_note": "Base map place names come from OpenStreetMap tiles. Market marker labels/tooltips are localized by the app.",
+        "covered_markets": "Covered Dhaka markets",
+        "source_policy": "This app uses only verified official/public-source data or a backend-configured verified official feed. It does not display demo prices as real prices. If official market-wise data is not available, the app clearly says so.",
     },
     "বাংলা": {
         "title": "🛒 বাংলাদেশ কমোডিটি ইন্টেলিজেন্স",
         "subtitle": "ভোক্তাদের জন্য সর্বশেষ যাচাইকৃত নিত্যপ্রয়োজনীয় পণ্যের বাজারদর। শুধু সরকারি তথ্য; ডেমো দাম নয়, ভুয়া র‍্যাঙ্কিং নয়।",
         "language": "ভাষা",
         "source_ok": "সরকারি তথ্য পাওয়া গেছে",
-        "source_partial": "সরকারি তথ্য আংশিক পাওয়া গেছে",
+        "source_partial": "সরকারি মূল্যসীমা পাওয়া গেছে; ঢাকার বাজারভিত্তিক র‍্যাঙ্কিং আজ পাওয়া যায়নি।",
         "source_fail": "এই মুহূর্তে সরকারি তথ্য পাওয়া যাচ্ছে না",
         "last_updated": "সর্বশেষ হালনাগাদ",
         "data_date": "তথ্যের তারিখ",
@@ -139,7 +155,7 @@ TRANSLATIONS = {
         "download": "বর্তমান তথ্য ডাউনলোড",
         "market_unavailable": "সরকারি উৎস বাজারভিত্তিক ঢাকার সারি না দেওয়া পর্যন্ত বাজার র‍্যাঙ্কিং পাওয়া যাবে না।",
         "verified": "যাচাইকৃত",
-        "partial": "আংশিক",
+        "partial": "মূল্যতথ্য পাওয়া গেছে",
         "unavailable": "পাওয়া যায়নি",
         "unit_published": "প্রকাশিত রূপে",
         "source_monitor": "সরকারি উৎস মনিটর",
@@ -148,6 +164,21 @@ TRANSLATIONS = {
         "low": "কম",
         "mid": "গড়",
         "high": "বেশি",
+        "spinner": "সরকারি পাবলিক উৎস থেকে তথ্য আনা হচ্ছে...",
+        "no_data_error": "যাচাইকৃত সরকারি মূল্যতথ্য লোড করা যায়নি এবং কোনো ক্যাশও নেই। ইন্টারনেট সংযোগ বা সরকারি উৎসের প্রাপ্যতা পরীক্ষা করুন।",
+        "key_prices_fail": "আজ গুরুত্বপূর্ণ সরকারি দামের সারাংশ তৈরি করা যায়নি।",
+        "basket_fail": "মিল পাওয়া সরকারি পণ্য না থাকায় বাজার ঝুড়ির হিসাব করা যায়নি।",
+        "basket_market_ok": "যাচাইকৃত বাজারভিত্তিক তথ্য থেকে বাজার র‍্যাঙ্কিং পাওয়া গেছে।",
+        "basket_no_market": "বাজারভিত্তিক তথ্য না থাকায় বাজার র‍্যাঙ্কিং দেখানো হয়নি। এটি সরকারি সামগ্রিক মূল্যসীমা দিয়ে আনুমানিক সাপ্তাহিক হিসাব।",
+        "official_ranges_none": "আজ DAM থেকে সামগ্রিক সরকারি মূল্যসীমা পাওয়া যায়নি।",
+        "chart_price_title": "উচ্চমূল্যের পণ্য",
+        "chart_spread_title": "সরকারি নিম্ন-উচ্চ মূল্যসীমার পার্থক্য",
+        "axis_price": "দাম",
+        "axis_spread": "পার্থক্য",
+        "axis_commodity": "পণ্য",
+        "map_note": "বেস ম্যাপের জায়গার নাম OpenStreetMap টাইল থেকে আসে। বাজারের মার্কার/টুলটিপের নাম অ্যাপ নিজে বাংলায় দেখায়।",
+        "covered_markets": "কভার করা ঢাকার বাজার",
+        "source_policy": "এই অ্যাপ শুধু যাচাইকৃত সরকারি/পাবলিক উৎসের তথ্য বা ব্যাকএন্ডে সংযুক্ত যাচাইকৃত সরকারি ফিড ব্যবহার করে। ডেমো দামকে বাস্তব দাম হিসেবে দেখায় না। সরকারি বাজারভিত্তিক তথ্য না পাওয়া গেলে অ্যাপ তা স্পষ্টভাবে জানায়।",
     },
 }
 
@@ -193,6 +224,32 @@ ITEM_BN = {
     "Sugar": "চিনি",
     "Salt": "লবণ",
     "TOTAL": "মোট",
+}
+
+MARKET_BN = {
+    "Karwan Bazar": "কারওয়ান বাজার",
+    "Shyambazar": "শ্যামবাজার",
+    "Jatrabari Bazar": "যাত্রাবাড়ী বাজার",
+    "Mohammadpur Krishi Market": "মোহাম্মদপুর কৃষি মার্কেট",
+    "Mirpur-1 Kitchen Market": "মিরপুর-১ কাঁচাবাজার",
+    "Uttara Bazar": "উত্তরা বাজার",
+    "New Market": "নিউ মার্কেট",
+    "Rampura Bazar": "রামপুরা বাজার",
+    "Malibagh Bazar": "মালিবাগ বাজার",
+    "Khilgaon Bazar": "খিলগাঁও বাজার",
+}
+
+AREA_BN = {
+    "Tejgaon": "তেজগাঁও",
+    "Old Dhaka": "পুরান ঢাকা",
+    "Jatrabari": "যাত্রাবাড়ী",
+    "Mohammadpur": "মোহাম্মদপুর",
+    "Mirpur": "মিরপুর",
+    "Uttara": "উত্তরা",
+    "New Market": "নিউ মার্কেট",
+    "Rampura": "রামপুরা",
+    "Malibagh": "মালিবাগ",
+    "Khilgaon": "খিলগাঁও",
 }
 
 COLUMN_BN = {
@@ -243,6 +300,16 @@ def display_commodity(name: object) -> str:
 def display_item(name: object) -> str:
     txt = clean_text(name)
     return ITEM_BN.get(txt, txt) if is_bn() else txt
+
+
+def display_market(name: object) -> str:
+    txt = clean_text(name)
+    return MARKET_BN.get(txt, txt) if is_bn() else txt
+
+
+def display_area(name: object) -> str:
+    txt = clean_text(name)
+    return AREA_BN.get(txt, txt) if is_bn() else txt
 
 
 def localize_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -781,7 +848,7 @@ def status_badge(statuses: List[Dict[str, str]]) -> Tuple[str, str, str]:
     if market_ok:
         return "🟢", tr("verified"), tr("source_ok")
     if any_ok:
-        return "🟡", tr("partial"), tr("source_partial")
+        return "🟢", tr("partial"), tr("source_partial")
     return "🔴", tr("unavailable"), tr("source_fail")
 
 
@@ -833,6 +900,54 @@ def build_key_price_table(official_range_df: pd.DataFrame) -> pd.DataFrame:
     })
 
 
+def localized_status_name(name: object) -> str:
+    raw = clean_text(name)
+    if not is_bn():
+        return raw
+    mapping = {
+        "Verified backend feed": "যাচাইকৃত ব্যাকএন্ড ফিড",
+        "DAM market-wise report": "DAM বাজারভিত্তিক রিপোর্ট",
+        "DAM recent prices": "DAM সাম্প্রতিক মূল্যসীমা",
+        "TCB daily retail prices": "TCB দৈনিক খুচরা দাম",
+        "Local cache": "লোকাল ক্যাশ",
+    }
+    return mapping.get(raw, raw)
+
+
+def localized_status_message(status: Dict[str, str]) -> str:
+    msg = clean_text(status.get("message", ""))
+    name = clean_text(status.get("name", ""))
+    if not is_bn():
+        return msg
+    if name == "Verified backend feed":
+        if "No backend" in msg or "not configured" in msg.lower():
+            return "অতিরিক্ত যাচাইকৃত ব্যাকএন্ড ফিড সংযুক্ত নয়।"
+        if "Loaded" in msg:
+            m = re.search(r"Loaded\s+(\d+)", msg)
+            n = bn_digits(m.group(1)) if m else ""
+            return f"ব্যাকএন্ড ফিড থেকে {n}টি যাচাইকৃত সারি পাওয়া গেছে।" if n else "ব্যাকএন্ড ফিড থেকে যাচাইকৃত তথ্য পাওয়া গেছে।"
+        return "যাচাইকৃত ব্যাকএন্ড ফিড আজ পড়া যায়নি।"
+    if name == "DAM market-wise report":
+        if status.get("ok") == "true":
+            m = re.search(r"Parsed\s+(\d+)", msg)
+            n = bn_digits(m.group(1)) if m else ""
+            return f"DAM বাজারভিত্তিক রিপোর্ট থেকে {n}টি সরকারি সারি পাওয়া গেছে।" if n else "DAM বাজারভিত্তিক রিপোর্ট থেকে সরকারি সারি পাওয়া গেছে।"
+        return "আজ পাবলিক রিপোর্ট এন্ডপয়েন্ট থেকে ব্যবহারযোগ্য ঢাকার বাজারভিত্তিক সরকারি সারি পাওয়া যায়নি।"
+    if name == "DAM recent prices":
+        m = re.search(r"Parsed\s+(\d+)", msg)
+        n = bn_digits(m.group(1)) if m else ""
+        return f"DAM থেকে {n}টি সরকারি মূল্যসীমা পাওয়া গেছে।" if n else "DAM থেকে সরকারি মূল্যসীমা পাওয়া গেছে।"
+    if name == "TCB daily retail prices":
+        if status.get("ok") == "true":
+            m = re.search(r"Found\s+(\d+)", msg)
+            n = bn_digits(m.group(1)) if m else ""
+            return f"TCB পেজ লোড হয়েছে; {n}টি সম্ভাব্য অফিসিয়াল রিপোর্ট/ডাউনলোড লিংক পাওয়া গেছে।" if n else "TCB পেজ লোড হয়েছে; দৈনিক খুচরা দামের কনটেন্ট দেখা যাচ্ছে।"
+        return "TCB পেজ আজ অ্যাপ থেকে যাচাই করা যায়নি।"
+    if name == "Local cache":
+        return "লাইভ সরকারি উৎস ব্যর্থ হওয়ায় সর্বশেষ যাচাইকৃত লোকাল ক্যাশ ব্যবহার করা হয়েছে।"
+    return msg.translate(BN_DIGITS)
+
+
 def main() -> None:
     st.set_page_config(page_title=APP_NAME, page_icon="🛒", layout="wide")
     st.markdown(
@@ -864,16 +979,16 @@ def main() -> None:
         st.cache_data.clear()
         refresh_key = int(time.time())
 
-    with st.spinner("Fetching official public sources..."):
+    with st.spinner(tr("spinner")):
         df, statuses = load_official_data(refresh_key)
 
     display_metric_cards(df, statuses)
 
     if df.empty:
-        st.error("No verified official price data could be loaded and no cache exists yet. Please check internet access or official source availability.")
+        st.error(tr("no_data_error"))
         with st.expander(tr("transparency"), expanded=True):
             for s in statuses:
-                st.write(f"**{s['name']}** — {s['message']}")
+                st.write(f"**{localized_status_name(s['name'])}** — {localized_status_message(s)}")
                 st.caption(s.get("url", ""))
         return
 
@@ -891,7 +1006,7 @@ def main() -> None:
     st.caption(tr("key_prices_help"))
     key_table = build_key_price_table(official_range_df)
     if key_table.empty:
-        st.info("Key official prices could not be summarized today.")
+        st.info(tr("key_prices_fail"))
     else:
         st.dataframe(localize_columns(key_table), use_container_width=True, hide_index=True)
 
@@ -904,8 +1019,8 @@ def main() -> None:
         show = cheapest[["commodity", "market", "area", "unit", "price", "saving_vs_highest", "source"]].copy()
         show = pd.DataFrame({
             "Commodity": [display_commodity(x) for x in show["commodity"]],
-            "Cheapest market": show["market"],
-            "Area": show["area"],
+            "Cheapest market": [display_market(x) for x in show["market"]],
+            "Area": [display_area(x) for x in show["area"]],
             "Unit": show["unit"],
             "Lowest price": [fmt_tk(x) for x in show["price"]],
             "Saving vs highest": [fmt_tk(x) for x in show["saving_vs_highest"]],
@@ -917,12 +1032,12 @@ def main() -> None:
     st.caption(tr("basket_help"))
     basket_df, basket_mode = build_basket(df)
     if basket_df.empty:
-        st.info("Basket could not be calculated because matching official commodity rows were not found.")
+        st.info(tr("basket_fail"))
     elif basket_mode == "market":
-        st.success("Market-wise basket ranking available from verified market rows.")
+        st.success(tr("basket_market_ok"))
         st.dataframe(localize_columns(basket_df), use_container_width=True, hide_index=True)
     else:
-        st.info("Market-wise basket ranking is not shown because market-level data was not available. This is an official aggregate weekly basket estimate.")
+        st.info(tr("basket_no_market"))
         total_row = basket_df[basket_df["Item"].astype(str).isin([display_item("TOTAL"), "TOTAL"])]
         if not total_row.empty:
             st.markdown(f"### {tr('basket_summary')}")
@@ -935,7 +1050,7 @@ def main() -> None:
     st.subheader(tr("official_ranges"))
     st.caption(tr("official_ranges_help"))
     if official_range_df.empty:
-        st.info("No aggregate official range data parsed from DAM today.")
+        st.info(tr("official_ranges_none"))
     else:
         table = official_range_df.copy()
         table = pd.DataFrame({
@@ -958,12 +1073,12 @@ def main() -> None:
         c1, c2 = st.columns(2)
         with c1:
             top = chart_df.sort_values("price", ascending=False).head(15)
-            fig = px.bar(top, x="price", y="commodity_display", orientation="h", title="Higher-price essentials / উচ্চমূল্যের পণ্য", labels={"price": "Price", "commodity_display": "Commodity"})
+            fig = px.bar(top, x="price", y="commodity_display", orientation="h", title=tr("chart_price_title"), labels={"price": tr("axis_price"), "commodity_display": tr("axis_commodity")})
             fig.update_layout(height=520, yaxis={"categoryorder": "total ascending"})
             st.plotly_chart(fig, use_container_width=True)
         with c2:
             sp = chart_df.sort_values("spread", ascending=False).head(15)
-            fig2 = px.bar(sp, x="spread", y="commodity_display", orientation="h", title="Official low-high spread / মূল্যসীমার পার্থক্য", labels={"spread": "Spread", "commodity_display": "Commodity"})
+            fig2 = px.bar(sp, x="spread", y="commodity_display", orientation="h", title=tr("chart_spread_title"), labels={"spread": tr("axis_spread"), "commodity_display": tr("axis_commodity")})
             fig2.update_layout(height=520, yaxis={"categoryorder": "total ascending"})
             st.plotly_chart(fig2, use_container_width=True)
 
@@ -972,7 +1087,44 @@ def main() -> None:
     if not market_df.empty:
         avg = market_df.groupby("market", as_index=False).agg(avg_price=("price", "mean"), rows=("price", "size"))
         map_df = map_df.merge(avg, on="market", how="left")
-    st.map(map_df.rename(columns={"lat": "latitude", "lon": "longitude"}), latitude="latitude", longitude="longitude", zoom=11)
+    map_df["market_label"] = [display_market(x) for x in map_df["market"]]
+    map_df["area_label"] = [display_area(x) for x in map_df["area"]]
+    view_state = pdk.ViewState(latitude=23.7600, longitude=90.4050, zoom=10.7, pitch=0)
+    scatter = pdk.Layer(
+        "ScatterplotLayer",
+        data=map_df,
+        get_position="[lon, lat]",
+        get_radius=120,
+        get_fill_color=[205, 88, 73, 180],
+        pickable=True,
+    )
+    labels = pdk.Layer(
+        "TextLayer",
+        data=map_df,
+        get_position="[lon, lat]",
+        get_text="market_label",
+        get_size=14,
+        get_color=[20, 36, 64, 230],
+        get_text_anchor="middle",
+        get_alignment_baseline="bottom",
+        pickable=True,
+    )
+    st.pydeck_chart(
+        pdk.Deck(
+            map_style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+            initial_view_state=view_state,
+            layers=[scatter, labels],
+            tooltip={"html": "<b>{market_label}</b><br/>{area_label}", "style": {"backgroundColor": "white", "color": "#111827"}},
+        ),
+        use_container_width=True,
+    )
+    st.caption(tr("map_note"))
+    with st.expander(tr("covered_markets"), expanded=False):
+        market_list = pd.DataFrame({
+            "Market": [display_market(x) for x in map_df["market"]],
+            "Area": [display_area(x) for x in map_df["area"]],
+        })
+        st.dataframe(localize_columns(market_list), use_container_width=True, hide_index=True)
     if market_df.empty:
         st.caption(tr("market_unavailable"))
 
@@ -981,13 +1133,10 @@ def main() -> None:
     with st.expander(tr("source_monitor"), expanded=False):
         for s in statuses:
             icon = "🟢" if s.get("ok") == "true" else "🟡"
-            st.markdown(f"{icon} **{s.get('name','Source')}** — {s.get('message','')}")
+            st.markdown(f"{icon} **{localized_status_name(s.get('name','Source'))}** — {localized_status_message(s)}")
             if s.get("url"):
                 st.caption(s["url"])
-        st.markdown(
-            "This app uses only verified official/public-source data or a backend-configured verified official feed. "
-            "It does not display demo prices as real prices. If official market-wise data is not available, the app clearly says so."
-        )
+        st.markdown(tr("source_policy"))
 
 
 if __name__ == "__main__":

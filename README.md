@@ -2,15 +2,19 @@
 
 A consumer-facing Streamlit app for Bangladesh essential commodity prices.
 
-## What this final version fixes
+## Final consumer version: 2.3.0
 
-This version removes the misleading placeholder rows such as:
+This version is designed for a public consumer website. It shows only verified official/public-source prices and never displays demo or preview prices as real market data.
 
-`PREVIEW ONLY - replace with verified DAM/TCB market-wise feed`
+## What this version fixes
 
-The app now follows a strict rule:
-
-> Show only verified official/public-source data. If official market-wise Dhaka rows are not available, say that clearly instead of showing fake cheapest-market results.
+- Replaced the confusing `Partial / আংশিক` status with a consumer-friendly status: **Prices available / মূল্যতথ্য পাওয়া গেছে**.
+- Keeps Dhaka market-wise availability as a separate card, so users clearly see whether true market ranking is available today.
+- Added full Bangla localization for commodity names, basket item names, table columns, dates, numbers, charts, and source-monitor messages.
+- Added localized Dhaka market marker labels/tooltips on the map. Base map labels still come from OpenStreetMap/CARTO tiles, but the app’s own market labels appear in Bangla when Bangla mode is selected.
+- Removed raw technical errors from consumer-facing areas.
+- Added cleaner data transparency messages.
+- Improved weekly household basket summary cards.
 
 ## Main features
 
@@ -18,13 +22,22 @@ The app now follows a strict rule:
 - Best-effort official DAM market-wise report parser
 - TCB daily retail-price page monitor
 - Optional backend-only verified CSV/API feed
-- Dhaka cheapest-market logic when market-wise verified rows are available
-- Household basket estimate
-- Bangla/English toggle
-- Dhaka market coverage map
-- Charts for price level and price spread
-- Local cache and history snapshots
-- GitHub Actions daily refresh script
+- Dhaka cheapest-market logic when verified market-wise rows are available
+- Household weekly basket estimate
+- English/Bangla toggle
+- Localized Dhaka market coverage map
+- Price level and spread charts
+- Local cache and historical snapshot files
+- GitHub Actions daily refresh workflow
+
+## Important data rule
+
+The app distinguishes between:
+
+1. **Market-level rows** — can support cheapest-market ranking.
+2. **Official aggregate/range rows** — can support price reference and basket estimates, but not true market ranking.
+
+If the official source does not return market-level rows, the app will not invent market rankings. It clearly shows aggregate official prices instead.
 
 ## Run locally
 
@@ -71,24 +84,4 @@ Unverified rows are rejected.
 
 ## Data honesty
 
-The app distinguishes between:
-
-1. **Market-level rows** — can support cheapest-market ranking.
-2. **Official aggregate/range rows** — can support price reference and basket estimates, but not true market ranking.
-
-If the official source does not return market-level rows, the app will not invent market rankings.
-
-## Important official sources
-
-- DAM market portal: https://market.dam.gov.bd/?L=E
-- DAM market daily price report: https://market.dam.gov.bd/market_daily_price_report?L=E
-- TCB daily retail market prices: https://tcb.gov.bd/pages/daily-rmps
-
-
-## Consumer-final corrections
-
-- Hides raw technical SSL errors from consumers.
-- Shows short status cards that do not get cut off.
-- Adds a consumer-first key prices section before technical tables.
-- Expands the household basket to rice, flour/ata, dal, onion, potato, soybean oil, eggs, chicken/hen, sugar, and salt where official rows are available.
-- Keeps market-wise cheapest-market results hidden unless verified market-level Dhaka rows are actually available.
+Prices may vary by quality, brand, package size, shop, and time of day. The app is a verified reference, not a bargaining guarantee.
