@@ -320,7 +320,7 @@ button[kind="secondary"]:focus {
 # ---------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------
-APP_VERSION = "4.0.0-mobile-first"
+APP_VERSION = "4.2.0-mobile-first-public-safe"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(APP_DIR, "data")
 SEED_PATH = os.path.join(DATA_DIR, "verified_dhaka_market_prices_seed.csv")
@@ -674,17 +674,40 @@ def read_csv_url(url: str) -> Tuple[pd.DataFrame, str]:
 
 @st.cache_data(ttl=60 * 60, show_spinner=False)
 def fetch_official_page_status() -> Dict[str, Any]:
+    """Public-safe source status. Raw exceptions are hidden from consumer UI."""
     out: Dict[str, Any] = {}
-    for name, url in {
+    sources = {
         "TCB daily retail prices": TCB_DAILY_URL,
         "DAM daily market report": DAM_DAILY_REPORT_URL,
         "DAM commodity report": DAM_COMMODITY_PRINT_URL,
-    }.items():
+    }
+    for name, url in sources.items():
         try:
             r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=16)
-            out[name] = {"ok": r.ok, "url": url, "status": r.status_code}
+            out[name] = {
+                "ok": bool(r.ok),
+                "url": url,
+                "status_code": int(r.status_code),
+                "public_status": "Available" if r.ok else "Temporarily unavailable",
+                "technical_status": str(r.status_code),
+            }
+        except requests.exceptions.SSLError:
+            # Common with some government sites on hosted environments.
+            out[name] = {
+                "ok": False,
+                "url": url,
+                "status_code": None,
+                "public_status": "Temporarily unavailable",
+                "technical_status": "SSL certificate verification failed",
+            }
         except Exception as exc:
-            out[name] = {"ok": False, "url": url, "status": str(exc)}
+            out[name] = {
+                "ok": False,
+                "url": url,
+                "status_code": None,
+                "public_status": "Temporarily unavailable",
+                "technical_status": exc.__class__.__name__,
+            }
     return out
 
 
@@ -1008,9 +1031,29 @@ st.markdown(
 if mode == "preview":
     render_notice("warn", f"⚠️ {t['preview_warning']}")
 elif mode == "unavailable":
-    render_notice("danger", t["unavailable"])
+    render_notice(
+        "danger",
+        "Official price data could not be loaded at this moment. Please refresh later."
+        if lang == "English"
+        else "এই মুহূর্তে সরকারি বাজারদর লোড করা যায়নি। পরে আবার রিফ্রেশ করুন।"
+    )
     status = fetch_official_page_status()
-    st.write(status)
+    rows = []
+    for name, value in status.items():
+        rows.append({
+            "Source" if lang == "English" else "উৎস": name,
+            "Status" if lang == "English" else "অবস্থা": value.get("public_status", "Unavailable"),
+        })
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    with st.expander("Technical details" if lang == "English" else "প্রযুক্তিগত বিস্তারিত"):
+        tech_rows = []
+        for name, value in status.items():
+            tech_rows.append({
+                "Source": name,
+                "Technical status": value.get("technical_status", ""),
+                "URL": value.get("url", ""),
+            })
+        st.dataframe(pd.DataFrame(tech_rows), use_container_width=True, hide_index=True)
     st.stop()
 
 
@@ -1212,7 +1255,8 @@ with tab_source:
   <div class="item-meta">
     {t['status']}: {mode}<br>
     {t['date']}: {fmt_date(latest_date)}<br>
-    App version: {APP_VERSION}
+    App version: {APP_VERSION}<br>
+    {'TCB may be temporarily unreachable from Streamlit because of SSL certificate verification; DAM remains the active official source.' if lang == 'English' else 'SSL certificate verification সমস্যার কারণে Streamlit থেকে TCB সাময়িকভাবে না-ও খুলতে পারে; DAM এখন সক্রিয় সরকারি উৎস হিসেবে ব্যবহৃত হচ্ছে।'}
   </div>
 </div>
 """,
@@ -1226,8 +1270,23 @@ with tab_source:
 
     with st.expander("Official pages monitored" if lang == "English" else "যেসব সরকারি পেজ দেখা হয়"):
         status = fetch_official_page_status()
-        rows = [{"Page": k, "Reached": v["ok"], "Status": v["status"], "URL": v["url"]} for k, v in status.items()]
+        rows = []
+        for k, v in status.items():
+            rows.append({
+                "Page" if lang == "English" else "পেজ": k,
+                "Status" if lang == "English" else "অবস্থা": v.get("public_status", "Unavailable"),
+                "Used in app" if lang == "English" else "অ্যাপে ব্যবহৃত": "Yes" if ("DAM" in k and v.get("ok")) else "No",
+            })
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        with st.expander("Technical details" if lang == "English" else "প্রযুক্তিগত বিস্তারিত"):
+            tech_rows = []
+            for k, v in status.items():
+                tech_rows.append({
+                    "Page": k,
+                    "Technical status": v.get("technical_status", ""),
+                    "URL": v.get("url", ""),
+                })
+            st.dataframe(pd.DataFrame(tech_rows), use_container_width=True, hide_index=True)
 
     st.markdown("---")
     dataframe_download(market_df, "dhaka_marketwise_prices.csv", f"⬇️ {t['download']} — market-wise")

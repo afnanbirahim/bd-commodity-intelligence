@@ -1,13 +1,14 @@
 # Dhaka Daily Price Watch — Mobile First Consumer Edition
 
-Version: 4.1.0-mobile-first-official
+Version: 4.2.0-mobile-first-public-safe
 
-## Main fixes
-- Active tab/click styling no longer turns dark.
-- Public default uses official DAM aggregate price ranges, not bundled preview data.
-- Preview market-wise rows are hidden from the public full-data table.
-- Bangla mode localizes the visible data table labels and commodity names where mappings exist.
-- Cheapest-market claims are disabled unless a verified market-wise feed is connected.
+## Fixes in this version
+- Raw SSL/JSON errors are no longer shown to consumers.
+- If TCB fails because of SSL certificate verification, the app shows a clean public message.
+- DAM remains the active official source when DAM is reachable.
+- Source status is shown as Available / Temporarily unavailable.
+- Technical details are hidden inside an expander for debugging only.
+- Public UI avoids fake cheapest-market claims unless a verified market-wise feed is connected.
 
 ## Run locally
 
