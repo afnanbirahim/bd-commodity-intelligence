@@ -34,7 +34,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-APP_VERSION = "6.0.0-market-map"
+APP_VERSION = "7.0.0-map-safe"
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(APP_DIR, "data")
 OFFICIAL_CACHE_PATH = os.path.join(DATA_DIR, "official_reference_cache.csv")
@@ -303,6 +303,8 @@ def load_market_locations() -> pd.DataFrame:
         df["latitude"] = df["latitude"].apply(clean_number)
         df["longitude"] = df["longitude"].apply(clean_number)
         df = df.dropna(subset=["market", "latitude", "longitude"])
+        # Keep plausible Bangladesh/Dhaka coordinates only.
+        df = df[(df["latitude"].between(20, 27)) & (df["longitude"].between(88, 93))]
         return df.drop_duplicates("market")
     except Exception:
         return pd.DataFrame()
@@ -671,29 +673,42 @@ with tab_markets:
             map_df["cheapest_price"] = 1
             color_col = "cheapest_price"
 
-        fig_map = px.scatter_mapbox(
-            map_df,
-            lat="latitude",
-            lon="longitude",
-            hover_name="display_market",
-            hover_data={
-                "display_area": True,
-                "cheapest_item": False if "cheapest_item" in map_df.columns else False,
-                "cheapest_price": False,
-                "latitude": False,
-                "longitude": False,
-            },
-            size=[13] * len(map_df),
-            color=color_col,
-            zoom=10.4,
-            height=430,
-        )
-        fig_map.update_layout(
-            mapbox_style="open-street-map",
-            margin=dict(l=0, r=0, t=0, b=0),
-            coloraxis_showscale=False,
-        )
-        st.plotly_chart(fig_map, use_container_width=True, config={"displayModeBar": False, "responsive": True})
+        # Safe map rendering:
+        # Do not pass missing columns to Plotly hover_data. That caused Streamlit Cloud errors.
+        hover_cols = {
+            "display_area": True,
+            "latitude": False,
+            "longitude": False,
+        }
+        if "cheapest_item" in map_df.columns:
+            map_df["cheapest_item_display"] = map_df["cheapest_item"].apply(
+                lambda x: tr_item(x, lang) if pd.notna(x) else ("Not available yet" if lang == "English" else "এখনো পাওয়া যায়নি")
+            )
+            hover_cols["cheapest_item_display"] = True
+        if "unit" in map_df.columns:
+            hover_cols["unit"] = True
+
+        try:
+            fig_map = px.scatter_mapbox(
+                map_df,
+                lat="latitude",
+                lon="longitude",
+                hover_name="display_market",
+                hover_data=hover_cols,
+                zoom=10.4,
+                height=430,
+            )
+            fig_map.update_traces(marker={"size": 14})
+            fig_map.update_layout(
+                mapbox_style="open-street-map",
+                margin=dict(l=0, r=0, t=0, b=0),
+                showlegend=False,
+            )
+            st.plotly_chart(fig_map, use_container_width=True, config={"displayModeBar": False, "responsive": True})
+        except Exception:
+            # Fallback that should never crash the app.
+            fallback_map = map_df.rename(columns={"latitude": "lat", "longitude": "lon"})
+            st.map(fallback_map, latitude="lat", longitude="lon", size=80)
 
         if cheapest_items.empty:
             notice("info", t["no_market"] + " " + t["connect_market"])

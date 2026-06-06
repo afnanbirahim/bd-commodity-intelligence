@@ -1,13 +1,13 @@
 # Dhaka Daily Price Watch — Full Mobile Consumer App
 
-Version: 6.0.0-market-map
+Version: 7.0.0-map-safe
 
-## Latest update
-- Added a Dhaka market map in the Markets tab.
-- The map always shows known Dhaka market locations from `data/dhaka_markets.csv`.
-- If a verified market-wise feed is connected, each market card shows the cheapest listed item for that market.
-- If no verified market-wise feed is connected, the map still shows market locations but clearly says cheapest item is not available yet.
-- No fake market-wise prices are invented from aggregate official DAM price ranges.
+## Latest fix
+- Fixed Streamlit Cloud map crash.
+- Plotly map no longer receives missing hover fields when market-wise data is absent.
+- Map has a safe fallback using `st.map`, so the app should not crash even if Plotly fails.
+- Dhaka market locations still show from `data/dhaka_markets.csv`.
+- Cheapest item per market appears only after a verified market-wise feed is connected.
 
 ## Run
 
